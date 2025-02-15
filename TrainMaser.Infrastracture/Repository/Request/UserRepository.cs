@@ -1,6 +1,7 @@
 ﻿using TrainMaser.Infrastracture.Connections;
 using TrainMaser.Infrastracture.Repository.Interfaces;
 using TrainMaster.Domain.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrainMaser.Infrastracture.Repository.Request
 {
@@ -13,34 +14,43 @@ namespace TrainMaser.Infrastracture.Repository.Request
             _context = context;
         }
 
-        public Task<UserEntity> AddUserAsync(UserEntity userEntity)
+        public async Task<UserEntity> AddUserAsync(UserEntity userEntity)
         {
-            throw new NotImplementedException();
+            if (userEntity is null)
+                throw new ArgumentNullException(nameof(userEntity), "User cannot be null");
+
+            var result = await _context.UserEntity.AddAsync(userEntity);
+            await _context.SaveChangesAsync();
+
+            return result.Entity;
         }
 
         public UserEntity DeleteUserAsync(UserEntity userEntity)
         {
-            throw new NotImplementedException();
+            var response = _context.UserEntity.Remove(userEntity);
+            return response.Entity;
         }
 
-        public Task<List<UserEntity>> GetAllUsersAsync()
+        public async Task<List<UserEntity>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.UserEntity
+                .OrderBy(accountUser => accountUser.Email)
+                .Select(accountUser => new UserEntity
+                {
+                    Id = accountUser.Id,
+                    Email = accountUser.Email
+                }).ToListAsync();
         }
 
-        public Task<UserEntity?> GetUserByIdAsync(int? id)
+        public async Task<UserEntity?> GetUserByIdAsync(int? id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<UserEntity?> GetUserByNameAsync(string? name)
-        {
-            throw new NotImplementedException();
+            return await _context.UserEntity.FirstOrDefaultAsync(userEntity => userEntity.Id == id);
         }
 
         public UserEntity UpdateUserAsync(UserEntity userEntity)
         {
-            throw new NotImplementedException();
+            var response = _context.UserEntity.Update(userEntity);
+            return response.Entity;
         }
     }
 }
