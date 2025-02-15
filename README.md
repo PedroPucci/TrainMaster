@@ -113,3 +113,14 @@ Biblioteca utilizada para validações e compartilhamento de recursos comuns:
 - **Helpers**: Classe auxiliar para validação de erros.
 - **Validator**: Regras de validação para as entidades.
 ---
+### **Bibliotecas (packages) para .NET, instaladas via NuGet**
+1. coverlet.collector – Biblioteca para cobertura de código em testes unitários no .NET.
+2. FluentValidation – Framework para validação de dados no .NET com sintaxe fluente.
+3. Microsoft.EntityFrameworkCore – ORM do .NET para acesso a bancos de dados.
+4. Microsoft.EntityFrameworkCore.Tools – Ferramentas para migrações e gestão do Entity Framework Core.
+5. Microsoft.VisualStudio.Web.CodeGeneration.Design – Geração automática de código para ASP.NET Core (Scaffolding).
+6. Npgsql – Provedor de acesso ao banco de dados PostgreSQL para .NET.
+7. Npgsql.EntityFrameworkCore.PostgreSQL – Integração do Entity Framework Core com PostgreSQL.
+8. Serilog.AspNetCore – Biblioteca para logging estruturado no ASP.NET Core.
+9. Swashbuckle.AspNetCore – Ferramenta para documentar APIs ASP.NET Core com Swagger.
+---
