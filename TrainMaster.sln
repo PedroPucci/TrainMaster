@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster", "TrainMaster\TrainMaster.csproj", "{26BE6BA9-BE0A-44C7-8FDE-59862C80F3FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainMaster", "TrainMaster\TrainMaster.csproj", "{26BE6BA9-BE0A-44C7-8FDE-59862C80F3FB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6} = {1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}
+		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235} = {4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}
+		{FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD} = {FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster.Domain", "TrainMaster.Domain\TrainMaster.Domain.csproj", "{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster.Application", "TrainMaster.Application\TrainMaster.Application.csproj", "{FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6} = {1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}
+		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235} = {4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}
+		{ED61BE00-36FF-4FF4-9DEE-828C4716FF39} = {ED61BE00-36FF-4FF4-9DEE-828C4716FF39}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster.Shared", "TrainMaster.Shared\TrainMaster.Shared.csproj", "{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6} = {1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaser.Infrastracture", "TrainMaser.Infrastracture\TrainMaser.Infrastracture.csproj", "{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6} = {1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +39,22 @@ Global
 		{26BE6BA9-BE0A-44C7-8FDE-59862C80F3FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26BE6BA9-BE0A-44C7-8FDE-59862C80F3FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26BE6BA9-BE0A-44C7-8FDE-59862C80F3FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
