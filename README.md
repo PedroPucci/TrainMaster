@@ -1,7 +1,10 @@
 # TrainMaster
 
 # **Descrição do projeto**
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+É uma plataforma web inovadora destinada a gerenciar e otimizar o treinamento de
+funcionários em empresas. O objetivo é criar um ambiente de aprendizado online, acessível
+a qualquer hora, de qualquer lugar e em qualquer dispositivo, para fornecer aulas,
+conteúdos e provas de forma eficiente e prática.
 ---
 # **Solução**
 
