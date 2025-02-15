@@ -34,11 +34,11 @@ namespace TrainMaser.Infrastracture.Repository.Request
         public async Task<List<UserEntity>> GetAllUsersAsync()
         {
             return await _context.UserEntity
-                .OrderBy(accountUser => accountUser.Email)
-                .Select(accountUser => new UserEntity
+                .OrderBy(user => user.Email)
+                .Select(user => new UserEntity
                 {
-                    Id = accountUser.Id,
-                    Email = accountUser.Email
+                    Id = user.Id,
+                    Email = user.Email
                 }).ToListAsync();
         }
 
