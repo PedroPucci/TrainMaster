@@ -73,7 +73,7 @@ Após seguir as etapas anteriores, o sistema será iniciado, e uma página com a
 ---
 ## **Estrutura do Projeto**
 Essa estrutura garante organização, modularidade e escalabilidade ao projeto.
-### **1. TrainMasterWebBackEndDeveloper (API)**
+### **1. TrainMaster (API)**
 Contém os endpoints para acesso e execução das funcionalidades:
 1. Organização das pastas:
 - **Controllers**: Controladores da aplicação.
@@ -85,28 +85,29 @@ Contém os endpoints para acesso e execução das funcionalidades:
 - **Appsettings**: Configurações, incluindo conexão com o banco de dados.
 - **Program**: Classe principal para inicialização.
 ---
-### **2. TrainMasterWebBackEndDeveloper.Application**
+### **2. TrainMaster.Application**
 Camada intermediária entre os controladores e o banco de dados. Responsável também por funções específicas, como envio de e-mails.
 1. Organização das pastas:
 - **ExtensionError**: Contém a classe `Result` para controle de erros, usando FluentValidator.
 - **Services**: Contém as classes de serviços e interfaces.
 - **UnitOfWork**: Implementação do padrão **Unit of Work**, que gerencia transações e persistência de dados.
 ---
-### **3. TrainMasterWebBackEndDeveloper.Domain**
+### **3. TrainMaster.Domain**
 Camada de domínio, responsável pelos dados principais do sistema.
 1. Organização das pastas:
 - **Entity**: Contém as entidades do projeto.
 - **Enum**: Contém enums utilizados no projeto.
 - **General**: Contém classes genéricas, incluindo a `BaseEntity`, com propriedades comuns às entidades.
+- **Dto**: Contém objetos de transferência de dados (DTOs), utilizados para transportar informações entre as camadas do sistema sem expor diretamente as entidades do domínio.
 ---
-### **4. TrainMasterWebBackEndDeveloper.Infrastructure**
+### **4. TrainMaster.Infrastructure**
 Camada responsável pela interação com o banco de dados.
 1. Organização das pastas:
 - **Connection**: Configuração de conexão e mapeamento das entidades para o Entity Framework.
 - **Migrations**: Diretório onde as migrations geradas serão armazenadas.
 - **Repository**: Contém repositórios e suas interfaces.
 ---
-### **5. TrainMasterWebBackEndDeveloper.Shared**
+### **5. TrainMaster.Shared**
 Biblioteca utilizada para validações e compartilhamento de recursos comuns:
 1. Organização das pastas:
 - **Enums**: Classes de enums para erros.
