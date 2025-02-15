@@ -1,10 +1,8 @@
 # TrainMaster
 
 # **Descrição do projeto**
-É uma plataforma web inovadora destinada a gerenciar e otimizar o treinamento de
-funcionários em empresas. O objetivo é criar um ambiente de aprendizado online, acessível
-a qualquer hora, de qualquer lugar e em qualquer dispositivo, para fornecer aulas,
-conteúdos e provas de forma eficiente e prática.
+- É uma plataforma web inovadora destinada a gerenciar e otimizar o treinamento de funcionários em empresas. O objetivo é criar um ambiente de aprendizado online, acessível
+a qualquer hora, de qualquer lugar e em qualquer dispositivo, para fornecer aulas, conteúdos e provas de forma eficiente e prática.
 ---
 # **Solução**
 
@@ -72,7 +70,7 @@ xxxx
 - Arquivo diário com informações estruturadas.
 ---
 ### **5. Finalização**
-Após seguir as etapas anteriores, o sistema será iniciado, e uma página com a interface **Swagger** será aberta automaticamente no navegador configurado no Visual Studio. Essa página permitirá explorar e testar os endpoints da API.
+- Após seguir as etapas anteriores, o sistema será iniciado, e uma página com a interface **Swagger** será aberta automaticamente no navegador configurado no Visual Studio. Essa página permitirá explorar e testar os endpoints da API.
 ---
 ## **Estrutura do Projeto**
 Essa estrutura garante organização, modularidade e escalabilidade ao projeto.
