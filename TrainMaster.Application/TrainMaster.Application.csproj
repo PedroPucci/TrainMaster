@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TrainMaser.Infrastracture\TrainMaser.Infrastracture.csproj" />
     <ProjectReference Include="..\TrainMaster.Domain\TrainMaster.Domain.csproj" />
+    <ProjectReference Include="..\TrainMaster.Shared\TrainMaster.Shared.csproj" />
   </ItemGroup>
 
 </Project>
