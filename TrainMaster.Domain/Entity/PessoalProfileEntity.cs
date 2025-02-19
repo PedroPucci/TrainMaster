@@ -14,5 +14,8 @@ namespace TrainMaster.Domain.Entity
         [JsonIgnore]
         public UserEntity? User { get; set; }
         public int UserId { get; set; }
+
+        [JsonIgnore]
+        public AddressEntity? Address { get; set; }
     }
 }

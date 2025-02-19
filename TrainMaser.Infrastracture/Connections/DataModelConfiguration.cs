@@ -25,6 +25,21 @@ namespace TrainMaser.Infrastracture.Connections
                 entity.Property(p => p.DateOfBirth).IsRequired();
                 entity.Property(p => p.Gender).IsRequired().HasMaxLength(50);
                 entity.Property(p => p.Marital).IsRequired().HasMaxLength(50);
+                entity.HasOne(p => p.Address)
+                      .WithOne(a => a.PessoalProfile)
+                      .HasForeignKey<AddressEntity>(a => a.PessoalProfileId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<AddressEntity>(entity =>
+            {
+                entity.HasKey(a => a.Id);
+                entity.Property(a => a.AddressType).HasMaxLength(50);
+                entity.Property(a => a.Street).HasMaxLength(255);
+                entity.Property(a => a.Complement).HasMaxLength(255);
+                entity.Property(a => a.City).HasMaxLength(100);
+                entity.Property(a => a.State).HasMaxLength(100);
+                entity.Property(a => a.PostalCode).HasMaxLength(20);
             });
         }
     }

@@ -1,18 +1,19 @@
-﻿using TrainMaster.Domain.General;
+﻿using System.Text.Json.Serialization;
+using TrainMaster.Domain.General;
 
 namespace TrainMaster.Domain.Entity
 {
     public class AddressEntity : BaseEntity
     {
-        public int PessoalProfileId { get; set; }
-        public string AddressType { get; set; } = string.Empty;
-        public string Street { get; set; } = string.Empty;
+        public string? AddressType { get; set; }
+        public string? Street { get; set; }
         public string? Complement { get; set; }
-        public string City { get; set; } = string.Empty;
-        public string State { get; set; } = string.Empty;
-        public string PostalCode { get; set; } = string.Empty;
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? PostalCode { get; set; }
 
-        // Navigation Property (assuming a relationship with PessoalProfile entity)
-        //public PessoalProfileEntity? PessoalProfile { get; set; }
+        [JsonIgnore]
+        public PessoalProfileEntity? PessoalProfile { get; set; }
+        public int PessoalProfileId { get; set; }
     }
 }
