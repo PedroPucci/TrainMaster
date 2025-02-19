@@ -19,6 +19,7 @@ namespace TrainMaser.Infrastracture.Connections
         }
 
         public DbSet<UserEntity> UserEntity { get; set; }
+        public DbSet<PessoalProfileEntity> PessoalProfileEntity { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

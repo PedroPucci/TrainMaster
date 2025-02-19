@@ -12,6 +12,19 @@ namespace TrainMaser.Infrastracture.Connections
                 entity.HasKey(u => u.Id);
                 entity.Property(u => u.Email).IsRequired();
                 entity.Property(u => u.Password).IsRequired();
+                entity.HasOne(u => u.PessoalProfile)
+                      .WithOne(p => p.User)
+                      .HasForeignKey<PessoalProfileEntity>(p => p.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<PessoalProfileEntity>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+                entity.Property(p => p.FullName).IsRequired().HasMaxLength(255);
+                entity.Property(p => p.DateOfBirth).IsRequired();
+                entity.Property(p => p.Gender).IsRequired().HasMaxLength(50);
+                entity.Property(p => p.Marital).IsRequired().HasMaxLength(50);
             });
         }
     }

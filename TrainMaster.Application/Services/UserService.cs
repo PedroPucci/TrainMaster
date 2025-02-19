@@ -123,7 +123,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.UpdatingErrorUser(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error updating Task", ex);
+                throw new InvalidOperationException("Message: Error updating User", ex);
             }
             finally
             {

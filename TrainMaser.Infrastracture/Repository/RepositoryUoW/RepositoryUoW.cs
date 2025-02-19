@@ -11,6 +11,7 @@ namespace TrainMaser.Infrastracture.Repository.RepositoryUoW
         private readonly DataContext _context;
         private bool _disposed = false;
         private IUserRepository? _userEntityRepository = null;
+        private IPessoalProfileRepository? _pessoalProfileEntityRepository = null;
 
         public RepositoryUoW(DataContext context)
         {
@@ -26,6 +27,18 @@ namespace TrainMaser.Infrastracture.Repository.RepositoryUoW
                     _userEntityRepository = new UserRepository(_context);
                 }
                 return _userEntityRepository;
+            }
+        }
+
+        public IPessoalProfileRepository PessoalProfileRepository
+        {
+            get
+            {
+                if (_pessoalProfileEntityRepository is null)
+                {
+                    _pessoalProfileEntityRepository = new PessoalProfileRepository(_context);
+                }
+                return _pessoalProfileEntityRepository;
             }
         }
 

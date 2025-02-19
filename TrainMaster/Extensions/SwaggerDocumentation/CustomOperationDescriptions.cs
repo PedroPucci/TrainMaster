@@ -12,7 +12,8 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
 
             var routeHandlers = new Dictionary<string, Action>
                 {
-                    { "user", () => HandleUserOperations(operation, context) }
+                    { "user", () => HandleUserOperations(operation, context) },
+                    { "pessoalProfile", () => HandlePessoalProfileOperations(operation, context) }
                 };
 
             foreach (var routeHandler in routeHandlers)
@@ -53,6 +54,37 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                 operation.Summary = "Retrieve all users";
                 operation.Description = "This endpoint allows you to retrieve details of all existing users.";
                 AddResponses(operation, "200", "All user details were successfully retrieved.");
+            }
+        }
+
+        private void HandlePessoalProfileOperations(OpenApiOperation operation, OperationFilterContext context)
+        {
+            if (context.ApiDescription.HttpMethod == "POST")
+            {
+                operation.Summary = "Create a new pessoal profile";
+                operation.Description = "This endpoint allows you to create a new pessoal profile by providing the necessary details.";
+                AddResponses(operation, "200", "The pessoal profile was successfully created.");
+            }
+            else if (context.ApiDescription.HttpMethod == "PUT")
+            {
+                operation.Summary = "Update an existing pessoal profile";
+                operation.Description = "This endpoint allows you to update an existing pessoal profile by providing the necessary details.";
+                AddResponses(operation, "200", "The pessoal profile was successfully updated.");
+            }
+            else if (context.ApiDescription.HttpMethod == "DELETE")
+            {
+                operation.Summary = "Delete an existing pessoal profile";
+                operation.Description = "This endpoint allows you to delete an existing pessoal profile by providing the ID.";
+                AddResponses(operation, "200", "The pessoal profile was successfully deleted.");
+                AddResponses(operation, "404", "pessoal profile not found. Please verify the ID.");
+            }
+            else if (context.ApiDescription.HttpMethod == "GET" &&
+                    context.ApiDescription.RelativePath != null &&
+                    context.ApiDescription.RelativePath.Contains("All"))
+            {
+                operation.Summary = "Retrieve all pessoal profiles";
+                operation.Description = "This endpoint allows you to retrieve details of all existing pessoal profiles.";
+                AddResponses(operation, "200", "All pessoal profiles details were successfully retrieved.");
             }
         }
 

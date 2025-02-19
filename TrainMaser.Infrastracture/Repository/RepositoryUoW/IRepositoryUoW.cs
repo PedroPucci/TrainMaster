@@ -6,6 +6,7 @@ namespace TrainMaser.Infrastracture.Repository.RepositoryUoW
     public interface IRepositoryUoW
     {
         IUserRepository UserRepository { get; }
+        IPessoalProfileRepository PessoalProfileRepository { get; }
 
         Task SaveAsync();
         void Commit();

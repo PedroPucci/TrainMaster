@@ -14,5 +14,16 @@
         public static string DeleteUserSuccess() => "Message: Delete with success User.";
         public static string GetAllUserError(Exception ex) => $"Message: Error to loading the list User: {ex.Message}";
         public static string GetAllUserSuccess() => "Message: GetAll with success User.";
+
+        //Pessoal Profile
+        public static string InvalidPessoalProfileInputs() => "Message: Invalid inputs to Pessoal Profile.";
+        public static string UpdatingErrorPessoalProfile(Exception ex) => $"Message: Error updating Pessoal Profile: {ex.Message}";
+        public static string UpdatingSuccessPessoalProfile() => "Message: Successfully updated Pessoal Profile.";
+        public static string AddingPessoalProfileError(Exception ex) => $"Message: Error adding a new Pessoal Profile: {ex.Message}";
+        public static string AddingPessoalProfileSuccess() => "Message: Successfully added a new Pessoal Profile.";
+        public static string DeletePessoalProfileError(Exception ex) => $"Message: Error to delete a Pessoal Profile: {ex.Message}";
+        public static string DeletePessoalProfileSuccess() => "Message: Delete with success Pessoal Profile.";
+        public static string GetAllPessoalProfileError(Exception ex) => $"Message: Error to loading the list Pessoal Profile: {ex.Message}";
+        public static string GetAllPessoalProfileSuccess() => "Message: GetAll with success Pessoal Profile.";
     }
 }

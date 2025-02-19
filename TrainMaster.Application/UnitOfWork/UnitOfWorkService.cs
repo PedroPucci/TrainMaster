@@ -7,6 +7,7 @@ namespace TrainMaster.Application.UnitOfWork
     {
         private readonly IRepositoryUoW _repositoryUoW;
         private UserService userService;
+        private ProfilePessoalService profilePessoalService;
 
         public UnitOfWorkService(IRepositoryUoW repositoryUoW)
         {
@@ -20,6 +21,16 @@ namespace TrainMaster.Application.UnitOfWork
                 if (userService is null)
                     userService = new UserService(_repositoryUoW);
                 return userService;
+            }
+        }
+
+        public ProfilePessoalService ProfilePessoalService
+        {
+            get
+            {
+                if (profilePessoalService is null)
+                    profilePessoalService = new ProfilePessoalService(_repositoryUoW);
+                return profilePessoalService;
             }
         }
     }
