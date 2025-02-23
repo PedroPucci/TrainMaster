@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using TrainMaser.Infrastracture.Repository.RepositoryUoW;
 using TrainMaser.Infrastracture.Repository.Security.Cryptography;
+using TrainMaser.Infrastracture.Security.Token.Access;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Entity;
@@ -47,7 +48,10 @@ namespace TrainMaster.Application.Services
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
 
-                return Result<UserEntity>.Ok();
+                var tokenGenerator = new TokenService();
+                var token = tokenGenerator.GenerateToken(userEntity.Id.ToString(), userEntity.Email);
+
+                return Result<UserEntity>.Ok(token.ToString());
             }
             catch (Exception ex)
             {

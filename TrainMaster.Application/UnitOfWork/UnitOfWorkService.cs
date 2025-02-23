@@ -1,4 +1,7 @@
-﻿using TrainMaser.Infrastracture.Repository.RepositoryUoW;
+﻿using BCrypt.Net;
+using TrainMaser.Infrastracture.Repository.RepositoryUoW;
+using TrainMaser.Infrastracture.Repository.Security.Cryptography;
+using TrainMaser.Infrastracture.Security.Token.Access;
 using TrainMaster.Application.Services;
 
 namespace TrainMaster.Application.UnitOfWork
@@ -6,12 +9,18 @@ namespace TrainMaster.Application.UnitOfWork
     public class UnitOfWorkService : IUnitOfWorkService
     {
         private readonly IRepositoryUoW _repositoryUoW;
+        private readonly TokenService _tokenService;
+        private readonly BCryptoAlgorithm _crypto;
+
         private UserService userService;
         private ProfilePessoalService profilePessoalService;
+        private AuthService authService;
 
-        public UnitOfWorkService(IRepositoryUoW repositoryUoW)
+        public UnitOfWorkService(IRepositoryUoW repositoryUoW, TokenService tokenService, BCryptoAlgorithm crypto)
         {
             _repositoryUoW = repositoryUoW;
+            _tokenService = tokenService;
+            _crypto = crypto;
         }
 
         public UserService UserService
@@ -31,6 +40,16 @@ namespace TrainMaster.Application.UnitOfWork
                 if (profilePessoalService is null)
                     profilePessoalService = new ProfilePessoalService(_repositoryUoW);
                 return profilePessoalService;
+            }
+        }
+
+        public AuthService AuthService
+        {
+            get
+            {
+                if (authService is null)
+                    authService = new AuthService(_repositoryUoW.UserRepository, _tokenService, _crypto);
+                return authService;
             }
         }
     }

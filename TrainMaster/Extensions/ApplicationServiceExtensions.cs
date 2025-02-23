@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using TrainMaser.Infrastracture.Connections;
 using TrainMaser.Infrastracture.Repository.RepositoryUoW;
+using TrainMaser.Infrastracture.Repository.Security.Cryptography;
+using TrainMaser.Infrastracture.Security.Token.Access;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Extensions.SwaggerDocumentation;
 
@@ -29,13 +31,13 @@ namespace TrainMaster.Extensions
                 });
 
                 opt.OperationFilter<CustomOperationDescriptions>();
-            }
-            );
+            });
 
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseNpgsql(config.GetConnectionString("WebApiDatabase"));
             });
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
@@ -44,13 +46,14 @@ namespace TrainMaster.Extensions
                 });
             });
 
-            services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
             services.AddScoped<IRepositoryUoW, RepositoryUoW>();
+            services.AddScoped<TokenService>();
+            services.AddScoped<BCryptoAlgorithm>();
+            services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
 
             services.AddMvc().AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.DefaultIgnoreCondition
-                                   = JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
 
             return services;
