@@ -22,6 +22,55 @@ namespace TrainMaser.Infrastracture.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("TrainMaster.Domain.Entity.AddressEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AddressType")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Complement")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PessoalProfileId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("State")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Street")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PessoalProfileId")
+                        .IsUnique();
+
+                    b.ToTable("AddressEntity");
+                });
+
             modelBuilder.Entity("TrainMaster.Domain.Entity.PessoalProfileEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -71,6 +120,9 @@ namespace TrainMaser.Infrastracture.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Cpf")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -93,6 +145,17 @@ namespace TrainMaser.Infrastracture.Migrations
                     b.ToTable("UserEntity");
                 });
 
+            modelBuilder.Entity("TrainMaster.Domain.Entity.AddressEntity", b =>
+                {
+                    b.HasOne("TrainMaster.Domain.Entity.PessoalProfileEntity", "PessoalProfile")
+                        .WithOne("Address")
+                        .HasForeignKey("TrainMaster.Domain.Entity.AddressEntity", "PessoalProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PessoalProfile");
+                });
+
             modelBuilder.Entity("TrainMaster.Domain.Entity.PessoalProfileEntity", b =>
                 {
                     b.HasOne("TrainMaster.Domain.Entity.UserEntity", "User")
@@ -102,6 +165,11 @@ namespace TrainMaser.Infrastracture.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TrainMaster.Domain.Entity.PessoalProfileEntity", b =>
+                {
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("TrainMaster.Domain.Entity.UserEntity", b =>

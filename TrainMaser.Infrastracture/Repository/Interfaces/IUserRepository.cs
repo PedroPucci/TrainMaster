@@ -9,5 +9,6 @@ namespace TrainMaser.Infrastracture.Repository.Interfaces
         UserEntity Delete(UserEntity userEntity);
         Task<List<UserEntity>> Get();
         Task<UserEntity?> GetById(int? id);
+        Task<UserEntity?> GetByCpf(string? cpf);
     }
 }

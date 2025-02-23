@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using TrainMaser.Infrastracture.Repository.RepositoryUoW;
+using TrainMaser.Infrastracture.Repository.Security.Cryptography;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Entity;
@@ -22,6 +23,7 @@ namespace TrainMaster.Application.Services
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
+                var crypto = new BCryptoAlgorithm();
                 var isValidUser = await IsValidUserRequest(userEntity);
 
                 if (!isValidUser.Success)
@@ -30,8 +32,16 @@ namespace TrainMaster.Application.Services
                     return Result<UserEntity>.Error(isValidUser.Message);
                 }
 
+                if (await UniqueCpf(userEntity.Cpf))
+                {
+                    Log.Error("CPF already exists in the system.");
+                    return Result<UserEntity>.Error("Message: The provided CPF is already in use.");
+                }
+
                 userEntity.ModificationDate = DateTime.UtcNow;
                 userEntity.Email = userEntity.Email?.Trim().ToLower();
+                userEntity.Password = crypto.HashPassword(userEntity.Password);
+                userEntity.Cpf = userEntity.Cpf;
                 var result = await _repositoryUoW.UserRepository.Add(userEntity);
 
                 await _repositoryUoW.SaveAsync();
@@ -131,23 +141,6 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        private Result<UserEntity> ValidateUser(UserEntity userEntity, Result<UserEntity> isValidUser)
-        {
-            if (!isValidUser.Success)
-            {
-                Log.Error(LogMessages.InvalidUserInputs());
-                return Result<UserEntity>.Error(isValidUser.Message);
-            }
-
-            if (string.IsNullOrWhiteSpace(userEntity.Email))
-            {
-                Log.Error(LogMessages.NullOrEmptyUserEmail());
-                return Result<UserEntity>.Error("Message: The Email field cannot be null, empty, or whitespace.");
-            }
-
-            return Result<UserEntity>.Ok();
-        }
-
         private async Task<Result<UserEntity>> IsValidUserRequest(UserEntity userEntity)
         {
             var requestValidator = await new UserRequestValidator().ValidateAsync(userEntity);
@@ -159,6 +152,11 @@ namespace TrainMaster.Application.Services
             }
 
             return Result<UserEntity>.Ok();
+        }
+
+        private async Task<bool> UniqueCpf(string cpf)
+        {
+            return await _repositoryUoW.UserRepository.GetByCpf(cpf) is not null;
         }
     }
 }

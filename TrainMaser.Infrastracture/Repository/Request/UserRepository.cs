@@ -47,6 +47,11 @@ namespace TrainMaser.Infrastracture.Repository.Request
             return await _context.UserEntity.FirstOrDefaultAsync(userEntity => userEntity.Id == id);
         }
 
+        public async Task<UserEntity?> GetByCpf(string? cpf)
+        {
+            return await _context.UserEntity.FirstOrDefaultAsync(userEntity => userEntity.Cpf == cpf);
+        }
+
         public UserEntity Update(UserEntity userEntity)
         {
             var response = _context.UserEntity.Update(userEntity);
