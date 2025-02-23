@@ -14,7 +14,7 @@ namespace TrainMaser.Infrastracture.Repository.Request
             _context = context;
         }
 
-        public async Task<PessoalProfileEntity> AddPessoalProfileAsync(PessoalProfileEntity pessoalProfileEntity)
+        public async Task<PessoalProfileEntity> Add(PessoalProfileEntity pessoalProfileEntity)
         {
             var result = await _context.PessoalProfileEntity.AddAsync(pessoalProfileEntity);
             await _context.SaveChangesAsync();
@@ -22,13 +22,13 @@ namespace TrainMaser.Infrastracture.Repository.Request
             return result.Entity;
         }
 
-        public PessoalProfileEntity DeletePessoalProfileAsync(PessoalProfileEntity pessoalProfileEntity)
+        public PessoalProfileEntity Delete(PessoalProfileEntity pessoalProfileEntity)
         {
             var response = _context.PessoalProfileEntity.Remove(pessoalProfileEntity);
             return response.Entity;
         }
 
-        public async Task<List<PessoalProfileEntity>> GetAllPessoalProfilesAsync()
+        public async Task<List<PessoalProfileEntity>> Get()
         {
             return await _context.PessoalProfileEntity
                 .OrderBy(pessoalProfile => pessoalProfile.Id)
@@ -42,12 +42,12 @@ namespace TrainMaser.Infrastracture.Repository.Request
                 }).ToListAsync();
         }
 
-        public async Task<PessoalProfileEntity?> GetUPessoalProfileByIdAsync(int? id)
+        public async Task<PessoalProfileEntity?> GetById(int? id)
         {
             return await _context.PessoalProfileEntity.FirstOrDefaultAsync(pessoalProfileEntity => pessoalProfileEntity.Id == id);
         }
 
-        public PessoalProfileEntity UpdatePessoalProfileAsync(PessoalProfileEntity pessoalProfileEntity)
+        public PessoalProfileEntity Update(PessoalProfileEntity pessoalProfileEntity)
         {
             var response = _context.PessoalProfileEntity.Update(pessoalProfileEntity);
             return response.Entity;

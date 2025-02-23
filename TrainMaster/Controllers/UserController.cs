@@ -23,7 +23,7 @@ namespace TrainMaster.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _serviceUoW.UserService.AddUserAsync(userEntity);
+            var result = await _serviceUoW.UserService.Add(userEntity);
             return result.Success ? Ok(result) : BadRequest(result);
         }
 
@@ -33,7 +33,7 @@ namespace TrainMaster.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> Update([FromBody] UserEntity userEntity)
         {
-            var result = await _serviceUoW.UserService.UpdateUserAsync(userEntity);
+            var result = await _serviceUoW.UserService.Update(userEntity);
             return result.Success ? Ok(result) : BadRequest(userEntity);
         }
 
@@ -43,16 +43,16 @@ namespace TrainMaster.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> Delete(int id)
         {
-            await _serviceUoW.UserService.DeleteUserAsync(id);
+            await _serviceUoW.UserService.Delete(id);
             return Ok();
         }
 
         [HttpGet("All")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserEntity>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var users = await _serviceUoW.UserService.GetAllUsersAsync();
+            var users = await _serviceUoW.UserService.Get();
             return Ok(users);
         }
     }

@@ -18,7 +18,7 @@ namespace TrainMaster.Application.Services
             _repositoryUoW = repositoryUoW;
         }
 
-        public async Task<Result<PessoalProfileEntity>> AddPessoalProfileAsync(PessoalProfileEntity pessoalProfileEntity)
+        public async Task<Result<PessoalProfileEntity>> Add(PessoalProfileEntity pessoalProfileEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
@@ -32,7 +32,7 @@ namespace TrainMaster.Application.Services
                 }
 
                 pessoalProfileEntity.ModificationDate = DateTime.UtcNow;
-                var result = await _repositoryUoW.PessoalProfileRepository.AddPessoalProfileAsync(pessoalProfileEntity);
+                var result = await _repositoryUoW.PessoalProfileRepository.Add(pessoalProfileEntity);
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
@@ -53,14 +53,14 @@ namespace TrainMaster.Application.Services
 
         }
 
-        public async Task DeletePessoalProfileAsync(int pessoalProfileEntity)
+        public async Task Delete(int pessoalProfileEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var pessoalProfileToDelete = await _repositoryUoW.PessoalProfileRepository.GetUPessoalProfileByIdAsync(pessoalProfileEntity);
+                var pessoalProfileToDelete = await _repositoryUoW.PessoalProfileRepository.GetById(pessoalProfileEntity);
                 if (pessoalProfileToDelete is not null)
-                    _repositoryUoW.PessoalProfileRepository.DeletePessoalProfileAsync(pessoalProfileToDelete);
+                    _repositoryUoW.PessoalProfileRepository.Delete(pessoalProfileToDelete);
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
@@ -78,12 +78,12 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<List<PessoalProfileEntity>> GetAllPessoalProfilesAsync()
+        public async Task<List<PessoalProfileEntity>> Get()
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                List<PessoalProfileEntity> pessoalProfileEntities = await _repositoryUoW.PessoalProfileRepository.GetAllPessoalProfilesAsync();
+                List<PessoalProfileEntity> pessoalProfileEntities = await _repositoryUoW.PessoalProfileRepository.Get();
                 _repositoryUoW.Commit();
                 return pessoalProfileEntities;
             }
@@ -100,19 +100,19 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<PessoalProfileEntity>> UpdatePessoalProfileAsync(PessoalProfileEntity pessoalProfileEntity)
+        public async Task<Result<PessoalProfileEntity>> Update(PessoalProfileEntity pessoalProfileEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var pessoalProfileById = await _repositoryUoW.PessoalProfileRepository.GetUPessoalProfileByIdAsync(pessoalProfileEntity.Id);
+                var pessoalProfileById = await _repositoryUoW.PessoalProfileRepository.GetById(pessoalProfileEntity.Id);
                 if (pessoalProfileById is null)
                     throw new InvalidOperationException("Message: Error updating Pessoal Profile");
 
                 pessoalProfileById.FullName = pessoalProfileEntity.FullName;
                 pessoalProfileById.ModificationDate = DateTime.UtcNow;
 
-                _repositoryUoW.PessoalProfileRepository.UpdatePessoalProfileAsync(pessoalProfileById);
+                _repositoryUoW.PessoalProfileRepository.Update(pessoalProfileById);
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();

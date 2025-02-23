@@ -4,10 +4,10 @@ namespace TrainMaser.Infrastracture.Repository.Interfaces
 {
     public interface IPessoalProfileRepository
     {
-        Task<PessoalProfileEntity> AddPessoalProfileAsync(PessoalProfileEntity pessoalProfileEntity);
-        PessoalProfileEntity UpdatePessoalProfileAsync(PessoalProfileEntity pessoalProfileEntity);
-        PessoalProfileEntity DeletePessoalProfileAsync(PessoalProfileEntity pessoalProfileEntity);
-        Task<List<PessoalProfileEntity>> GetAllPessoalProfilesAsync();
-        Task<PessoalProfileEntity?> GetUPessoalProfileByIdAsync(int? id);
+        Task<PessoalProfileEntity> Add(PessoalProfileEntity pessoalProfileEntity);
+        PessoalProfileEntity Update(PessoalProfileEntity pessoalProfileEntity);
+        PessoalProfileEntity Delete(PessoalProfileEntity pessoalProfileEntity);
+        Task<List<PessoalProfileEntity>> Get();
+        Task<PessoalProfileEntity?> GetById(int? id);
     }
 }

@@ -17,7 +17,7 @@ namespace TrainMaster.Application.Services
             _repositoryUoW = repositoryUoW;
         }
 
-        public async Task<Result<UserEntity>> AddUserAsync(UserEntity userEntity)
+        public async Task<Result<UserEntity>> Add(UserEntity userEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
@@ -32,7 +32,7 @@ namespace TrainMaster.Application.Services
 
                 userEntity.ModificationDate = DateTime.UtcNow;
                 userEntity.Email = userEntity.Email?.Trim().ToLower();
-                var result = await _repositoryUoW.UserRepository.AddUserAsync(userEntity);
+                var result = await _repositoryUoW.UserRepository.Add(userEntity);
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
@@ -52,14 +52,14 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task DeleteUserAsync(int userId)
+        public async Task Delete(int userId)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var userToDelete = await _repositoryUoW.UserRepository.GetUserByIdAsync(userId);                
+                var userToDelete = await _repositoryUoW.UserRepository.GetById(userId);                
                 if (userToDelete is not null)
-                    _repositoryUoW.UserRepository.DeleteUserAsync(userToDelete);
+                    _repositoryUoW.UserRepository.Delete(userToDelete);
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
@@ -77,12 +77,12 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<List<UserEntity>> GetAllUsersAsync()
+        public async Task<List<UserEntity>> Get()
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                List<UserEntity> userEntities = await _repositoryUoW.UserRepository.GetAllUsersAsync();
+                List<UserEntity> userEntities = await _repositoryUoW.UserRepository.Get();
                 _repositoryUoW.Commit();
                 return userEntities;
             }
@@ -99,12 +99,12 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<UserEntity>> UpdateUserAsync(UserEntity userEntity)
+        public async Task<Result<UserEntity>> Update(UserEntity userEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var userById = await _repositoryUoW.UserRepository.GetUserByIdAsync(userEntity.Id);
+                var userById = await _repositoryUoW.UserRepository.GetById(userEntity.Id);
                 if (userById is null)
                     throw new InvalidOperationException("Message: Error updating User");
                 
@@ -112,7 +112,7 @@ namespace TrainMaster.Application.Services
                 userById.ModificationDate = DateTime.UtcNow;
                 userById.IsActive = userEntity.IsActive;
 
-                _repositoryUoW.UserRepository.UpdateUserAsync(userById);
+                _repositoryUoW.UserRepository.Update(userById);
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();

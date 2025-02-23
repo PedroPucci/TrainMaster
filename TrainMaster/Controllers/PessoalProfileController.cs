@@ -23,7 +23,7 @@ namespace TrainMaster.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _serviceUoW.ProfilePessoalService.AddPessoalProfileAsync(pessoalProfileEntity);
+            var result = await _serviceUoW.ProfilePessoalService.Add(pessoalProfileEntity);
             return result.Success ? Ok(result) : BadRequest(result);
         }
 
@@ -33,7 +33,7 @@ namespace TrainMaster.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> Update([FromBody] PessoalProfileEntity pessoalProfileEntity)
         {
-            var result = await _serviceUoW.ProfilePessoalService.UpdatePessoalProfileAsync(pessoalProfileEntity);
+            var result = await _serviceUoW.ProfilePessoalService.Update(pessoalProfileEntity);
             return result.Success ? Ok(result) : BadRequest(pessoalProfileEntity);
         }
 
@@ -43,16 +43,16 @@ namespace TrainMaster.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> Delete(int id)
         {
-            await _serviceUoW.ProfilePessoalService.DeletePessoalProfileAsync(id);
+            await _serviceUoW.ProfilePessoalService.Delete(id);
             return Ok();
         }
 
         [HttpGet("All")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PessoalProfileEntity>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var users = await _serviceUoW.ProfilePessoalService.GetAllPessoalProfilesAsync();
+            var users = await _serviceUoW.ProfilePessoalService.Get();
             return Ok(users);
         }
     }

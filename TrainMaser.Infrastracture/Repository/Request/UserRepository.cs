@@ -14,7 +14,7 @@ namespace TrainMaser.Infrastracture.Repository.Request
             _context = context;
         }
 
-        public async Task<UserEntity> AddUserAsync(UserEntity userEntity)
+        public async Task<UserEntity> Add(UserEntity userEntity)
         {
             if (userEntity is null)
                 throw new ArgumentNullException(nameof(userEntity), "User cannot be null");
@@ -25,13 +25,13 @@ namespace TrainMaser.Infrastracture.Repository.Request
             return result.Entity;
         }
 
-        public UserEntity DeleteUserAsync(UserEntity userEntity)
+        public UserEntity Delete(UserEntity userEntity)
         {
             var response = _context.UserEntity.Remove(userEntity);
             return response.Entity;
         }
 
-        public async Task<List<UserEntity>> GetAllUsersAsync()
+        public async Task<List<UserEntity>> Get()
         {
             return await _context.UserEntity
                 .OrderBy(user => user.Email)
@@ -42,12 +42,12 @@ namespace TrainMaser.Infrastracture.Repository.Request
                 }).ToListAsync();
         }
 
-        public async Task<UserEntity?> GetUserByIdAsync(int? id)
+        public async Task<UserEntity?> GetById(int? id)
         {
             return await _context.UserEntity.FirstOrDefaultAsync(userEntity => userEntity.Id == id);
         }
 
-        public UserEntity UpdateUserAsync(UserEntity userEntity)
+        public UserEntity Update(UserEntity userEntity)
         {
             var response = _context.UserEntity.Update(userEntity);
             return response.Entity;
