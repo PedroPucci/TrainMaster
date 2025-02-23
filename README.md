@@ -42,10 +42,7 @@ a qualquer hora, de qualquer lugar e em qualquer dispositivo, para fornecer aula
 - Caso seu antivírus exiba alertas ao executar o projeto, será necessário fechar esses avisos para continuar.
 - Durante a execução, um console será aberto para a geração de logs. Caso queira, você pode fechá-lo sem impactar a execução do sistema.
 
-### **3. Configurando o Postman**
-xxxx
-
-### **4. Banco de Dados**
+### **3. Banco de Dados**
 - **Centralização de Exceções:**  
   Implementada a classe `ExceptionMiddleware` para unificar o tratamento de erros no sistema.
 - **Alterações Realizadas:**  
