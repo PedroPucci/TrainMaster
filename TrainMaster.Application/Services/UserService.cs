@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Microsoft.EntityFrameworkCore;
+using Serilog;
 using TrainMaser.Infrastracture.Repository.RepositoryUoW;
 using TrainMaser.Infrastracture.Repository.Security.Cryptography;
 using TrainMaser.Infrastracture.Security.Token.Access;
@@ -51,7 +52,7 @@ namespace TrainMaster.Application.Services
                 var tokenGenerator = new TokenService();
                 var token = tokenGenerator.GenerateToken(userEntity.Id.ToString(), userEntity.Email);
 
-                return Result<UserEntity>.Ok(token.ToString());
+                return Result<UserEntity>.Ok();
             }
             catch (Exception ex)
             {
@@ -73,7 +74,7 @@ namespace TrainMaster.Application.Services
             {
                 var userToDelete = await _repositoryUoW.UserRepository.GetById(userId);                
                 if (userToDelete is not null)
-                    _repositoryUoW.UserRepository.Delete(userToDelete);
+                    _repositoryUoW.UserRepository.UpdateByActive(userToDelete.Id, userToDelete.IsActive);
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
@@ -105,6 +106,28 @@ namespace TrainMaster.Application.Services
                 Log.Error(LogMessages.GetAllUserError(ex));
                 transaction.Rollback();
                 throw new InvalidOperationException("Message: Error to loading the list User");
+            }
+            finally
+            {
+                Log.Error(LogMessages.GetAllUserSuccess());
+                transaction.Dispose();
+            }
+        }
+
+        public async Task<List<UserEntity>> GetAllActives()
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                List<UserEntity> userEntities = await _repositoryUoW.UserRepository.GetAllActives();
+                _repositoryUoW.Commit();
+                return userEntities;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(LogMessages.GetAllUserError(ex));
+                transaction.Rollback();
+                throw new InvalidOperationException("Message: Error to loading the list User Actives");
             }
             finally
             {
@@ -162,5 +185,6 @@ namespace TrainMaster.Application.Services
         {
             return await _repositoryUoW.UserRepository.GetByCpf(cpf) is not null;
         }
+
     }
 }

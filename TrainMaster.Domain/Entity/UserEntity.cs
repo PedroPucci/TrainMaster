@@ -8,7 +8,7 @@ namespace TrainMaster.Domain.Entity
         public string? Cpf { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
         
         [JsonIgnore]
         public PessoalProfileEntity? PessoalProfile { get; set; }

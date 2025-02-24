@@ -8,7 +8,9 @@ namespace TrainMaser.Infrastracture.Repository.Interfaces
         UserEntity Update(UserEntity userEntity);
         UserEntity Delete(UserEntity userEntity);
         Task<List<UserEntity>> Get();
+        Task<List<UserEntity>> GetAllActives();
         Task<UserEntity?> GetById(int? id);
         Task<UserEntity?> GetByCpf(string? cpf);
+        UserEntity UpdateByActive(int userId, bool isActive);
     }
 }

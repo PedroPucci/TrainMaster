@@ -34,12 +34,22 @@ namespace TrainMaser.Infrastracture.Repository.Request
         public async Task<List<UserEntity>> Get()
         {
             return await _context.UserEntity
+                .AsNoTracking()
                 .OrderBy(user => user.Email)
                 .Select(user => new UserEntity
                 {
                     Id = user.Id,
-                    Email = user.Email
-                }).ToListAsync();
+                    Email = user.Email,
+                    IsActive = user.IsActive
+                })
+                .ToListAsync();
+        }
+
+        public async Task<List<UserEntity>> GetAllActives()
+        {
+            return await _context.UserEntity
+                .Where(user => user.IsActive)
+                .ToListAsync();
         }
 
         public async Task<UserEntity?> GetById(int? id)
@@ -56,6 +66,20 @@ namespace TrainMaser.Infrastracture.Repository.Request
         {
             var response = _context.UserEntity.Update(userEntity);
             return response.Entity;
+        }
+
+        public UserEntity UpdateByActive(int userId, bool isActive)
+        {
+            var user = _context.UserEntity.Find(userId);
+
+            if (user == null)
+                throw new KeyNotFoundException("User not found.");
+
+            user.IsActive = isActive;
+            _context.UserEntity.Attach(user).Property(u => u.IsActive).IsModified = true;
+            _context.SaveChanges();
+
+            return user;
         }
     }
 }

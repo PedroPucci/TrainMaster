@@ -9,5 +9,6 @@ namespace TrainMaster.Application.Services.Interfaces
         Task<Result<UserEntity>> Update(UserEntity userEntity);
         Task Delete(int userId);
         Task<List<UserEntity>> Get();
+        Task<List<UserEntity>> GetAllActives();
     }
 }

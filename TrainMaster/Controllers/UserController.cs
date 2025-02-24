@@ -55,5 +55,14 @@ namespace TrainMaster.Controllers
             var users = await _serviceUoW.UserService.Get();
             return Ok(users);
         }
+
+        [HttpGet("AllActives")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserEntity>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllActives()
+        {
+            var users = await _serviceUoW.UserService.GetAllActives();
+            return Ok(users);
+        }
     }
 }
