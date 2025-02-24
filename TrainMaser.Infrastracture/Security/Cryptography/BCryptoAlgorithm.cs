@@ -2,8 +2,6 @@
 {
     public class BCryptoAlgorithm
     {
-        //public string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);
-
         public string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
