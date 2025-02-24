@@ -5,7 +5,7 @@ using TrainMaster.Domain.Entity;
 namespace TrainMaster.Controllers
 {
     [ApiController]
-    [Route("api/v1/login")]
+    [Route("api/v1/loginSystem")]
     public class LoginController : Controller
     {
         private readonly IUnitOfWorkService _serviceUoW;
@@ -29,6 +29,18 @@ namespace TrainMaster.Controllers
             }
 
             return Ok(new { accessToken = result.Data });
+        }
+
+        [HttpPost("logout")]
+        //[Authorize] 
+        public async Task<IActionResult> Logout()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if (string.IsNullOrEmpty(token))
+                return BadRequest("Token is required");
+
+            var result = await _serviceUoW.AuthService.Logout(token);
+            return result.Success ? Ok(result.Message) : BadRequest(result.Message);
         }
     }
 }

@@ -13,7 +13,8 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
             var routeHandlers = new Dictionary<string, Action>
                 {
                     { "user", () => HandleUserOperations(operation, context) },
-                    { "pessoalProfile", () => HandlePessoalProfileOperations(operation, context) }
+                    { "pessoalProfile", () => HandlePessoalProfileOperations(operation, context) },
+                    { "loginSystem", () => HandleLoginOperations(operation, context) }
                 };
 
             foreach (var routeHandler in routeHandlers)
@@ -95,6 +96,34 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                 operation.Summary = "Retrieve all pessoal profiles";
                 operation.Description = "This endpoint allows you to retrieve details of all existing pessoal profiles.";
                 AddResponses(operation, "200", "All pessoal profiles details were successfully retrieved.");
+            }
+        }
+
+        private void HandleLoginOperations(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var method = context.ApiDescription.HttpMethod;
+            var path = context.ApiDescription.RelativePath?.ToLower() ?? string.Empty;
+
+            if (method == "POST")
+            {
+                if (path.Contains("login"))
+                {
+                    operation.Summary = "User Login";
+                    operation.Description = "Authenticates a user and returns a JWT token.";
+                    AddResponses(operation, "200", "User successfully logged in.");
+                    AddResponses(operation, "400", "Invalid request body.");
+                    AddResponses(operation, "401", "Invalid email or password.");
+                }
+            }
+            if (method == "POST")
+            {
+               if (path.Contains("logout"))
+                {
+                    operation.Summary = "User Logout";
+                    operation.Description = "Logs out the user by invalidating the token.";
+                    AddResponses(operation, "200", "User successfully logged out.");
+                    AddResponses(operation, "401", "Unauthorized: Token is missing or invalid.");
+                }
             }
         }
 

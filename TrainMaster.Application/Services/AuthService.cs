@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using System.IdentityModel.Tokens.Jwt;
 using TrainMaser.Infrastracture.Repository.Interfaces;
 using TrainMaser.Infrastracture.Repository.Security.Cryptography;
 using TrainMaser.Infrastracture.Security.Token.Access;
@@ -43,6 +44,26 @@ namespace TrainMaster.Application.Services
                 Log.Error(LogMessages.AddingUserError(ex));
                 return Result<string>.Error("An unexpected error occurred during login.");
             }
+        }
+
+        public async Task<Result<string>> Logout(string token)
+        {
+            //// Obter a data de expiração do token
+            //var handler = new JwtSecurityTokenHandler();
+            //var jwtToken = handler.ReadJwtToken(token);
+            //var expiration = jwtToken.ValidTo;
+
+            //// Salvar o token na lista de tokens revogados
+            //var revokedToken = new RevokedToken
+            //{
+            //    Token = token,
+            //    Expiration = expiration
+            //};
+
+            //await _repositoryUoW.RevokedTokenRepository.Add(revokedToken);
+            //await _repositoryUoW.SaveAsync();
+
+            return Result<string>.Ok("User logged out successfully.");
         }
     }
 }

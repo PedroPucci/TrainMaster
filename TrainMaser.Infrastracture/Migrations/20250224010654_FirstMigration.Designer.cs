@@ -12,7 +12,7 @@ using TrainMaser.Infrastracture.Connections;
 namespace TrainMaser.Infrastracture.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250223212913_FirstMigration")]
+    [Migration("20250224010654_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
