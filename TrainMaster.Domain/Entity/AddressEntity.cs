@@ -22,8 +22,7 @@ namespace TrainMaster.Domain.Entity
         public string? Uf { get; set; }
 
         [JsonIgnore]
-        public PessoalProfileEntity? PessoalProfile { get; set; }
-        [JsonIgnore]
+        public PessoalProfileEntity? PessoalProfile { get; set; }        
         public int PessoalProfileId { get; set; }
     }
 }

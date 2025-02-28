@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TrainMaser.Infrastracture.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class primeira : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,12 +61,11 @@ namespace TrainMaser.Infrastracture.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AddressType = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    PostalCode = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     Street = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    Complement = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    Neighborhood = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    State = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    PostalCode = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    Uf = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     PessoalProfileId = table.Column<int>(type: "integer", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)

@@ -61,7 +61,6 @@ namespace TrainMaster.Application.Services
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var crypto = new BCryptoAlgorithm();
                 var isValidAddress = await IsValidAddressRequest(addressEntity);
 
                 if (!isValidAddress.Success)

@@ -44,6 +44,7 @@ namespace TrainMaser.Infrastracture.Repository.Request
                  City = address.City,
                  PostalCode = address.PostalCode,
                  Street = address.Street,
+                 PessoalProfileId = address.PessoalProfileId,
              }).ToListAsync();
         }
 
