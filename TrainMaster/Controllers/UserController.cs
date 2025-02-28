@@ -47,14 +47,27 @@ namespace TrainMaster.Controllers
             return Ok();
         }
 
+        //[HttpGet("All")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserEntity>))]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> Get()
+        //{
+        //    var users = await _serviceUoW.UserService.Get();
+        //    return Ok(users);
+        //}
+
         [HttpGet("All")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserEntity>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10)
         {
-            var users = await _serviceUoW.UserService.Get();
+            if (pageNumber < 1 || pageSize < 1)
+                return BadRequest("PageNumber and PageSize must be greater than 0.");
+
+            var users = await _serviceUoW.UserService.GetPaginated(pageNumber, pageSize);
             return Ok(users);
         }
+
 
         [HttpGet("AllActives")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserEntity>))]

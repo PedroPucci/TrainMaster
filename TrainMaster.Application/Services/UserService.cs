@@ -92,12 +92,34 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<List<UserEntity>> Get()
+        //public async Task<List<UserEntity>> Get()
+        //{
+        //    using var transaction = _repositoryUoW.BeginTransaction();
+        //    try
+        //    {
+        //        List<UserEntity> userEntities = await _repositoryUoW.UserRepository.Get();
+        //        _repositoryUoW.Commit();
+        //        return userEntities;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Error(LogMessages.GetAllUserError(ex));
+        //        transaction.Rollback();
+        //        throw new InvalidOperationException("Message: Error to loading the list User");
+        //    }
+        //    finally
+        //    {
+        //        Log.Error(LogMessages.GetAllUserSuccess());
+        //        transaction.Dispose();
+        //    }
+        //}
+
+        public async Task<List<UserEntity>> GetPaginated(int pageNumber, int pageSize)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                List<UserEntity> userEntities = await _repositoryUoW.UserRepository.Get();
+                List<UserEntity> userEntities = await _repositoryUoW.UserRepository.GetPaginated(pageNumber, pageSize);
                 _repositoryUoW.Commit();
                 return userEntities;
             }
@@ -105,7 +127,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.GetAllUserError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to loading the list User");
+                throw new InvalidOperationException("Message: Error to loading the list of users");
             }
             finally
             {
@@ -113,6 +135,7 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
+
 
         public async Task<List<UserEntity>> GetAllActives()
         {

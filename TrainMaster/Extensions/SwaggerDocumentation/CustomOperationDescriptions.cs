@@ -115,16 +115,6 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                     AddResponses(operation, "401", "Invalid email or password.");
                 }
             }
-            if (method == "POST")
-            {
-               if (path.Contains("logout"))
-                {
-                    operation.Summary = "User Logout";
-                    operation.Description = "Logs out the user by invalidating the token.";
-                    AddResponses(operation, "200", "User successfully logged out.");
-                    AddResponses(operation, "401", "Unauthorized: Token is missing or invalid.");
-                }
-            }
         }
 
         private void AddResponses(OpenApiOperation operation, string statusCode, string description)

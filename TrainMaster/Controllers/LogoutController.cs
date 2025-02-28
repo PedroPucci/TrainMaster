@@ -5,17 +5,17 @@ using TrainMaster.Domain.Entity;
 namespace TrainMaster.Controllers
 {
     [ApiController]
-    [Route("api/v1/loginSystem")]
-    public class LoginController : Controller
+    [Route("api/v1/logout")]
+    public class LogoutController : Controller
     {
         private readonly IUnitOfWorkService _serviceUoW;
 
-        public LoginController(IUnitOfWorkService unitOfWorkService)
+        public LogoutController(IUnitOfWorkService unitOfWorkService)
         {
             _serviceUoW = unitOfWorkService;
         }
 
-        [HttpPost("login")]
+        [HttpPost("logout")]
         public async Task<IActionResult> DoLogin([FromBody] LoginEntity loginEntity)
         {
             if (string.IsNullOrWhiteSpace(loginEntity.Cpf) || string.IsNullOrWhiteSpace(loginEntity.Password))

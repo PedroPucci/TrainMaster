@@ -31,11 +31,27 @@ namespace TrainMaser.Infrastracture.Repository.Request
             return response.Entity;
         }
 
-        public async Task<List<UserEntity>> Get()
+        //public async Task<List<UserEntity>> Get()
+        //{
+        //    return await _context.UserEntity
+        //        .AsNoTracking()
+        //        .OrderBy(user => user.Email)
+        //        .Select(user => new UserEntity
+        //        {
+        //            Id = user.Id,
+        //            Email = user.Email,
+        //            IsActive = user.IsActive
+        //        })
+        //        .ToListAsync();
+        //}
+
+        public async Task<List<UserEntity>> GetPaginated(int pageNumber, int pageSize)
         {
             return await _context.UserEntity
                 .AsNoTracking()
                 .OrderBy(user => user.Email)
+                .Skip((pageNumber - 1) * pageSize) // 🔹 Pula os registros das páginas anteriores
+                .Take(pageSize) // 🔹 Retorna apenas a quantidade especificada
                 .Select(user => new UserEntity
                 {
                     Id = user.Id,
@@ -44,6 +60,7 @@ namespace TrainMaser.Infrastracture.Repository.Request
                 })
                 .ToListAsync();
         }
+
 
         public async Task<List<UserEntity>> GetAllActives()
         {

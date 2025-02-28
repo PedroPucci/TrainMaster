@@ -8,7 +8,8 @@ namespace TrainMaster.Application.Services.Interfaces
         Task<Result<UserEntity>> Add(UserEntity userEntity);
         Task<Result<UserEntity>> Update(UserEntity userEntity);
         Task Delete(int userId);
-        Task<List<UserEntity>> Get();
+        //Task<List<UserEntity>> Get();
+        Task<List<UserEntity>> GetPaginated(int pageNumber, int pageSize);
         Task<List<UserEntity>> GetAllActives();
     }
 }
