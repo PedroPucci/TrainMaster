@@ -34,12 +34,11 @@ namespace TrainMaser.Infrastracture.Connections
             modelBuilder.Entity<AddressEntity>(entity =>
             {
                 entity.HasKey(a => a.Id);
-                entity.Property(a => a.AddressType).HasMaxLength(50);
+                entity.Property(a => a.PostalCode).HasMaxLength(50);
                 entity.Property(a => a.Street).HasMaxLength(255);
-                entity.Property(a => a.Complement).HasMaxLength(255);
+                entity.Property(a => a.Neighborhood).HasMaxLength(255);
                 entity.Property(a => a.City).HasMaxLength(100);
-                entity.Property(a => a.State).HasMaxLength(100);
-                entity.Property(a => a.PostalCode).HasMaxLength(20);
+                entity.Property(a => a.Uf).HasMaxLength(100);
             });
         }
     }

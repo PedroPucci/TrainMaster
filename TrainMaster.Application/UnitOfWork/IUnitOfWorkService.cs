@@ -7,5 +7,6 @@ namespace TrainMaster.Application.UnitOfWork
         UserService UserService { get; }
         ProfilePessoalService ProfilePessoalService { get; }
         AuthService AuthService { get; }
+        AddressService AddressService { get; }
     }
 }

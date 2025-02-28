@@ -15,12 +15,23 @@ namespace TrainMaster.Application.UnitOfWork
         private UserService userService;
         private ProfilePessoalService profilePessoalService;
         private AuthService authService;
+        private AddressService addressService;
 
         public UnitOfWorkService(IRepositoryUoW repositoryUoW, TokenService tokenService, BCryptoAlgorithm crypto)
         {
             _repositoryUoW = repositoryUoW;
             _tokenService = tokenService;
             _crypto = crypto;
+        }
+
+        public AddressService AddressService
+        {
+            get
+            {
+                if (addressService is null)
+                    addressService = new AddressService(_repositoryUoW);
+                return addressService;
+            }
         }
 
         public UserService UserService

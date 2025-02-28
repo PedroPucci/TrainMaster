@@ -35,18 +35,19 @@ namespace TrainMaser.Infrastracture.Repository.Request
 
         public async Task<List<AddressEntity>> GetAllAddressesAsync()
         {
-            return await _context.AddressEntity
-             .OrderBy(address => address.Id)
-             .Select(address => new AddressEntity
-             {
-                 Id = address.Id,
-                 State = address.State,
-                 City = address.City,
-                 AddressType = address.AddressType,
-                 PostalCode = address.PostalCode,
-                 Street = address.Street,
-                 Complement = address.City
-             }).ToListAsync();
+            //return await _context.AddressEntity
+            // .OrderBy(address => address.Id)
+            // .Select(address => new AddressEntity
+            // {
+            //     Id = address.Id,
+            //     State = address.State,
+            //     City = address.City,
+            //     AddressType = address.AddressType,
+            //     PostalCode = address.PostalCode,
+            //     Street = address.Street,
+            //     Complement = address.City
+            // }).ToListAsync();
+            return null;
         }
 
         public AddressEntity UpdateAddressAsync(AddressEntity addressEntity)
