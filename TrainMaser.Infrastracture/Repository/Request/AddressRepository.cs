@@ -14,7 +14,7 @@ namespace TrainMaser.Infrastracture.Repository.Request
             _context = context;
         }
 
-        public async Task<AddressEntity> AddAddressAsync(AddressEntity addressEntity)
+        public async Task<AddressEntity> Add(AddressEntity addressEntity)
         {
             var result = await _context.AddressEntity.AddAsync(addressEntity);
             await _context.SaveChangesAsync();
@@ -22,35 +22,32 @@ namespace TrainMaser.Infrastracture.Repository.Request
             return result.Entity;
         }
 
-        public AddressEntity DeleteAddressAsync(AddressEntity addressEntity)
+        public AddressEntity Delete(AddressEntity addressEntity)
         {
             var response = _context.AddressEntity.Remove(addressEntity);
             return response.Entity;
         }
 
-        public async Task<AddressEntity?> GetAddressByIdAsync(int? id)
+        public async Task<AddressEntity?> GetById(int? id)
         {
             return await _context.AddressEntity.FirstOrDefaultAsync(addressEntity => addressEntity.Id == id);
         }
 
-        public async Task<List<AddressEntity>> GetAllAddressesAsync()
+        public async Task<List<AddressEntity>> Get()
         {
-            //return await _context.AddressEntity
-            // .OrderBy(address => address.Id)
-            // .Select(address => new AddressEntity
-            // {
-            //     Id = address.Id,
-            //     State = address.State,
-            //     City = address.City,
-            //     AddressType = address.AddressType,
-            //     PostalCode = address.PostalCode,
-            //     Street = address.Street,
-            //     Complement = address.City
-            // }).ToListAsync();
-            return null;
+            return await _context.AddressEntity
+             .OrderBy(address => address.Id)
+             .Select(address => new AddressEntity
+             {
+                 Id = address.Id,
+                 Neighborhood = address.Neighborhood,                 
+                 City = address.City,
+                 PostalCode = address.PostalCode,
+                 Street = address.Street,
+             }).ToListAsync();
         }
 
-        public AddressEntity UpdateAddressAsync(AddressEntity addressEntity)
+        public AddressEntity Update(AddressEntity addressEntity)
         {
             var response = _context.AddressEntity.Update(addressEntity);
             return response.Entity;

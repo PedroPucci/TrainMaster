@@ -1,5 +1,4 @@
-﻿using BCrypt.Net;
-using TrainMaser.Infrastracture.Repository.RepositoryUoW;
+﻿using TrainMaser.Infrastracture.Repository.RepositoryUoW;
 using TrainMaser.Infrastracture.Repository.Security.Cryptography;
 using TrainMaser.Infrastracture.Security.Token.Access;
 using TrainMaster.Application.Services;

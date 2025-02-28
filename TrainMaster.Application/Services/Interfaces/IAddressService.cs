@@ -6,5 +6,9 @@ namespace TrainMaster.Application.Services.Interfaces
     public interface IAddressService
     {
         Task<Result<AddressEntity>> FindAddressByZipCode(string postalCode);
+        Task<Result<AddressEntity>> Add(AddressEntity addressEntity);
+        Task Delete(int userId);
+        Task<List<AddressEntity>> Get();
+        Task<Result<AddressEntity>> Update(AddressEntity addressEntity);
     }
 }

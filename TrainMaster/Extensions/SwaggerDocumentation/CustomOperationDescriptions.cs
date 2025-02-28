@@ -14,7 +14,8 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                 {
                     { "user", () => HandleUserOperations(operation, context) },
                     { "pessoalProfile", () => HandlePessoalProfileOperations(operation, context) },
-                    { "loginSystem", () => HandleLoginOperations(operation, context) }
+                    { "loginSystem", () => HandleLoginOperations(operation, context) },
+                    { "address", () => HandleAddressOperations(operation, context) }
                 };
 
             foreach (var routeHandler in routeHandlers)
@@ -113,6 +114,47 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                     AddResponses(operation, "200", "User successfully logged in.");
                     AddResponses(operation, "400", "Invalid request body.");
                     AddResponses(operation, "401", "Invalid email or password.");
+                }
+            }
+        }
+
+        private void HandleAddressOperations(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var method = context.ApiDescription.HttpMethod;
+            var path = context.ApiDescription.RelativePath?.ToLower() ?? string.Empty;
+
+            if (method == "POST")
+            {
+                operation.Summary = "Create a new address";
+                operation.Description = "This endpoint allows you to create a new address by providing the necessary details.";
+                AddResponses(operation, "200", "The address was successfully created.");
+            }
+            else if (method == "PUT")
+            {
+                operation.Summary = "Update an existing address";
+                operation.Description = "This endpoint allows you to update an existing address by providing the necessary details.";
+                AddResponses(operation, "200", "The address was successfully updated.");
+            }
+            else if (method == "DELETE")
+            {
+                operation.Summary = "Delete an existing address";
+                operation.Description = "This endpoint allows you to delete an existing address by providing the ID.";
+                AddResponses(operation, "200", "The address was successfully deleted.");
+                AddResponses(operation, "404", "Address not found. Please verify the ID.");
+            }
+            else if (method == "GET")
+            {
+                if (path.Contains("postalCode", StringComparison.OrdinalIgnoreCase))
+                {
+                    operation.Summary = "Retrieve address";
+                    operation.Description = "This endpoint returns address.";
+                    AddResponses(operation, "200", "Address were successfully retrieved.");
+                }
+                else if (path.Contains("all"))
+                {
+                    operation.Summary = "Retrieve all addresses";
+                    operation.Description = "This endpoint allows you to retrieve details of all existing addresses.";
+                    AddResponses(operation, "200", "All address details were successfully retrieved.");
                 }
             }
         }

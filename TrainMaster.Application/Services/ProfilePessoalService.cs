@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Serilog;
+﻿using Serilog;
 using TrainMaser.Infrastracture.Repository.RepositoryUoW;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;

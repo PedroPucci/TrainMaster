@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Serilog;
+﻿using Serilog;
 using TrainMaser.Infrastracture.Repository.RepositoryUoW;
 using TrainMaser.Infrastracture.Repository.Security.Cryptography;
 using TrainMaser.Infrastracture.Security.Token.Access;

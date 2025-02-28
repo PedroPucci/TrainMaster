@@ -25,5 +25,16 @@
         public static string DeletePessoalProfileSuccess() => "Message: Delete with success Pessoal Profile.";
         public static string GetAllPessoalProfileError(Exception ex) => $"Message: Error to loading the list Pessoal Profile: {ex.Message}";
         public static string GetAllPessoalProfileSuccess() => "Message: GetAll with success Pessoal Profile.";
+
+        //Address Profile
+        public static string InvalidAddressInputs() => "Message: Invalid inputs to Address.";
+        public static string AddingAddressSuccess() => "Message: Successfully added a new Address.";
+        public static string AddingAddressError(Exception ex) => $"Message: Error adding a new Address: {ex.Message}";
+        public static string DeleteAddressError(Exception ex) => $"Message: Error to delete a Address: {ex.Message}";
+        public static string DeleteAddressSuccess() => "Message: Delete with success Address.";
+        public static string GetAllAddressError(Exception ex) => $"Message: Error to loading the list Address: {ex.Message}";
+        public static string GetAllAddressSuccess() => "Message: GetAll with success Address.";
+        public static string UpdatingErrorAddress(Exception ex) => $"Message: Error updating Address: {ex.Message}";
+        public static string UpdatingSuccessAddress() => "Message: Successfully updated Address.";
     }
 }

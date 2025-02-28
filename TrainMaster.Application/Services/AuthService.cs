@@ -1,10 +1,8 @@
 ﻿using Serilog;
-using System.IdentityModel.Tokens.Jwt;
 using TrainMaser.Infrastracture.Repository.Interfaces;
 using TrainMaser.Infrastracture.Repository.Security.Cryptography;
 using TrainMaser.Infrastracture.Security.Token.Access;
 using TrainMaster.Application.ExtensionError;
-using TrainMaster.Domain.Entity;
 using TrainMaster.Shared.Logging;
 
 namespace TrainMaster.Application.Services
