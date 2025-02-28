@@ -123,3 +123,5 @@ Biblioteca utilizada para validações e compartilhamento de recursos comuns:
 8. Serilog.AspNetCore – Biblioteca para logging estruturado no ASP.NET Core.
 9. Swashbuckle.AspNetCore – Ferramenta para documentar APIs ASP.NET Core com Swagger.
 ---
+### **ViaCEP**
+Acesso ao serviço da API dos correios, através do ViaCEP (gratuito e amplamente utilizado).
