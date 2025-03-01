@@ -13,6 +13,8 @@ namespace TrainMaser.Infrastracture.Repository.RepositoryUoW
         private IUserRepository? _userEntityRepository = null;
         private IPessoalProfileRepository? _pessoalProfileEntityRepository = null;
         private IAddressRepository? _addressRepository = null;
+        private IEducationLevelRepository? _educationLevelRepository = null;
+        private IProfessionalProfileRepository? _professionalProfileRepository = null;
 
         public RepositoryUoW(DataContext context)
         {
@@ -52,6 +54,30 @@ namespace TrainMaser.Infrastracture.Repository.RepositoryUoW
                     _addressRepository = new AddressRepository(_context);
                 }
                 return _addressRepository;
+            }
+        }
+
+        public IProfessionalProfileRepository ProfessionalProfileRepository
+        {
+            get
+            {
+                if (_professionalProfileRepository is null)
+                {
+                    _professionalProfileRepository = new ProfessionalProfileRepository(_context);
+                }
+                return _professionalProfileRepository;
+            }
+        }
+
+        public IEducationLevelRepository EducationLevelRepository
+        {
+            get
+            {
+                if (_educationLevelRepository is null)
+                {
+                    _educationLevelRepository = new EducationLevelRepository(_context);
+                }
+                return _educationLevelRepository;
             }
         }
 

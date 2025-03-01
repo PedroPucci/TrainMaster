@@ -8,6 +8,8 @@ namespace TrainMaser.Infrastracture.Repository.RepositoryUoW
         IUserRepository UserRepository { get; }
         IPessoalProfileRepository PessoalProfileRepository { get; }
         IAddressRepository AddressRepository { get; }
+        IEducationLevelRepository EducationLevelRepository { get; }
+        IProfessionalProfileRepository ProfessionalProfileRepository { get; }
 
         Task SaveAsync();
         void Commit();
