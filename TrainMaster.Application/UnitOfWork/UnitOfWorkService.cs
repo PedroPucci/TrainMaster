@@ -13,14 +13,36 @@ namespace TrainMaster.Application.UnitOfWork
 
         private UserService userService;
         private ProfilePessoalService profilePessoalService;
+        private ProfileProfessionalService profileProfessionalService;
         private AuthService authService;
         private AddressService addressService;
+        private EducationLevelService educationLevelService;
 
         public UnitOfWorkService(IRepositoryUoW repositoryUoW, TokenService tokenService, BCryptoAlgorithm crypto)
         {
             _repositoryUoW = repositoryUoW;
             _tokenService = tokenService;
             _crypto = crypto;
+        }
+
+        public EducationLevelService EducationLevelService
+        {
+            get
+            {
+                if (educationLevelService is null)
+                    educationLevelService = new EducationLevelService(_repositoryUoW);
+                return educationLevelService;
+            }
+        }
+
+        public ProfileProfessionalService ProfileProfessionalService
+        {
+            get
+            {
+                if (profileProfessionalService is null)
+                    profileProfessionalService = new ProfileProfessionalService(_repositoryUoW);
+                return profileProfessionalService;
+            }
         }
 
         public AddressService AddressService
@@ -30,16 +52,6 @@ namespace TrainMaster.Application.UnitOfWork
                 if (addressService is null)
                     addressService = new AddressService(_repositoryUoW);
                 return addressService;
-            }
-        }
-
-        public UserService UserService
-        {
-            get
-            {
-                if (userService is null)
-                    userService = new UserService(_repositoryUoW);
-                return userService;
             }
         }
 
@@ -60,6 +72,16 @@ namespace TrainMaster.Application.UnitOfWork
                 if (authService is null)
                     authService = new AuthService(_repositoryUoW.UserRepository, _tokenService, _crypto);
                 return authService;
+            }
+        }
+
+        public UserService UserService
+        {
+            get
+            {
+                if (userService is null)
+                    userService = new UserService(_repositoryUoW);
+                return userService;
             }
         }
     }

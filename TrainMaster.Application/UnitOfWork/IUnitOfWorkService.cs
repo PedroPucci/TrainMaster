@@ -5,8 +5,10 @@ namespace TrainMaster.Application.UnitOfWork
     public interface IUnitOfWorkService
     {
         UserService UserService { get; }
-        ProfilePessoalService ProfilePessoalService { get; }
         AuthService AuthService { get; }
+        ProfilePessoalService ProfilePessoalService { get; }
+        ProfileProfessionalService ProfileProfessionalService { get; }
         AddressService AddressService { get; }
+        EducationLevelService EducationLevelService { get; }
     }
 }

@@ -64,8 +64,8 @@ namespace TrainMaster.Controllers
             if (pageNumber < 1 || pageSize < 1)
                 return BadRequest("PageNumber and PageSize must be greater than 0.");
 
-            var users = await _serviceUoW.UserService.GetPaginated(pageNumber, pageSize);
-            return Ok(users);
+            var result = await _serviceUoW.UserService.GetPaginated(pageNumber, pageSize);
+            return Ok(result);
         }
 
 
@@ -74,8 +74,8 @@ namespace TrainMaster.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllActives()
         {
-            var users = await _serviceUoW.UserService.GetAllActives();
-            return Ok(users);
+            var result = await _serviceUoW.UserService.GetAllActives();
+            return Ok(result);
         }
     }
 }

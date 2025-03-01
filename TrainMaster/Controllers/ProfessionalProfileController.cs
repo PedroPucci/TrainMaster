@@ -6,11 +6,11 @@ namespace TrainMaster.Controllers
 {
     [ApiController]
     [Route("api/v1/pessoalProfiles")]
-    public class PessoalProfileController : Controller
+    public class ProfessionalProfileController : Controller
     {
         private readonly IUnitOfWorkService _serviceUoW;
 
-        public PessoalProfileController(IUnitOfWorkService unitOfWorkService)
+        public ProfessionalProfileController(IUnitOfWorkService unitOfWorkService)
         {
             _serviceUoW = unitOfWorkService;
         }
@@ -18,12 +18,12 @@ namespace TrainMaster.Controllers
         [HttpPost()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add([FromBody] PessoalProfileEntity pessoalProfileEntity)
+        public async Task<IActionResult> Add([FromBody] ProfessionalProfileEntity professionalProfileEntity)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _serviceUoW.ProfilePessoalService.Add(pessoalProfileEntity);
+            var result = await _serviceUoW.ProfileProfessionalService.Add(professionalProfileEntity);
             return result.Success ? Ok(result) : BadRequest(result);
         }
 
@@ -31,10 +31,10 @@ namespace TrainMaster.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> Update([FromBody] PessoalProfileEntity pessoalProfileEntity)
+        public async Task<IActionResult> Update([FromBody] ProfessionalProfileEntity professionalProfileEntity)
         {
-            var result = await _serviceUoW.ProfilePessoalService.Update(pessoalProfileEntity);
-            return result.Success ? Ok(result) : BadRequest(pessoalProfileEntity);
+            var result = await _serviceUoW.ProfileProfessionalService.Update(professionalProfileEntity);
+            return result.Success ? Ok(result) : BadRequest(professionalProfileEntity);
         }
 
         [HttpDelete("{id}")]
@@ -43,16 +43,16 @@ namespace TrainMaster.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> Delete(int id)
         {
-            await _serviceUoW.ProfilePessoalService.Delete(id);
+            await _serviceUoW.ProfileProfessionalService.Delete(id);
             return Ok();
         }
 
         [HttpGet("All")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PessoalProfileEntity>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProfessionalProfileEntity>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get()
         {
-            var result = await _serviceUoW.ProfilePessoalService.Get();
+            var result = await _serviceUoW.ProfileProfessionalService.Get();
             return Ok(result);
         }
     }
