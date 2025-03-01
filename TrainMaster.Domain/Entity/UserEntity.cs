@@ -12,5 +12,8 @@ namespace TrainMaster.Domain.Entity
         
         [JsonIgnore]
         public PessoalProfileEntity? PessoalProfile { get; set; }
+
+        [JsonIgnore]
+        public ProfessionalProfileEntity? ProfessionalProfile { get; set; }
     }
 }

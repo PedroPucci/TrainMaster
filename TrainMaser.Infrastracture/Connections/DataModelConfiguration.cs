@@ -12,9 +12,17 @@ namespace TrainMaser.Infrastracture.Connections
                 entity.HasKey(u => u.Id);
                 entity.Property(u => u.Email).IsRequired();
                 entity.Property(u => u.Password).IsRequired();
+                entity.Property(u => u.Cpf).HasMaxLength(14);
+                entity.Property(u => u.IsActive).IsRequired();
+
                 entity.HasOne(u => u.PessoalProfile)
                       .WithOne(p => p.User)
                       .HasForeignKey<PessoalProfileEntity>(p => p.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(u => u.ProfessionalProfile)
+                      .WithOne(p => p.User)
+                      .HasForeignKey<ProfessionalProfileEntity>(p => p.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
@@ -25,6 +33,7 @@ namespace TrainMaser.Infrastracture.Connections
                 entity.Property(p => p.DateOfBirth).IsRequired();
                 entity.Property(p => p.Gender).IsRequired().HasMaxLength(50);
                 entity.Property(p => p.Marital).IsRequired().HasMaxLength(50);
+
                 entity.HasOne(p => p.Address)
                       .WithOne(a => a.PessoalProfile)
                       .HasForeignKey<AddressEntity>(a => a.PessoalProfileId)
@@ -39,6 +48,39 @@ namespace TrainMaser.Infrastracture.Connections
                 entity.Property(a => a.Neighborhood).HasMaxLength(255);
                 entity.Property(a => a.City).HasMaxLength(100);
                 entity.Property(a => a.Uf).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<ProfessionalProfileEntity>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+                entity.Property(p => p.JobTitle).HasMaxLength(255);
+                entity.Property(p => p.YearsOfExperience);
+                entity.Property(p => p.Skills);
+                entity.Property(p => p.Certifications);
+
+                entity.HasOne(p => p.User)
+                      .WithOne(u => u.ProfessionalProfile)
+                      .HasForeignKey<ProfessionalProfileEntity>(p => p.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(p => p.EducationLevel)
+                      .WithOne(e => e.ProfessionalProfile)
+                      .HasForeignKey<EducationLevelEntity>(e => e.ProfessionalProfileId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<EducationLevelEntity>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Title).HasMaxLength(255);
+                entity.Property(e => e.Institution).HasMaxLength(255);
+                entity.Property(e => e.StartedAt);
+                entity.Property(e => e.EndeedAt);
+
+                entity.HasOne(e => e.ProfessionalProfile)
+                      .WithOne(p => p.EducationLevel)
+                      .HasForeignKey<EducationLevelEntity>(e => e.ProfessionalProfileId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

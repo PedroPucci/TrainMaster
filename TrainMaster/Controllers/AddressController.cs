@@ -61,7 +61,7 @@ namespace TrainMaster.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get([FromQuery] string postalCode)
         {
-            var result = await _serviceUoW.AddressService.FindAddressByZipCode(postalCode);
+            var result = await _serviceUoW.AddressService.GetAddressByZipCode(postalCode);
             return Ok(result);
         }
     }
