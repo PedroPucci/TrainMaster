@@ -2,12 +2,12 @@
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using TrainMaser.Infrastracture.Connections;
-using TrainMaser.Infrastracture.Repository.RepositoryUoW;
-using TrainMaser.Infrastracture.Repository.Security.Cryptography;
-using TrainMaser.Infrastracture.Security.Token.Access;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Extensions.SwaggerDocumentation;
+using TrainMaster.Infrastracture.Connections;
+using TrainMaster.Infrastracture.Repository.RepositoryUoW;
+using TrainMaster.Infrastracture.Security.Cryptography;
+using TrainMaster.Infrastracture.Security.Token.Access;
 
 namespace TrainMaster.Extensions
 {

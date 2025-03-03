@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Serilog;
-using TrainMaser.Infrastracture.Connections;
-using TrainMaser.Infrastracture.Repository.Interfaces;
-using TrainMaser.Infrastracture.Repository.Request;
+using TrainMaster.Infrastracture.Connections;
+using TrainMaster.Infrastracture.Repository.Interfaces;
+using TrainMaster.Infrastracture.Repository.Request;
 
-namespace TrainMaser.Infrastracture.Repository.RepositoryUoW
+namespace TrainMaster.Infrastracture.Repository.RepositoryUoW
 {
     public class RepositoryUoW : IRepositoryUoW
     {

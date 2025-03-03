@@ -1,8 +1,8 @@
 ﻿using Serilog;
-using TrainMaser.Infrastracture.Repository.Interfaces;
-using TrainMaser.Infrastracture.Repository.Security.Cryptography;
-using TrainMaser.Infrastracture.Security.Token.Access;
 using TrainMaster.Application.ExtensionError;
+using TrainMaster.Infrastracture.Repository.Interfaces;
+using TrainMaster.Infrastracture.Security.Cryptography;
+using TrainMaster.Infrastracture.Security.Token.Access;
 using TrainMaster.Shared.Logging;
 
 namespace TrainMaster.Application.Services

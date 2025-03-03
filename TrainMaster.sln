@@ -6,25 +6,24 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainMaster", "TrainMaster\TrainMaster.csproj", "{26BE6BA9-BE0A-44C7-8FDE-59862C80F3FB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6} = {1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}
-		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235} = {4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}
 		{FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD} = {FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster.Domain", "TrainMaster.Domain\TrainMaster.Domain.csproj", "{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainMaster.Domain", "TrainMaster.Domain\TrainMaster.Domain.csproj", "{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster.Application", "TrainMaster.Application\TrainMaster.Application.csproj", "{FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainMaster.Application", "TrainMaster.Application\TrainMaster.Application.csproj", "{FAB0CED5-BCF4-448C-8A7C-7065DCA4F7BD}"
 	ProjectSection(ProjectDependencies) = postProject
+		{1055A6C2-F8C1-414D-B971-DBB1E5377219} = {1055A6C2-F8C1-414D-B971-DBB1E5377219}
 		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6} = {1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}
-		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235} = {4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}
 		{ED61BE00-36FF-4FF4-9DEE-828C4716FF39} = {ED61BE00-36FF-4FF4-9DEE-828C4716FF39}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster.Shared", "TrainMaster.Shared\TrainMaster.Shared.csproj", "{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainMaster.Shared", "TrainMaster.Shared\TrainMaster.Shared.csproj", "{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6} = {1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaser.Infrastracture", "TrainMaser.Infrastracture\TrainMaser.Infrastracture.csproj", "{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster.Infrastracture", "TrainMaster.Infrastracture\TrainMaster.Infrastracture.csproj", "{1055A6C2-F8C1-414D-B971-DBB1E5377219}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6} = {1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}
 	EndProjectSection
@@ -51,10 +50,10 @@ Global
 		{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED61BE00-36FF-4FF4-9DEE-828C4716FF39}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C5913F8-9ACF-4B13-BA43-D60DFC7DD235}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1055A6C2-F8C1-414D-B971-DBB1E5377219}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1055A6C2-F8C1-414D-B971-DBB1E5377219}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1055A6C2-F8C1-414D-B971-DBB1E5377219}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1055A6C2-F8C1-414D-B971-DBB1E5377219}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

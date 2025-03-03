@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TrainMaster.Domain.Entity;
 
-namespace TrainMaser.Infrastracture.Connections
+namespace TrainMaster.Infrastracture.Connections
 {
     public static class DataModelConfiguration
     {

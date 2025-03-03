@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using TrainMaster.Domain.Entity;
 
-namespace TrainMaser.Infrastracture.Connections
+namespace TrainMaster.Infrastracture.Connections
 {
     public class DataContext : DbContext
     {
@@ -20,7 +20,9 @@ namespace TrainMaser.Infrastracture.Connections
 
         public DbSet<UserEntity> UserEntity { get; set; }
         public DbSet<PessoalProfileEntity> PessoalProfileEntity { get; set; }
+        public DbSet<ProfessionalProfileEntity> ProfessionalProfileEntity { get; set; }
         public DbSet<AddressEntity> AddressEntity { get; set; }
+        public DbSet<EducationLevelEntity> EducationLevelEntity { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

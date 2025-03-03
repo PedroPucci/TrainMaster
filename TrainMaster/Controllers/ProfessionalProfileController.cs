@@ -5,7 +5,7 @@ using TrainMaster.Domain.Entity;
 namespace TrainMaster.Controllers
 {
     [ApiController]
-    [Route("api/v1/pessoalProfiles")]
+    [Route("api/v1/professionalProfiles")]
     public class ProfessionalProfileController : Controller
     {
         private readonly IUnitOfWorkService _serviceUoW;

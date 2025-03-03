@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TrainMaser.Infrastracture.Connections;
-using TrainMaser.Infrastracture.Repository.Interfaces;
 using TrainMaster.Domain.Entity;
+using TrainMaster.Infrastracture.Connections;
+using TrainMaster.Infrastracture.Repository.Interfaces;
 
-namespace TrainMaser.Infrastracture.Repository.Request
+namespace TrainMaster.Infrastracture.Repository.Request
 {
     public class AddressRepository : IAddressRepository
     {
@@ -40,7 +40,7 @@ namespace TrainMaser.Infrastracture.Repository.Request
              .Select(address => new AddressEntity
              {
                  Id = address.Id,
-                 Neighborhood = address.Neighborhood,                 
+                 Neighborhood = address.Neighborhood,
                  City = address.City,
                  PostalCode = address.PostalCode,
                  Street = address.Street,

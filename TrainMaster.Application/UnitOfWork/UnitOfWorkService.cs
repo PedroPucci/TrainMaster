@@ -1,7 +1,7 @@
-﻿using TrainMaser.Infrastracture.Repository.RepositoryUoW;
-using TrainMaser.Infrastracture.Repository.Security.Cryptography;
-using TrainMaser.Infrastracture.Security.Token.Access;
-using TrainMaster.Application.Services;
+﻿using TrainMaster.Application.Services;
+using TrainMaster.Infrastracture.Repository.RepositoryUoW;
+using TrainMaster.Infrastracture.Security.Cryptography;
+using TrainMaster.Infrastracture.Security.Token.Access;
 
 namespace TrainMaster.Application.UnitOfWork
 {

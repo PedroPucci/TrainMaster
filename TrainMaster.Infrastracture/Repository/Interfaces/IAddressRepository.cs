@@ -1,6 +1,6 @@
 ﻿using TrainMaster.Domain.Entity;
 
-namespace TrainMaser.Infrastracture.Repository.Interfaces
+namespace TrainMaster.Infrastracture.Repository.Interfaces
 {
     public interface IAddressRepository
     {

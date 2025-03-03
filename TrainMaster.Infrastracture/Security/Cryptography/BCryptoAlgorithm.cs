@@ -1,4 +1,4 @@
-﻿namespace TrainMaser.Infrastracture.Repository.Security.Cryptography
+﻿namespace TrainMaster.Infrastracture.Security.Cryptography
 {
     public class BCryptoAlgorithm
     {

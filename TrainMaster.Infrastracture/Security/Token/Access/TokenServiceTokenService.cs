@@ -3,11 +3,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace TrainMaser.Infrastracture.Security.Token.Access
+namespace TrainMaster.Infrastracture.Security.Token.Access
 {
     public class TokenService
     {
-        private const string SecretKey = "Z4QJ5lEr7Rx8C9EO5vvv65X0DYH38NNh"; // como receber por injecao de depedencia?
+        private const string SecretKey = "Z4QJ5lEr7Rx8C9EO5vvv65X0DYH38NNh";
         private const int ExpirationMinutes = 60;
 
         public string GenerateToken(string userId, string email)

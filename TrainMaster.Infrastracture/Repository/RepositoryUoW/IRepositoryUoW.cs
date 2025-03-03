@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
-using TrainMaser.Infrastracture.Repository.Interfaces;
+using TrainMaster.Infrastracture.Repository.Interfaces;
 
-namespace TrainMaser.Infrastracture.Repository.RepositoryUoW
+namespace TrainMaster.Infrastracture.Repository.RepositoryUoW
 {
     public interface IRepositoryUoW
     {

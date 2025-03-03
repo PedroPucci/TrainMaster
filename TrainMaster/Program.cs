@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using TrainMaser.Infrastracture.Connections;
+﻿using Microsoft.EntityFrameworkCore;
 using TrainMaster.Extensions;
 using TrainMaster.Extensions.ExtensionsLogs;
+using TrainMaster.Infrastracture.Connections;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();

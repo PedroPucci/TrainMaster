@@ -1,9 +1,14 @@
-﻿using TrainMaser.Infrastracture.Connections;
-using TrainMaser.Infrastracture.Repository.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TrainMaster.Domain.Entity;
-using Microsoft.EntityFrameworkCore;
+using TrainMaster.Infrastracture.Connections;
+using TrainMaster.Infrastracture.Repository.Interfaces;
 
-namespace TrainMaser.Infrastracture.Repository.Request
+namespace TrainMaster.Infrastracture.Repository.Request
 {
     public class UserRepository : IUserRepository
     {
