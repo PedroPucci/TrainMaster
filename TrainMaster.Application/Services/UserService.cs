@@ -36,7 +36,7 @@ namespace TrainMaster.Application.Services
                 if (await UniqueCpf(userEntity.Cpf))
                 {
                     Log.Error("CPF already exists in the system.");
-                    return Result<UserEntity>.Error("Message: The provided CPF is already in use.");
+                    return Result<UserEntity>.Error("The provided CPF is already in use.");
                 }
 
                 userEntity.ModificationDate = DateTime.UtcNow;
@@ -57,7 +57,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.AddingUserError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to add a new User");
+                throw new InvalidOperationException("Error to add a new User");
             }
             finally
             {
@@ -82,7 +82,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.DeleteUserError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to delete a User.");
+                throw new InvalidOperationException("Error to delete a User.");
             }
             finally
             {
@@ -104,7 +104,7 @@ namespace TrainMaster.Application.Services
         //    {
         //        Log.Error(LogMessages.GetAllUserError(ex));
         //        transaction.Rollback();
-        //        throw new InvalidOperationException("Message: Error to loading the list User");
+        //        throw new InvalidOperationException("Error to loading the list User");
         //    }
         //    finally
         //    {
@@ -126,7 +126,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.GetAllUserError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to loading the list of users");
+                throw new InvalidOperationException("Error to loading the list of users");
             }
             finally
             {
@@ -149,7 +149,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.GetAllUserError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to loading the list User Actives");
+                throw new InvalidOperationException("Error to loading the list User Actives");
             }
             finally
             {
@@ -165,7 +165,7 @@ namespace TrainMaster.Application.Services
             {
                 var userById = await _repositoryUoW.UserRepository.GetById(userEntity.Id);
                 if (userById is null)
-                    throw new InvalidOperationException("Message: Error updating User");
+                    throw new InvalidOperationException("Error updating User");
                 
                 userById.Email = userEntity.Email;
                 userById.ModificationDate = DateTime.UtcNow;
@@ -182,7 +182,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.UpdatingErrorUser(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error updating User", ex);
+                throw new InvalidOperationException("Error updating User", ex);
             }
             finally
             {

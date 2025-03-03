@@ -35,7 +35,7 @@ namespace TrainMaster.Application.Services
                 if (!IsValidCep(addressEntity.PostalCode))
                 {
                     Log.Error("Postal code is invalid.");
-                    return Result<AddressEntity>.Error("Message: Postal Code invalid.");
+                    return Result<AddressEntity>.Error("Postal Code invalid.");
                 }
 
                 addressEntity.ModificationDate = DateTime.UtcNow;
@@ -50,7 +50,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.AddingAddressError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to add a new address");
+                throw new InvalidOperationException("Error to add a new address");
             }
             finally
             {
@@ -75,7 +75,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.DeleteAddressError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to delete a Address.");
+                throw new InvalidOperationException("Error to delete a Address.");
             }
             finally
             {
@@ -97,7 +97,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.GetAllAddressError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to loading the list Address");
+                throw new InvalidOperationException("Error to loading the list Address");
             }
             finally
             {
@@ -113,7 +113,7 @@ namespace TrainMaster.Application.Services
             {
                 var addressById = await _repositoryUoW.AddressRepository.GetById(addressEntity.Id);
                 if (addressById is null)
-                    throw new InvalidOperationException("Message: Error updating Address");
+                    throw new InvalidOperationException("Error updating Address");
 
                 addressById.Street = addressEntity.Street;
                 addressById.City = addressEntity.City;
@@ -131,7 +131,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.UpdatingErrorAddress(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error updating Address", ex);
+                throw new InvalidOperationException("Error updating Address", ex);
             }
             finally
             {
@@ -146,7 +146,7 @@ namespace TrainMaster.Application.Services
                 if (!IsValidCep(postalCode))
                 {
                     Log.Error("Postal code is invalid.");
-                    return Result<AddressEntity>.Error("Message: Postal Code invalid.");
+                    return Result<AddressEntity>.Error("Postal Code invalid.");
                 }
 
                 string url = $"https://viacep.com.br/ws/{postalCode}/json/";
@@ -161,17 +161,17 @@ namespace TrainMaster.Application.Services
                     var endereco = JsonConvert.DeserializeObject<AddressEntity>(response.Content);
 
                     if (endereco == null || string.IsNullOrWhiteSpace(endereco.PostalCode))
-                        return Result<AddressEntity>.Error("Message: Postal code not found.");
+                        return Result<AddressEntity>.Error("Postal code not found.");
 
                     return Result<AddressEntity>.Ok("Postal code found.", endereco);
                 }
 
-                return Result<AddressEntity>.Error("Message: Error fetching postal code.");
+                return Result<AddressEntity>.Error("Error fetching postal code.");
             }
             catch (Exception ex)
             {
                 Log.Error($"Error fetching postal code: {ex.Message}");
-                return Result<AddressEntity>.Error("Message: Error occurred while fetching postal code.");
+                return Result<AddressEntity>.Error("Error occurred while fetching postal code.");
             }
         }
 

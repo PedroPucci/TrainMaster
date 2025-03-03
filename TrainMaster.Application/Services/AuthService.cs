@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using TrainMaster.Application.ExtensionError;
+using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 using TrainMaster.Infrastracture.Security.Cryptography;
 using TrainMaster.Infrastracture.Security.Token.Access;
@@ -20,27 +21,30 @@ namespace TrainMaster.Application.Services
             _crypto = crypto;
         }
 
-        public async Task<Result<string>> Login(string cpf, string password)
+        public async Task<Result<LoginEntity>> Login(string cpf, string password)
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(cpf) || string.IsNullOrWhiteSpace(password))
+                    return Result<LoginEntity>.Error("CPF and Password are required.");
+
                 var user = await _userRepository.GetByCpf(cpf);
 
-                if (user == null)
-                    Log.Error("CPF or password is incorrect.");
-
-                if (!_crypto.VerifyPassword(password, user.Password))
-                    Log.Error("CPF or password is incorrect.");
+                if (user == null || !_crypto.VerifyPassword(password, user.Password))
+                {
+                    Log.Error("CPF or Password is incorrect.");
+                    return Result<LoginEntity>.Error("CPF and Password are required.");
+                }                    
 
                 var token = _tokenService.GenerateToken(user.Id.ToString(), user.Email);
                 Log.Information($"User {user.Email} logged in successfully."); 
 
-                return Result<string>.Ok(token);
+                return Result<LoginEntity>.Ok(token);
             }
             catch (Exception ex)
             {
                 Log.Error(LogMessages.AddingUserError(ex));
-                return Result<string>.Error("An unexpected error occurred during login.");
+                return Result<LoginEntity>.Error("CPF or Password is incorrect.");
             }
         }
 

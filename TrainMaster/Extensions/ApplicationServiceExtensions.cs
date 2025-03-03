@@ -24,11 +24,21 @@ namespace TrainMaster.Extensions
                 opt.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Api TrainMaster",
+                    Title = "API TrainMaster",
                     Description = @"
-                        - Sistema TrainMaster, uma plataforma de gerenciamento de cursos online para empresas.
-                        ",
+                    A **API TrainMaster** é uma solução inovadora para gerenciamento e otimização de treinamentos corporativos. 
+                    Criada para oferecer um ambiente de aprendizado online acessível e flexível, ela permite que funcionários 
+                    realizem treinamentos a qualquer hora, de qualquer lugar e em qualquer dispositivo.
+
+                    🚀 **Principais Benefícios:**
+                    - 📚 Aulas e conteúdos organizados de forma eficiente.
+                    - 📝 Provas e avaliações para medir o progresso dos colaboradores.
+                    - 🌍 Acesso global em qualquer dispositivo, proporcionando flexibilidade.
+        
+                    Com a **TrainMaster**, sua empresa pode capacitar colaboradores de maneira ágil, prática e eficiente!
+                ",
                 });
+
 
                 opt.OperationFilter<CustomOperationDescriptions>();
             });

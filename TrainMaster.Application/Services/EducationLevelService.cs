@@ -1,7 +1,10 @@
-﻿using TrainMaster.Application.ExtensionError;
+﻿using Serilog;
+using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
+using TrainMaster.Shared.Logging;
+using TrainMaster.Shared.Validator;
 
 namespace TrainMaster.Application.Services
 {
@@ -14,24 +17,130 @@ namespace TrainMaster.Application.Services
             _repositoryUoW = repositoryUoW;
         }
 
-        public Task<Result<EducationLevelEntity>> Add(EducationLevelEntity educationLevelEntity)
+        public async Task<Result<EducationLevelEntity>> Add(EducationLevelEntity educationLevelEntity)
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var isValidEducationLevel = await IsValidEducationLevelRequest(educationLevelEntity);
+
+                if (!isValidEducationLevel.Success)
+                {
+                    Log.Error(LogMessages.InvalidEducationLevelInputs());
+                    return Result<EducationLevelEntity>.Error(isValidEducationLevel.Message);
+                }
+
+                educationLevelEntity.ModificationDate = DateTime.UtcNow;
+                var result = await _repositoryUoW.EducationLevelRepository.Add(educationLevelEntity);
+
+                await _repositoryUoW.SaveAsync();
+                await transaction.CommitAsync();
+
+                return Result<EducationLevelEntity>.Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(LogMessages.AddingEducationLevelError(ex));
+                transaction.Rollback();
+                throw new InvalidOperationException("Error to add a new Education Level");
+            }
+            finally
+            {
+                Log.Error(LogMessages.AddingEducationLevelSuccess());
+                transaction.Dispose();
+            }
         }
 
-        public Task Delete(int educationLevelId)
+        public async Task Delete(int educationLevelId)
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var educationLevelEntity = await _repositoryUoW.EducationLevelRepository.GetById(educationLevelId);
+                if (educationLevelEntity is not null)
+                    _repositoryUoW.EducationLevelRepository.Update(educationLevelEntity);
+
+                await _repositoryUoW.SaveAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(LogMessages.DeleteEducationLevelError(ex));
+                transaction.Rollback();
+                throw new InvalidOperationException("Error to delete a Education Level.");
+            }
+            finally
+            {
+                Log.Error(LogMessages.DeleteEducationLevelSuccess());
+                transaction.Dispose();
+            }
         }
 
-        public Task<List<EducationLevelEntity>> Get()
+        public async Task<List<EducationLevelEntity>> Get()
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                List<EducationLevelEntity> educationLevelEntities = await _repositoryUoW.EducationLevelRepository.Get();
+                _repositoryUoW.Commit();
+                return educationLevelEntities;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(LogMessages.GetAllEducationLevelError(ex));
+                transaction.Rollback();
+                throw new InvalidOperationException("Error to loading the list Education Level");
+            }
+            finally
+            {
+                Log.Error(LogMessages.GetAllEducationLevelSuccess());
+                transaction.Dispose();
+            }
         }
 
-        public Task<Result<EducationLevelEntity>> Update(EducationLevelEntity educationLevelEntity)
+        public async Task<Result<EducationLevelEntity>> Update(EducationLevelEntity educationLevelEntity)
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var educationLevelById = await _repositoryUoW.EducationLevelRepository.GetById(educationLevelEntity.Id);
+                if (educationLevelById is null)
+                    throw new InvalidOperationException("Error updating Education Level.");
+
+                educationLevelById.Title = educationLevelEntity.Title;
+                educationLevelById.Institution = educationLevelEntity.Institution;
+                educationLevelById.ModificationDate = DateTime.UtcNow;
+
+                _repositoryUoW.EducationLevelRepository.Update(educationLevelById);
+
+                await _repositoryUoW.SaveAsync();
+                await transaction.CommitAsync();
+
+                return Result<EducationLevelEntity>.Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(LogMessages.UpdatingErrorEducationLevel(ex));
+                transaction.Rollback();
+                throw new InvalidOperationException("Error updating Education Level", ex);
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
+        private async Task<Result<EducationLevelEntity>> IsValidEducationLevelRequest(EducationLevelEntity educationLevelEntity)
+        {
+            var requestValidator = await new EducationLevelRequestValidator().ValidateAsync(educationLevelEntity);
+            if (!requestValidator.IsValid)
+            {
+                string errorMessage = string.Join(" ", requestValidator.Errors.Select(e => e.ErrorMessage));
+                errorMessage = errorMessage.Replace(Environment.NewLine, "");
+                return Result<EducationLevelEntity>.Error(errorMessage);
+            }
+
+            return Result<EducationLevelEntity>.Ok();
         }
     }
 }

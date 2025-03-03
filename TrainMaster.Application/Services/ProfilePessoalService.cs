@@ -42,7 +42,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.AddingUserError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to add a new User");
+                throw new InvalidOperationException("Error to add a new User");
             }
             finally
             {
@@ -68,7 +68,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.DeletePessoalProfileError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to delete a Pessoal Profile.");
+                throw new InvalidOperationException("Error to delete a Pessoal Profile.");
             }
             finally
             {
@@ -90,7 +90,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.GetAllPessoalProfileError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error to loading the list Pessoal Profile");
+                throw new InvalidOperationException("Error to loading the list Pessoal Profile");
             }
             finally
             {
@@ -106,7 +106,7 @@ namespace TrainMaster.Application.Services
             {
                 var pessoalProfileById = await _repositoryUoW.PessoalProfileRepository.GetById(pessoalProfileEntity.Id);
                 if (pessoalProfileById is null)
-                    throw new InvalidOperationException("Message: Error updating Pessoal Profile");
+                    throw new InvalidOperationException("Error updating Pessoal Profile");
 
                 pessoalProfileById.FullName = pessoalProfileEntity.FullName;
                 pessoalProfileById.ModificationDate = DateTime.UtcNow;
@@ -122,7 +122,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.UpdatingErrorPessoalProfile(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Message: Error updating Pessoal Profile", ex);
+                throw new InvalidOperationException("Error updating Pessoal Profile", ex);
             }
             finally
             {
