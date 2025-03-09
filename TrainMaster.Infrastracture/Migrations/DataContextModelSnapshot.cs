@@ -67,6 +67,43 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.ToTable("AddressEntity");
                 });
 
+            modelBuilder.Entity("TrainMaster.Domain.Entity.CourseEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CourseEntity");
+                });
+
             modelBuilder.Entity("TrainMaster.Domain.Entity.EducationLevelEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -230,6 +267,17 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.Navigation("PessoalProfile");
                 });
 
+            modelBuilder.Entity("TrainMaster.Domain.Entity.CourseEntity", b =>
+                {
+                    b.HasOne("TrainMaster.Domain.Entity.UserEntity", "User")
+                        .WithMany("Courses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TrainMaster.Domain.Entity.EducationLevelEntity", b =>
                 {
                     b.HasOne("TrainMaster.Domain.Entity.ProfessionalProfileEntity", "ProfessionalProfile")
@@ -275,6 +323,8 @@ namespace TrainMaster.Infrastracture.Migrations
 
             modelBuilder.Entity("TrainMaster.Domain.Entity.UserEntity", b =>
                 {
+                    b.Navigation("Courses");
+
                     b.Navigation("PessoalProfile");
 
                     b.Navigation("ProfessionalProfile");

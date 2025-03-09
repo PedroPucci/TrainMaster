@@ -10,6 +10,7 @@ namespace TrainMaster.Infrastracture.Repository.RepositoryUoW
         IAddressRepository AddressRepository { get; }
         IEducationLevelRepository EducationLevelRepository { get; }
         IProfessionalProfileRepository ProfessionalProfileRepository { get; }
+        ICourseRepository CourseRepository { get; }
 
         Task SaveAsync();
         void Commit();

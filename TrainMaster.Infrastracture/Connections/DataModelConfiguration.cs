@@ -24,6 +24,11 @@ namespace TrainMaster.Infrastracture.Connections
                       .WithOne(p => p.User)
                       .HasForeignKey<ProfessionalProfileEntity>(p => p.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(u => u.Courses)
+                      .WithOne(c => c.User)
+                      .HasForeignKey(c => c.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<PessoalProfileEntity>(entity =>
@@ -82,6 +87,21 @@ namespace TrainMaster.Infrastracture.Connections
                       .HasForeignKey<EducationLevelEntity>(e => e.ProfessionalProfileId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
+
+            modelBuilder.Entity<CourseEntity>(entity =>
+            {
+                entity.HasKey(c => c.Id);
+                entity.Property(c => c.Name).IsRequired();
+                entity.Property(c => c.Description);
+                entity.Property(c => c.StartDate).IsRequired();
+                entity.Property(c => c.EndDate).IsRequired();
+
+                entity.HasOne(c => c.User)
+                      .WithMany(u => u.Courses)
+                      .HasForeignKey(c => c.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
         }
     }
 }

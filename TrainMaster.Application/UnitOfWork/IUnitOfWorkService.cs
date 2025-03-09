@@ -10,5 +10,6 @@ namespace TrainMaster.Application.UnitOfWork
         ProfileProfessionalService ProfileProfessionalService { get; }
         AddressService AddressService { get; }
         EducationLevelService EducationLevelService { get; }
+        CourseService CourseService { get; }
     }
 }

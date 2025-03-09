@@ -15,5 +15,8 @@ namespace TrainMaster.Domain.Entity
 
         [JsonIgnore]
         public ProfessionalProfileEntity? ProfessionalProfile { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<CourseEntity> Courses { get; set; } = new List<CourseEntity>();
     }
 }

@@ -31,6 +31,31 @@ namespace TrainMaster.Infrastracture.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CourseEntity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ModificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseEntity_UserEntity_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UserEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PessoalProfileEntity",
                 columns: table => new
                 {
@@ -138,6 +163,11 @@ namespace TrainMaster.Infrastracture.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CourseEntity_UserId",
+                table: "CourseEntity",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EducationLevelEntity_ProfessionalProfileId",
                 table: "EducationLevelEntity",
                 column: "ProfessionalProfileId",
@@ -161,6 +191,9 @@ namespace TrainMaster.Infrastracture.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AddressEntity");
+
+            migrationBuilder.DropTable(
+                name: "CourseEntity");
 
             migrationBuilder.DropTable(
                 name: "EducationLevelEntity");

@@ -17,7 +17,8 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                     { "loginSystem", () => HandleLoginOperations(operation, context) },
                     { "educationLevel", () => HandleEducationLevelOperations(operation, context) },
                     { "professionalProfile", () => HandleProfessionalProfileOperations(operation, context) },
-                    { "address", () => HandleAddressOperations(operation, context) }
+                    { "address", () => HandleAddressOperations(operation, context) },
+                    { "course", () => HandleCourseOperations(operation, context) }
                 };
 
             foreach (var routeHandler in routeHandlers)
@@ -222,6 +223,38 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                     operation.Description = "This endpoint allows you to retrieve details of all existing Addresses.";
                     AddResponses(operation, "200", "All Addresses details were successfully retrieved.");
                 }
+            }
+        }
+
+        private void HandleCourseOperations(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var method = context.ApiDescription.HttpMethod;
+            var path = context.ApiDescription.RelativePath?.ToLower() ?? string.Empty;
+
+            if (method == "POST")
+            {
+                operation.Summary = "Create a new Course";
+                operation.Description = "This endpoint allows you to create a new Course by providing the necessary details.";
+                AddResponses(operation, "200", "The Course was successfully created.");
+            }
+            else if (method == "PUT")
+            {
+                operation.Summary = "Update an existing Course";
+                operation.Description = "This endpoint allows you to update an existing Course by providing the necessary details.";
+                AddResponses(operation, "200", "The Course was successfully updated.");
+            }
+            else if (method == "DELETE")
+            {
+                operation.Summary = "Delete an existing Course";
+                operation.Description = "This endpoint allows you to delete an existing Course by providing the ID.";
+                AddResponses(operation, "200", "The Course was successfully deleted.");
+                AddResponses(operation, "404", "Course not found. Please verify the ID.");
+            }
+            else if (method == "GET")
+            {
+                operation.Summary = "Retrieve all Courses";
+                operation.Description = "This endpoint allows you to retrieve details of all existing Courses.";
+                AddResponses(operation, "200", "All Courses details were successfully retrieved.");
             }
         }
 

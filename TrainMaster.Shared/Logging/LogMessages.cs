@@ -58,5 +58,27 @@
         public static string GetAllProfessionalProfileSuccess() => "Message: GetAll with success Professional Profile.";
         public static string UpdatingErrorProfessionalProfile(Exception ex) => $"Message: Error updating Professional Profile: {ex.Message}";
         public static string UpdatingSuccessProfessionalProfile() => "Message: Successfully updated Professional Profile.";
+
+        //Course
+        public static string InvalidCourseInputs() => "Message: Invalid inputs to Course.";
+        public static string AddingCourseSuccess() => "Message: Successfully added a new Course.";
+        public static string AddingCourseError(Exception ex) => $"Message: Error adding a new Course: {ex.Message}";
+        public static string DeleteCourseError(Exception ex) => $"Message: Error to delete a Course: {ex.Message}";
+        public static string DeleteCourseSuccess() => "Message: Delete with success Course.";
+        public static string GetAllCourseError(Exception ex) => $"Message: Error to loading the list Course: {ex.Message}";
+        public static string GetAllCourseSuccess() => "Message: GetAll with success Course.";
+        public static string UpdatingErrorCourse(Exception ex) => $"Message: Error updating Course: {ex.Message}";
+        public static string UpdatingSuccessCourse() => "Message: Successfully updated Course.";
+
+        //Deparment
+        public static string InvalidDeparmentInputs() => "Message: Invalid inputs to Deparment.";
+        public static string AddingDeparmentSuccess() => "Message: Successfully added a new Deparment.";
+        public static string AddingDeparmentError(Exception ex) => $"Message: Error adding a new Deparment: {ex.Message}";
+        public static string DeleteDeparmentError(Exception ex) => $"Message: Error to delete a Deparment: {ex.Message}";
+        public static string DeleteDeparmentSuccess() => "Message: Delete with success Deparment.";
+        public static string GetAllDeparmentError(Exception ex) => $"Message: Error to loading the list Deparment: {ex.Message}";
+        public static string GetAllDeparmentSuccess() => "Message: GetAll with success Deparment.";
+        public static string UpdatingErrorDeparment(Exception ex) => $"Message: Error updating Deparment: {ex.Message}";
+        public static string UpdatingSuccessDeparment() => "Message: Successfully updated Deparment.";
     }
 }
