@@ -8,5 +8,6 @@ namespace TrainMaster.Infrastracture.Repository.Interfaces
         CourseEntity Update(CourseEntity courseEntity);
         CourseEntity Delete(CourseEntity courseEntity);
         Task<List<CourseEntity>> Get();
+        Task<CourseEntity?> GetById(int? id);
     }
 }

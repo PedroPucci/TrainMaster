@@ -1,4 +1,5 @@
-﻿using TrainMaster.Domain.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Connections;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 
@@ -13,24 +14,41 @@ namespace TrainMaster.Infrastracture.Repository.Request
             _context = context;
         }
 
-        public Task<CourseEntity> Add(CourseEntity courseEntity)
+        public async Task<CourseEntity> Add(CourseEntity courseEntity)
         {
-            throw new NotImplementedException();
+            var result = await _context.CourseEntity.AddAsync(courseEntity);
+            await _context.SaveChangesAsync();
+
+            return result.Entity;
         }
 
-        public CourseEntity Delete(CourseEntity courseEntity)
+        public CourseEntity Delete(CourseEntity CourseEntity)
         {
-            throw new NotImplementedException();
+            var response = _context.CourseEntity.Remove(CourseEntity);
+            return response.Entity;
         }
 
-        public Task<List<CourseEntity>> Get()
+        public async Task<List<CourseEntity>> Get()
         {
-            throw new NotImplementedException();
+            return await _context.CourseEntity
+             .OrderBy(course => course.Id)
+             .Select(course => new CourseEntity
+             {
+                 Id = course.Id,
+                 Name = course.Name,
+                 Description = course.Description,
+             }).ToListAsync();
+        }
+
+        public async Task<CourseEntity?> GetById(int? id)
+        {
+            return await _context.CourseEntity.FirstOrDefaultAsync(courseEntity => courseEntity.Id == id);
         }
 
         public CourseEntity Update(CourseEntity courseEntity)
         {
-            throw new NotImplementedException();
+            var response = _context.CourseEntity.Update(courseEntity);
+            return response.Entity;
         }
     }
 }
