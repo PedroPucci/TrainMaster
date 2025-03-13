@@ -18,7 +18,8 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                     { "educationLevel", () => HandleEducationLevelOperations(operation, context) },
                     { "professionalProfile", () => HandleProfessionalProfileOperations(operation, context) },
                     { "address", () => HandleAddressOperations(operation, context) },
-                    { "course", () => HandleCourseOperations(operation, context) }
+                    { "course", () => HandleCourseOperations(operation, context) },
+                    { "deparment", () => HandleDeparmentOperations(operation, context) }
                 };
 
             foreach (var routeHandler in routeHandlers)
@@ -255,6 +256,38 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                 operation.Summary = "Retrieve all Courses";
                 operation.Description = "This endpoint allows you to retrieve details of all existing Courses.";
                 AddResponses(operation, "200", "All Courses details were successfully retrieved.");
+            }
+        }
+
+        private void HandleDeparmentOperations(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var method = context.ApiDescription.HttpMethod;
+            var path = context.ApiDescription.RelativePath?.ToLower() ?? string.Empty;
+
+            if (method == "POST")
+            {
+                operation.Summary = "Create a new Deparment";
+                operation.Description = "This endpoint allows you to create a new Deparment by providing the necessary details.";
+                AddResponses(operation, "200", "The Deparment was successfully created.");
+            }
+            else if (method == "PUT")
+            {
+                operation.Summary = "Update an existing Deparment";
+                operation.Description = "This endpoint allows you to update an existing Deparment by providing the necessary details.";
+                AddResponses(operation, "200", "The Deparment was successfully updated.");
+            }
+            else if (method == "DELETE")
+            {
+                operation.Summary = "Delete an existing Deparment";
+                operation.Description = "This endpoint allows you to delete an existing Deparment by providing the ID.";
+                AddResponses(operation, "200", "The Deparment was successfully deleted.");
+                AddResponses(operation, "404", "Deparment not found. Please verify the ID.");
+            }
+            else if (method == "GET")
+            {
+                operation.Summary = "Retrieve all Deparments";
+                operation.Description = "This endpoint allows you to retrieve details of all existing Deparments.";
+                AddResponses(operation, "200", "All Deparments details were successfully retrieved.");
             }
         }
 

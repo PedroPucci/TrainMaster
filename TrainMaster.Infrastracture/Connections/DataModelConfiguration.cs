@@ -29,6 +29,12 @@ namespace TrainMaster.Infrastracture.Connections
                       .WithOne(c => c.User)
                       .HasForeignKey(c => c.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(u => u.Department)
+                      .WithOne(d => d.User)
+                      .HasForeignKey<DepartmentEntity>(d => d.UserId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
             });
 
             modelBuilder.Entity<PessoalProfileEntity>(entity =>
@@ -102,6 +108,17 @@ namespace TrainMaster.Infrastracture.Connections
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity<DepartmentEntity>(entity =>
+            {
+                entity.HasKey(d => d.Id);
+                entity.Property(d => d.Name).IsRequired().HasMaxLength(255);
+                entity.Property(d => d.Description).HasMaxLength(500);
+
+                entity.HasOne(d => d.User)
+                      .WithOne(u => u.Department)
+                      .HasForeignKey<DepartmentEntity>(d => d.UserId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

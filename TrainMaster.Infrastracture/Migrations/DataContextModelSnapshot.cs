@@ -84,6 +84,9 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -102,6 +105,43 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CourseEntity");
+                });
+
+            modelBuilder.Entity("TrainMaster.Domain.Entity.DepartmentEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("DepartmentEntity");
                 });
 
             modelBuilder.Entity("TrainMaster.Domain.Entity.EducationLevelEntity", b =>
@@ -278,6 +318,17 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TrainMaster.Domain.Entity.DepartmentEntity", b =>
+                {
+                    b.HasOne("TrainMaster.Domain.Entity.UserEntity", "User")
+                        .WithOne("Department")
+                        .HasForeignKey("TrainMaster.Domain.Entity.DepartmentEntity", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TrainMaster.Domain.Entity.EducationLevelEntity", b =>
                 {
                     b.HasOne("TrainMaster.Domain.Entity.ProfessionalProfileEntity", "ProfessionalProfile")
@@ -324,6 +375,8 @@ namespace TrainMaster.Infrastracture.Migrations
             modelBuilder.Entity("TrainMaster.Domain.Entity.UserEntity", b =>
                 {
                     b.Navigation("Courses");
+
+                    b.Navigation("Department");
 
                     b.Navigation("PessoalProfile");
 

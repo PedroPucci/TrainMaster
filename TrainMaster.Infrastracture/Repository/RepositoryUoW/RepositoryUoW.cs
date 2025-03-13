@@ -16,10 +16,23 @@ namespace TrainMaster.Infrastracture.Repository.RepositoryUoW
         private IEducationLevelRepository? _educationLevelRepository = null;
         private IProfessionalProfileRepository? _professionalProfileRepository = null;
         private ICourseRepository _courseRepository = null;
+        private IDepartmentRepository _departmentRepository = null;
 
         public RepositoryUoW(DataContext context)
         {
             _context = context;
+        }
+
+        public IDepartmentRepository DepartmentRepository
+        {
+            get
+            {
+                if (_departmentRepository is null)
+                {
+                    _departmentRepository = new DepartmentRepository(_context);
+                }
+                return _departmentRepository;
+            }
         }
 
         public ICourseRepository CourseRepository

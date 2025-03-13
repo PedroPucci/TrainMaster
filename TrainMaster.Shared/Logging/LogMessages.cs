@@ -71,14 +71,14 @@
         public static string UpdatingSuccessCourse() => "Message: Successfully updated Course.";
 
         //Deparment
-        public static string InvalidDeparmentInputs() => "Message: Invalid inputs to Deparment.";
-        public static string AddingDeparmentSuccess() => "Message: Successfully added a new Deparment.";
-        public static string AddingDeparmentError(Exception ex) => $"Message: Error adding a new Deparment: {ex.Message}";
-        public static string DeleteDeparmentError(Exception ex) => $"Message: Error to delete a Deparment: {ex.Message}";
-        public static string DeleteDeparmentSuccess() => "Message: Delete with success Deparment.";
-        public static string GetAllDeparmentError(Exception ex) => $"Message: Error to loading the list Deparment: {ex.Message}";
-        public static string GetAllDeparmentSuccess() => "Message: GetAll with success Deparment.";
-        public static string UpdatingErrorDeparment(Exception ex) => $"Message: Error updating Deparment: {ex.Message}";
-        public static string UpdatingSuccessDeparment() => "Message: Successfully updated Deparment.";
+        public static string InvalidDepartmentInputs() => "Message: Invalid inputs to Department.";
+        public static string AddingDepartmentSuccess() => "Message: Successfully added a new Department.";
+        public static string AddingDepartmentError(Exception ex) => $"Message: Error adding a new Department: {ex.Message}";
+        public static string DeleteDepartmentError(Exception ex) => $"Message: Error to delete a Department: {ex.Message}";
+        public static string DeleteDepartmentSuccess() => "Message: Delete with success Department.";
+        public static string GetAllDepartmentError(Exception ex) => $"Message: Error to loading the list Department: {ex.Message}";
+        public static string GetAllDepartmentSuccess() => "Message: GetAll with success Department.";
+        public static string UpdatingErrorDepartment(Exception ex) => $"Message: Error updating Department: {ex.Message}";
+        public static string UpdatingSuccessDepartment() => "Message: Successfully updated Department.";
     }
 }

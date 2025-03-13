@@ -18,5 +18,8 @@ namespace TrainMaster.Domain.Entity
 
         [JsonIgnore]
         public virtual ICollection<CourseEntity> Courses { get; set; } = new List<CourseEntity>();
+
+        [JsonIgnore]
+        public DepartmentEntity? Department { get; set; }
     }
 }

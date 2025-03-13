@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TrainMaster.Infrastracture.Migrations
 {
     /// <inheritdoc />
-    public partial class Primeira : Migration
+    public partial class primeira : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,7 @@ namespace TrainMaster.Infrastracture.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -53,6 +54,30 @@ namespace TrainMaster.Infrastracture.Migrations
                         principalTable: "UserEntity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DepartmentEntity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ModificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DepartmentEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DepartmentEntity_UserEntity_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UserEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,6 +193,12 @@ namespace TrainMaster.Infrastracture.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DepartmentEntity_UserId",
+                table: "DepartmentEntity",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EducationLevelEntity_ProfessionalProfileId",
                 table: "EducationLevelEntity",
                 column: "ProfessionalProfileId",
@@ -194,6 +225,9 @@ namespace TrainMaster.Infrastracture.Migrations
 
             migrationBuilder.DropTable(
                 name: "CourseEntity");
+
+            migrationBuilder.DropTable(
+                name: "DepartmentEntity");
 
             migrationBuilder.DropTable(
                 name: "EducationLevelEntity");

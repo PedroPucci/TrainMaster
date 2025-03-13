@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Serilog;
+﻿using Serilog;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Entity;

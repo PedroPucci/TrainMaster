@@ -24,6 +24,7 @@ namespace TrainMaster.Infrastracture.Connections
         public DbSet<AddressEntity> AddressEntity { get; set; }
         public DbSet<EducationLevelEntity> EducationLevelEntity { get; set; }
         public DbSet<CourseEntity> CourseEntity { get; set; }
+        public DbSet<DepartmentEntity> DepartmentEntity { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
