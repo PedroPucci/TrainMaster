@@ -12,6 +12,8 @@ namespace TrainMaster.Infrastracture.Repository.RepositoryUoW
         IProfessionalProfileRepository ProfessionalProfileRepository { get; }
         ICourseRepository CourseRepository { get; }
         IDepartmentRepository DepartmentRepository { get; }
+        ITeamRepository TeamRepository { get; }
+        IHistoryPasswordRepository HistoryPasswordRepository { get; }
 
         Task SaveAsync();
         void Commit();

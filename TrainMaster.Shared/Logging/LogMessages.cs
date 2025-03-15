@@ -80,5 +80,27 @@
         public static string GetAllDepartmentSuccess() => "Message: GetAll with success Department.";
         public static string UpdatingErrorDepartment(Exception ex) => $"Message: Error updating Department: {ex.Message}";
         public static string UpdatingSuccessDepartment() => "Message: Successfully updated Department.";
+
+        //Team
+        public static string InvalidTeamInputs() => "Message: Invalid inputs to Team.";
+        public static string AddingTeamSuccess() => "Message: Successfully added a new Team.";
+        public static string AddingTeamError(Exception ex) => $"Message: Error adding a new Team: {ex.Message}";
+        public static string DeleteTeamError(Exception ex) => $"Message: Error to delete a Team: {ex.Message}";
+        public static string DeleteTeamSuccess() => "Message: Delete with success Team.";
+        public static string GetAllTeamError(Exception ex) => $"Message: Error to loading the list Team: {ex.Message}";
+        public static string GetAllTeamSuccess() => "Message: GetAll with success Team.";
+        public static string UpdatingErrorTeam(Exception ex) => $"Message: Error updating Team: {ex.Message}";
+        public static string UpdatingSuccessTeam() => "Message: Successfully updated Team.";
+
+        //PasswordHistory
+        public static string InvalidHistoryPasswordInputs() => "Message: Invalid inputs to Password History.";
+        public static string AddingHistoryPasswordSuccess() => "Message: Successfully added a new Password History.";
+        public static string AddingHistoryPasswordError(Exception ex) => $"Message: Error adding a new Password History: {ex.Message}";
+        public static string DeleteHistoryPasswordError(Exception ex) => $"Message: Error to delete a Password History: {ex.Message}";
+        public static string DeleteHistoryPasswordSuccess() => "Message: Delete with success Password History.";
+        public static string GetAllHistoryPasswordError(Exception ex) => $"Message: Error to loading the list Password History: {ex.Message}";
+        public static string GetAllHistoryPasswordSuccess() => "Message: GetAll with success Password History.";
+        public static string UpdatingErrorHistoryPassword(Exception ex) => $"Message: Error updating Password History: {ex.Message}";
+        public static string UpdatingSuccessHistoryPassword() => "Message: Successfully updated Password History.";
     }
 }

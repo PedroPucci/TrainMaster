@@ -12,5 +12,8 @@ namespace TrainMaster.Domain.Entity
         [JsonIgnore]
         public UserEntity? User { get; set; }
         public int UserId { get; set; }
+
+        [JsonIgnore]
+        public List<TeamEntity> Teams { get; set; } = [];
     }
 }

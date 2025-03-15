@@ -35,6 +35,10 @@ namespace TrainMaster.Infrastracture.Connections
                       .HasForeignKey<DepartmentEntity>(d => d.UserId)
                       .OnDelete(DeleteBehavior.Restrict);
 
+                entity.HasMany(u => u.HistoryPasswords)
+                     .WithOne(ph => ph.User)
+                     .HasForeignKey(ph => ph.UserId)
+                     .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<PessoalProfileEntity>(entity =>
@@ -118,6 +122,29 @@ namespace TrainMaster.Infrastracture.Connections
                       .WithOne(u => u.Department)
                       .HasForeignKey<DepartmentEntity>(d => d.UserId)
                       .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<HistoryPasswordEntity>(entity =>
+            {
+                entity.HasKey(ph => ph.Id);
+                entity.Property(ph => ph.OldPassword).IsRequired().HasMaxLength(255);
+
+                entity.HasOne(ph => ph.User)
+                      .WithMany(u => u.HistoryPasswords)
+                      .HasForeignKey(ph => ph.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<TeamEntity>(entity =>
+            {
+                entity.HasKey(t => t.Id);
+                entity.Property(t => t.Name).IsRequired().HasMaxLength(255);
+                entity.Property(t => t.Description).HasMaxLength(500);
+
+                entity.HasOne(t => t.Department)
+                      .WithMany(d => d.Teams)
+                      .HasForeignKey(t => t.DepartmentId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

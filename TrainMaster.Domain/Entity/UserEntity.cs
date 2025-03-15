@@ -21,5 +21,8 @@ namespace TrainMaster.Domain.Entity
 
         [JsonIgnore]
         public DepartmentEntity? Department { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<HistoryPasswordEntity> HistoryPasswords { get; set; } = new List<HistoryPasswordEntity>();
     }
 }

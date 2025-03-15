@@ -183,6 +183,35 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.ToTable("EducationLevelEntity");
                 });
 
+            modelBuilder.Entity("TrainMaster.Domain.Entity.HistoryPasswordEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("OldPassword")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("HistoryPasswordEntity");
+                });
+
             modelBuilder.Entity("TrainMaster.Domain.Entity.PessoalProfileEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -260,6 +289,42 @@ namespace TrainMaster.Infrastracture.Migrations
                         .IsUnique();
 
                     b.ToTable("ProfessionalProfileEntity");
+                });
+
+            modelBuilder.Entity("TrainMaster.Domain.Entity.TeamEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("TeamEntity");
                 });
 
             modelBuilder.Entity("TrainMaster.Domain.Entity.UserEntity", b =>
@@ -340,6 +405,17 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.Navigation("ProfessionalProfile");
                 });
 
+            modelBuilder.Entity("TrainMaster.Domain.Entity.HistoryPasswordEntity", b =>
+                {
+                    b.HasOne("TrainMaster.Domain.Entity.UserEntity", "User")
+                        .WithMany("HistoryPasswords")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TrainMaster.Domain.Entity.PessoalProfileEntity", b =>
                 {
                     b.HasOne("TrainMaster.Domain.Entity.UserEntity", "User")
@@ -362,6 +438,22 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TrainMaster.Domain.Entity.TeamEntity", b =>
+                {
+                    b.HasOne("TrainMaster.Domain.Entity.DepartmentEntity", "Department")
+                        .WithMany("Teams")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("TrainMaster.Domain.Entity.DepartmentEntity", b =>
+                {
+                    b.Navigation("Teams");
+                });
+
             modelBuilder.Entity("TrainMaster.Domain.Entity.PessoalProfileEntity", b =>
                 {
                     b.Navigation("Address");
@@ -377,6 +469,8 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.Navigation("Courses");
 
                     b.Navigation("Department");
+
+                    b.Navigation("HistoryPasswords");
 
                     b.Navigation("PessoalProfile");
 

@@ -19,12 +19,34 @@ namespace TrainMaster.Application.UnitOfWork
         private EducationLevelService educationLevelService;
         private CourseService courseService;
         private DepartmentService departmentService;
+        private TeamService teamService;
+        private HistoryPasswordService historyPasswordService;
 
         public UnitOfWorkService(IRepositoryUoW repositoryUoW, TokenService tokenService, BCryptoAlgorithm crypto)
         {
             _repositoryUoW = repositoryUoW;
             _tokenService = tokenService;
             _crypto = crypto;
+        }
+
+        public TeamService TeamService
+        {
+            get
+            {
+                if (teamService is null)
+                    teamService = new TeamService(_repositoryUoW);
+                return teamService;
+            }
+        }
+
+        public HistoryPasswordService HistoryPasswordService
+        {
+            get
+            {
+                if (historyPasswordService is null)
+                    historyPasswordService = new HistoryPasswordService(_repositoryUoW);
+                return historyPasswordService;
+            }
         }
 
         public DepartmentService DepartmentService

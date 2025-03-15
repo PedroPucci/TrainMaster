@@ -12,5 +12,7 @@ namespace TrainMaster.Application.UnitOfWork
         EducationLevelService EducationLevelService { get; }
         CourseService CourseService { get; }
         DepartmentService DepartmentService { get; }
+        TeamService TeamService { get; }
+        HistoryPasswordService HistoryPasswordService { get; }
     }
 }

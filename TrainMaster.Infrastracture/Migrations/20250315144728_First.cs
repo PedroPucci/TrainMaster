@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TrainMaster.Infrastracture.Migrations
 {
     /// <inheritdoc />
-    public partial class primeira : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -81,6 +81,28 @@ namespace TrainMaster.Infrastracture.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HistoryPasswordEntity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OldPassword = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ModificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HistoryPasswordEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HistoryPasswordEntity_UserEntity_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UserEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PessoalProfileEntity",
                 columns: table => new
                 {
@@ -126,6 +148,30 @@ namespace TrainMaster.Infrastracture.Migrations
                         name: "FK_ProfessionalProfileEntity_UserEntity_UserId",
                         column: x => x.UserId,
                         principalTable: "UserEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamEntity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    DepartmentId = table.Column<int>(type: "integer", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ModificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TeamEntity_DepartmentEntity_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "DepartmentEntity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -205,6 +251,11 @@ namespace TrainMaster.Infrastracture.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_HistoryPasswordEntity_UserId",
+                table: "HistoryPasswordEntity",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PessoalProfileEntity_UserId",
                 table: "PessoalProfileEntity",
                 column: "UserId",
@@ -215,6 +266,11 @@ namespace TrainMaster.Infrastracture.Migrations
                 table: "ProfessionalProfileEntity",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeamEntity_DepartmentId",
+                table: "TeamEntity",
+                column: "DepartmentId");
         }
 
         /// <inheritdoc />
@@ -227,16 +283,22 @@ namespace TrainMaster.Infrastracture.Migrations
                 name: "CourseEntity");
 
             migrationBuilder.DropTable(
-                name: "DepartmentEntity");
+                name: "EducationLevelEntity");
 
             migrationBuilder.DropTable(
-                name: "EducationLevelEntity");
+                name: "HistoryPasswordEntity");
+
+            migrationBuilder.DropTable(
+                name: "TeamEntity");
 
             migrationBuilder.DropTable(
                 name: "PessoalProfileEntity");
 
             migrationBuilder.DropTable(
                 name: "ProfessionalProfileEntity");
+
+            migrationBuilder.DropTable(
+                name: "DepartmentEntity");
 
             migrationBuilder.DropTable(
                 name: "UserEntity");
