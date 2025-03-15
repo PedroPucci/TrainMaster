@@ -5,6 +5,6 @@ namespace TrainMaster.Application.Services.Interfaces
 {
     public interface IHistoryPasswordService
     {
-        Task<Result<HistoryPasswordEntity>> UpdateOldPassword(HistoryPasswordEntity historyPasswordEntity);
+        Task<Result<HistoryPasswordEntity>> UpdateOldPassword(int id, string newPassword);
     }
 }
