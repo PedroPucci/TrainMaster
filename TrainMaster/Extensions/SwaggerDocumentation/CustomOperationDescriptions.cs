@@ -19,7 +19,9 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                     { "professionalProfile", () => HandleProfessionalProfileOperations(operation, context) },
                     { "address", () => HandleAddressOperations(operation, context) },
                     { "course", () => HandleCourseOperations(operation, context) },
-                    { "deparment", () => HandleDeparmentOperations(operation, context) }
+                    { "deparment", () => HandleDeparmentOperations(operation, context) },
+                    { "team", () => HandleTeamOperations(operation, context) },
+                    { "historyPassword", () => HandleHistoryPasswordOperations(operation, context) }
                 };
 
             foreach (var routeHandler in routeHandlers)
@@ -288,6 +290,51 @@ namespace TrainMaster.Extensions.SwaggerDocumentation
                 operation.Summary = "Retrieve all Deparments";
                 operation.Description = "This endpoint allows you to retrieve details of all existing Deparments.";
                 AddResponses(operation, "200", "All Deparments details were successfully retrieved.");
+            }
+        }
+
+        private void HandleTeamOperations(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var method = context.ApiDescription.HttpMethod;
+            var path = context.ApiDescription.RelativePath?.ToLower() ?? string.Empty;
+
+            if (method == "POST")
+            {
+                operation.Summary = "Create a new Team";
+                operation.Description = "This endpoint allows you to create a new Team by providing the necessary details.";
+                AddResponses(operation, "200", "The Team was successfully created.");
+            }
+            else if (method == "PUT")
+            {
+                operation.Summary = "Update an existing Team";
+                operation.Description = "This endpoint allows you to update an existing Team by providing the necessary details.";
+                AddResponses(operation, "200", "The Team was successfully updated.");
+            }
+            else if (method == "DELETE")
+            {
+                operation.Summary = "Delete an existing Team";
+                operation.Description = "This endpoint allows you to delete an existing Team by providing the ID.";
+                AddResponses(operation, "200", "The Team was successfully deleted.");
+                AddResponses(operation, "404", "Team not found. Please verify the ID.");
+            }
+            else if (method == "GET")
+            {
+                operation.Summary = "Retrieve all Teams";
+                operation.Description = "This endpoint allows you to retrieve details of all existing Teams.";
+                AddResponses(operation, "200", "All Teams details were successfully retrieved.");
+            }
+        }
+
+        private void HandleHistoryPasswordOperations(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var method = context.ApiDescription.HttpMethod;
+            var path = context.ApiDescription.RelativePath?.ToLower() ?? string.Empty;
+
+            if (method == "PATCH")
+            {
+                operation.Summary = "Update the password to History Password";
+                operation.Description = "This endpoint allows you to update the password to History Password.";
+                AddResponses(operation, "200", "The History Password was successfully updated.");
             }
         }
 
