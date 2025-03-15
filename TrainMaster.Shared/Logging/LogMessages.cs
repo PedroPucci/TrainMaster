@@ -25,6 +25,7 @@
         public static string DeletePessoalProfileSuccess() => "Message: Delete with success Pessoal Profile.";
         public static string GetAllPessoalProfileError(Exception ex) => $"Message: Error to loading the list Pessoal Profile: {ex.Message}";
         public static string GetAllPessoalProfileSuccess() => "Message: GetAll with success Pessoal Profile.";
+        public static string FullNameExists() => "Message: User already exists with that name.";
 
         //Address
         public static string InvalidAddressInputs() => "Message: Invalid inputs to Address.";
@@ -80,6 +81,7 @@
         public static string GetAllDepartmentSuccess() => "Message: GetAll with success Department.";
         public static string UpdatingErrorDepartment(Exception ex) => $"Message: Error updating Department: {ex.Message}";
         public static string UpdatingSuccessDepartment() => "Message: Successfully updated Department.";
+        public static string NameExistsDepartment() => "Message: Department already exists with that name.";
 
         //Team
         public static string InvalidTeamInputs() => "Message: Invalid inputs to Team.";

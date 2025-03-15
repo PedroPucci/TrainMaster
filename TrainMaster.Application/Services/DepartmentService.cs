@@ -30,6 +30,15 @@ namespace TrainMaster.Application.Services
                     return Result<DepartmentEntity>.Error(isValidDepartment.Message);
                 }
 
+                var checkNameIsExist = await _repositoryUoW.DepartmentRepository.GetByName(departmentEntity.Name);
+
+                if (checkNameIsExist is not null)
+                {
+                    var errorMessage = "Department already exists with that name";
+                    Log.Error(LogMessages.NameExistsDepartment());
+                    return Result<DepartmentEntity>.Error(errorMessage);
+                }
+
                 departmentEntity.ModificationDate = DateTime.UtcNow;
                 departmentEntity.IsActive = true;
                 var result = await _repositoryUoW.DepartmentRepository.Add(departmentEntity);

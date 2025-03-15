@@ -9,5 +9,6 @@ namespace TrainMaster.Infrastracture.Repository.Interfaces
         DepartmentEntity Delete(DepartmentEntity departmentEntity);
         Task<List<DepartmentEntity>> Get();
         Task<DepartmentEntity?> GetById(int? id);
+        Task<DepartmentEntity?> GetByName(string? name);
     }
 }

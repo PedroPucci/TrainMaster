@@ -30,6 +30,15 @@ namespace TrainMaster.Application.Services
                     return Result<PessoalProfileEntity>.Error(isValidPessoalProfile.Message);
                 }
 
+                var checkFullNameIsExist = await _repositoryUoW.PessoalProfileRepository.GetByFullName(pessoalProfileEntity.FullName);
+
+                if (checkFullNameIsExist is not null)
+                {
+                    var errorMessage = "User already exists with that name";
+                    Log.Error(LogMessages.FullNameExists());
+                    return Result<PessoalProfileEntity>.Error(errorMessage);
+                }                    
+
                 pessoalProfileEntity.ModificationDate = DateTime.UtcNow;
                 var result = await _repositoryUoW.PessoalProfileRepository.Add(pessoalProfileEntity);
 
@@ -49,7 +58,6 @@ namespace TrainMaster.Application.Services
                 Log.Error(LogMessages.AddingUserSuccess());
                 transaction.Dispose();
             }
-
         }
 
         public async Task Delete(int pessoalProfileEntity)

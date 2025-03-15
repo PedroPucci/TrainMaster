@@ -47,6 +47,11 @@ namespace TrainMaster.Infrastracture.Repository.Request
             return await _context.PessoalProfileEntity.FirstOrDefaultAsync(pessoalProfileEntity => pessoalProfileEntity.Id == id);
         }
 
+        public async Task<PessoalProfileEntity?> GetByFullName(string? fullName)
+        {
+            return await _context.PessoalProfileEntity.FirstOrDefaultAsync(pessoalProfileEntity => pessoalProfileEntity.FullName == fullName);
+        }
+
         public PessoalProfileEntity Update(PessoalProfileEntity pessoalProfileEntity)
         {
             var response = _context.PessoalProfileEntity.Update(pessoalProfileEntity);
