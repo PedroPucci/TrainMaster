@@ -9,7 +9,6 @@ a qualquer hora, de qualquer lugar e em qualquer dispositivo, para fornecer aula
 ## **IDE's Utilizadas**
 - Visual Studio 2022
 - PostgreSQL
-- Postman
 ---
 ## **Recursos do Projeto**
 - **Serilog**: Para geração e gerenciamento de logs.
