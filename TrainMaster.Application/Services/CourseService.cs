@@ -30,6 +30,13 @@ namespace TrainMaster.Application.Services
                     return Result<CourseEntity>.Error(isValidAddress.Message);
                 }
 
+                if (courseEntity.EndDate < courseEntity.StartDate)
+                {
+                    var errorMessage = "End date cannot be earlier than start date.";
+                    Log.Error(LogMessages.InvalidDateRangeCourse());
+                    return Result<CourseEntity>.Error(errorMessage);
+                }
+
                 courseEntity.ModificationDate = DateTime.UtcNow;
                 courseEntity.IsActive = true;
                 var result = await _repositoryUoW.CourseRepository.Add(courseEntity);

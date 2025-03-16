@@ -26,6 +26,7 @@
         public static string GetAllPessoalProfileError(Exception ex) => $"Message: Error to loading the list Pessoal Profile: {ex.Message}";
         public static string GetAllPessoalProfileSuccess() => "Message: GetAll with success Pessoal Profile.";
         public static string FullNameExists() => "Message: User already exists with that name.";
+        public static string AgeBelow16() => "Message: User must be 16 years or older.";
 
         //Address
         public static string InvalidAddressInputs() => "Message: Invalid inputs to Address.";
@@ -70,6 +71,7 @@
         public static string GetAllCourseSuccess() => "Message: GetAll with success Course.";
         public static string UpdatingErrorCourse(Exception ex) => $"Message: Error updating Course: {ex.Message}";
         public static string UpdatingSuccessCourse() => "Message: Successfully updated Course.";
+        public static string InvalidDateRangeCourse() => "Message: End date cannot be earlier than start date.";
 
         //Deparment
         public static string InvalidDepartmentInputs() => "Message: Invalid inputs to Department.";

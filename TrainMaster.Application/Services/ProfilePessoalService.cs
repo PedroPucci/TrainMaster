@@ -37,7 +37,14 @@ namespace TrainMaster.Application.Services
                     var errorMessage = "User already exists with that name";
                     Log.Error(LogMessages.FullNameExists());
                     return Result<PessoalProfileEntity>.Error(errorMessage);
-                }                    
+                }
+
+                if (pessoalProfileEntity.DateOfBirth > DateTime.Today.AddYears(-16))
+                {
+                    var errorMessage = "User must be 16 years or older.";
+                    Log.Error(LogMessages.AgeBelow16());
+                    return Result<PessoalProfileEntity>.Error(errorMessage);
+                }
 
                 pessoalProfileEntity.ModificationDate = DateTime.UtcNow;
                 var result = await _repositoryUoW.PessoalProfileRepository.Add(pessoalProfileEntity);
