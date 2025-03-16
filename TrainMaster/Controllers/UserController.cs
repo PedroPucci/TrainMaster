@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrainMaster.Application.UnitOfWork;
+using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
@@ -27,14 +28,14 @@ namespace TrainMaster.Controllers
             return result.Success ? Ok(result) : BadRequest(result);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> Update([FromBody] UserEntity userEntity)
+        public async Task<IActionResult> Update(int id, [FromBody] UserCreateUpdateDto userCreateUpdateDto)
         {
-            var result = await _serviceUoW.UserService.Update(userEntity);
-            return result.Success ? Ok(result) : BadRequest(userEntity);
+            var result = await _serviceUoW.UserService.Update(userCreateUpdateDto);
+            return result.Success ? Ok(result) : BadRequest(userCreateUpdateDto);
         }
 
         [HttpDelete("{id}")]
@@ -48,7 +49,7 @@ namespace TrainMaster.Controllers
         }
 
         //[HttpGet("All")]
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserEntity>))]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDto>))]
         //[ProducesResponseType(StatusCodes.Status400BadRequest)]
         //public async Task<IActionResult> Get()
         //{
@@ -67,7 +68,6 @@ namespace TrainMaster.Controllers
             var result = await _serviceUoW.UserService.GetPaginated(pageNumber, pageSize);
             return Ok(result);
         }
-
 
         [HttpGet("AllActives")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserEntity>))]

@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Connections;
 using TrainMaster.Infrastracture.Repository.Interfaces;
@@ -36,11 +32,28 @@ namespace TrainMaster.Infrastracture.Repository.Request
             return response.Entity;
         }
 
-        //public async Task<List<UserEntity>> Get()
+        public async Task<List<UserDto>> Get()
+        {
+            return await _context.UserEntity
+                .AsNoTracking()
+                .OrderBy(user => user.Id)
+                .Select(user => new UserDto
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Cpf = user.Cpf,
+                    IsActive = user.IsActive
+                })
+                .ToListAsync();
+        }
+
+        //public async Task<List<UserEntity>> GetPaginated(int pageNumber, int pageSize)
         //{
         //    return await _context.UserEntity
         //        .AsNoTracking()
         //        .OrderBy(user => user.Email)
+        //        .Skip((pageNumber - 1) * pageSize) // 🔹 Pula os registros das páginas anteriores
+        //        .Take(pageSize) // 🔹 Retorna apenas a quantidade especificada
         //        .Select(user => new UserEntity
         //        {
         //            Id = user.Id,
@@ -49,18 +62,18 @@ namespace TrainMaster.Infrastracture.Repository.Request
         //        })
         //        .ToListAsync();
         //}
-
-        public async Task<List<UserEntity>> GetPaginated(int pageNumber, int pageSize)
+        public async Task<List<UserDto>> GetPaginated(int pageNumber, int pageSize)
         {
             return await _context.UserEntity
                 .AsNoTracking()
-                .OrderBy(user => user.Email)
+                .OrderBy(user => user.Id)
                 .Skip((pageNumber - 1) * pageSize) // 🔹 Pula os registros das páginas anteriores
                 .Take(pageSize) // 🔹 Retorna apenas a quantidade especificada
-                .Select(user => new UserEntity
+                .Select(user => new UserDto
                 {
-                    Id = user.Id,
+                    Id = user.Id,  // ✅ Agora o ID será retornado
                     Email = user.Email,
+                    Cpf = user.Cpf, // ✅ Adicionando CPF para completar os dados
                     IsActive = user.IsActive
                 })
                 .ToListAsync();
@@ -97,7 +110,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
             if (user == null)
                 throw new KeyNotFoundException("User not found.");
 
-            user.IsActive = isActive;
+            user.IsActive = false;
             _context.UserEntity.Attach(user).Property(u => u.IsActive).IsModified = true;
             _context.SaveChanges();
 

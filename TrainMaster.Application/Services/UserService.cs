@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
+using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 using TrainMaster.Infrastracture.Security.Cryptography;
@@ -43,6 +44,7 @@ namespace TrainMaster.Application.Services
                 userEntity.Email = userEntity.Email?.Trim().ToLower();
                 userEntity.Password = crypto.HashPassword(userEntity.Password);
                 userEntity.Cpf = userEntity.Cpf;
+                userEntity.IsActive = true;
                 var result = await _repositoryUoW.UserRepository.Add(userEntity);
 
                 await _repositoryUoW.SaveAsync();
@@ -91,34 +93,34 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        //public async Task<List<UserEntity>> Get()
-        //{
-        //    using var transaction = _repositoryUoW.BeginTransaction();
-        //    try
-        //    {
-        //        List<UserEntity> userEntities = await _repositoryUoW.UserRepository.Get();
-        //        _repositoryUoW.Commit();
-        //        return userEntities;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Error(LogMessages.GetAllUserError(ex));
-        //        transaction.Rollback();
-        //        throw new InvalidOperationException("Error to loading the list User");
-        //    }
-        //    finally
-        //    {
-        //        Log.Error(LogMessages.GetAllUserSuccess());
-        //        transaction.Dispose();
-        //    }
-        //}
-
-        public async Task<List<UserEntity>> GetPaginated(int pageNumber, int pageSize)
+        public async Task<List<UserDto>> Get()
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                List<UserEntity> userEntities = await _repositoryUoW.UserRepository.GetPaginated(pageNumber, pageSize);
+                List<UserDto> userEntities = await _repositoryUoW.UserRepository.Get();
+                _repositoryUoW.Commit();
+                return userEntities;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(LogMessages.GetAllUserError(ex));
+                transaction.Rollback();
+                throw new InvalidOperationException("Error to loading the list User");
+            }
+            finally
+            {
+                Log.Error(LogMessages.GetAllUserSuccess());
+                transaction.Dispose();
+            }
+        }
+
+        public async Task<List<UserDto>> GetPaginated(int pageNumber, int pageSize)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                List<UserDto> userEntities = await _repositoryUoW.UserRepository.GetPaginated(pageNumber, pageSize);
                 _repositoryUoW.Commit();
                 return userEntities;
             }
@@ -158,18 +160,18 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<UserEntity>> Update(UserEntity userEntity)
+        public async Task<Result<UserEntity>> Update(UserCreateUpdateDto userCreateUpdateDto)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var userById = await _repositoryUoW.UserRepository.GetById(userEntity.Id);
+                var userById = await _repositoryUoW.UserRepository.GetById(userCreateUpdateDto.Id);
                 if (userById is null)
                     throw new InvalidOperationException("Error updating User");
                 
-                userById.Email = userEntity.Email;
+                userById.Cpf = userCreateUpdateDto.Cpf;
+                userById.Email = userCreateUpdateDto.Email;
                 userById.ModificationDate = DateTime.UtcNow;
-                userById.IsActive = userEntity.IsActive;
 
                 _repositoryUoW.UserRepository.Update(userById);
 
