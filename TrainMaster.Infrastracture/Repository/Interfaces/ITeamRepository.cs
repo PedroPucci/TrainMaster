@@ -9,5 +9,6 @@ namespace TrainMaster.Infrastracture.Repository.Interfaces
         TeamEntity Delete(TeamEntity teamEntity);
         Task<List<TeamEntity>> Get();
         Task<TeamEntity?> GetById(int? id);
+        Task<TeamEntity?> GetByName(string? name);
     }
 }

@@ -95,6 +95,7 @@
         public static string GetAllTeamSuccess() => "Message: GetAll with success Team.";
         public static string UpdatingErrorTeam(Exception ex) => $"Message: Error updating Team: {ex.Message}";
         public static string UpdatingSuccessTeam() => "Message: Successfully updated Team.";
+        public static string DuplicateName() => "Message: This name not possible, check other name to team.";
 
         //PasswordHistory
         public static string InvalidHistoryPasswordInputs() => "Message: Invalid inputs to Password History.";

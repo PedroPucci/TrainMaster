@@ -30,6 +30,15 @@ namespace TrainMaster.Application.Services
                     return Result<TeamEntity>.Error(isValidTeam.Message);
                 }
 
+                TeamEntity? IsDuplicateName = await _repositoryUoW.TeamRepository.GetByName(teamEntity.Name);
+
+                if (IsDuplicateName is not null)
+                {
+                    string errorMessage = $"Já existe um time com o nome \"{teamEntity.Name}\".";
+                    Log.Error(LogMessages.DuplicateName());
+                    return Result<TeamEntity>.Error(errorMessage);
+                }
+
                 teamEntity.ModificationDate = DateTime.UtcNow;
                 teamEntity.IsActive = true;
                 var result = await _repositoryUoW.TeamRepository.Add(teamEntity);

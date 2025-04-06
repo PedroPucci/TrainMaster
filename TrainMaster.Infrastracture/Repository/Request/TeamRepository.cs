@@ -46,6 +46,11 @@ namespace TrainMaster.Infrastracture.Repository.Request
             return await _context.TeamEntity.FirstOrDefaultAsync(teamEntity => teamEntity.Id == id);
         }
 
+        public async Task<TeamEntity?> GetByName(string? name)
+        {
+            return await _context.TeamEntity.FirstOrDefaultAsync(teamEntity => teamEntity.Name == name);
+        }
+
         public TeamEntity Update(TeamEntity teamEntity)
         {
             var response = _context.TeamEntity.Update(teamEntity);
