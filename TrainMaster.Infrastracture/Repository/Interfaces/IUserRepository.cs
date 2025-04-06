@@ -13,6 +13,7 @@ namespace TrainMaster.Infrastracture.Repository.Interfaces
         Task<List<UserEntity>> GetAllActives();
         Task<UserEntity?> GetById(int? id);
         Task<UserEntity?> GetByCpf(string? cpf);
+        Task<UserEntity?> GetByEmail(string? email);
         UserEntity UpdateByActive(int userId, bool isActive);
     }
 }

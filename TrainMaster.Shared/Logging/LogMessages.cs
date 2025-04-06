@@ -14,6 +14,9 @@
         public static string DeleteUserSuccess() => "Message: Delete with success User.";
         public static string GetAllUserError(Exception ex) => $"Message: Error to loading the list User: {ex.Message}";
         public static string GetAllUserSuccess() => "Message: GetAll with success User.";
+        public static string UserNotFound() => "Message: User not found.";
+        public static string PasswordInvalid() => "Message: Incorrect current password.";
+        public static string UpdatingSuccessPassword() => "Message: Password updated successfully.";
 
         //Pessoal Profile
         public static string InvalidPessoalProfileInputs() => "Message: Invalid inputs to Pessoal Profile.";

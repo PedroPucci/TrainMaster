@@ -92,6 +92,11 @@ namespace TrainMaster.Infrastracture.Repository.Request
             return await _context.UserEntity.FirstOrDefaultAsync(userEntity => userEntity.Id == id);
         }
 
+        public async Task<UserEntity?> GetByEmail(string? email)
+        {
+            return await _context.UserEntity.FirstOrDefaultAsync(userEntity => userEntity.Email == email);
+        }
+
         public async Task<UserEntity?> GetByCpf(string? cpf)
         {
             return await _context.UserEntity.FirstOrDefaultAsync(userEntity => userEntity.Cpf == cpf);

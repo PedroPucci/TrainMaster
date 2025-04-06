@@ -192,6 +192,58 @@ namespace TrainMaster.Application.Services
             }
         }
 
+        public async Task<Result<UserEntity>> ChangePassword(string email, string currentPassword, string newPassword)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var crypto = new BCryptoAlgorithm();
+                var normalizedEmail = email?.Trim().ToLower();
+
+                var user = await _repositoryUoW.UserRepository.GetByEmail(normalizedEmail);
+
+                if (user is null)
+                {
+                    Log.Error(LogMessages.UserNotFound());
+                    return Result<UserEntity>.Error("User not found.");
+                }
+
+                var isPasswordValid = crypto.VerifyPassword(currentPassword, user.Password);
+                if (!isPasswordValid)
+                {
+                    Log.Error(LogMessages.PasswordInvalid());
+                    return Result<UserEntity>.Error("Incorrect current password.");
+                }
+
+                //if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 6)
+                //{
+                //    Log.Error(LogMessages.PasswordInvalid());
+                //    return Result<UserEntity>.Error("New password must be at least 6 characters long.");
+                //}
+
+                user.Password = crypto.HashPassword(newPassword);
+                user.ModificationDate = DateTime.UtcNow;
+
+                _repositoryUoW.UserRepository.Update(user);
+                await _repositoryUoW.SaveAsync();
+                await transaction.CommitAsync();
+
+                Log.Information(LogMessages.UpdatingSuccessPassword());
+                return Result<UserEntity>.Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error updating password: {ex.Message}");
+                await transaction.RollbackAsync();
+                throw new InvalidOperationException("Error updating the user's password.");
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
+
         private async Task<Result<UserEntity>> IsValidUserRequest(UserEntity userEntity)
         {
             var requestValidator = await new UserRequestValidator().ValidateAsync(userEntity);
