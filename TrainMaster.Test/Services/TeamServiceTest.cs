@@ -46,7 +46,6 @@ namespace TrainMaster.Test.Services
             mockRepositoryUoW.Setup(x => x.BeginTransaction()).Returns(Mock.Of<IDbContextTransaction>());
             mockRepositoryUoW.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
 
-            // Cria a instância do serviço com um método IsValidTeamRequest público ou mockável
             var service = new Mock<TeamService>(mockRepositoryUoW.Object) { CallBase = true };            
 
             // Act
