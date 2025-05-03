@@ -137,7 +137,6 @@ namespace TrainMaster.Application.Services
             }
         }
 
-
         public async Task<List<UserEntity>> GetAllActives()
         {
             using var transaction = _repositoryUoW.BeginTransaction();
@@ -242,8 +241,6 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
-
-
         private async Task<Result<UserEntity>> IsValidUserRequest(UserEntity userEntity)
         {
             var requestValidator = await new UserRequestValidator().ValidateAsync(userEntity);
@@ -256,11 +253,9 @@ namespace TrainMaster.Application.Services
 
             return Result<UserEntity>.Ok();
         }
-
         private async Task<bool> UniqueCpf(string cpf)
         {
             return await _repositoryUoW.UserRepository.GetByCpf(cpf) is not null;
         }
-
     }
 }

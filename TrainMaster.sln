@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster.Infrastracture"
 		{1E62C0F8-40FA-4996-A6BA-24AB29EC90B6} = {1E62C0F8-40FA-4996-A6BA-24AB29EC90B6}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainMaster.Test", "TrainMaster.Test\TrainMaster.Test.csproj", "{F4C784C3-7ACF-481E-B18A-C0BA4AAC4577}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{1055A6C2-F8C1-414D-B971-DBB1E5377219}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1055A6C2-F8C1-414D-B971-DBB1E5377219}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1055A6C2-F8C1-414D-B971-DBB1E5377219}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4C784C3-7ACF-481E-B18A-C0BA4AAC4577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4C784C3-7ACF-481E-B18A-C0BA4AAC4577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4C784C3-7ACF-481E-B18A-C0BA4AAC4577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4C784C3-7ACF-481E-B18A-C0BA4AAC4577}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
