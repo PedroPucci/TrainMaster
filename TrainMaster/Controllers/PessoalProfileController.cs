@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrainMaster.Application.UnitOfWork;
+using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
@@ -31,9 +32,9 @@ namespace TrainMaster.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> Update([FromBody] PessoalProfileEntity pessoalProfileEntity)
+        public async Task<IActionResult> Update(int id, [FromBody] PessoalProfileEntity pessoalProfileEntity)
         {
-            var result = await _serviceUoW.ProfilePessoalService.Update(pessoalProfileEntity);
+            var result = await _serviceUoW.ProfilePessoalService.Update(id, pessoalProfileEntity);
             return result.Success ? Ok(result) : BadRequest(pessoalProfileEntity);
         }
 

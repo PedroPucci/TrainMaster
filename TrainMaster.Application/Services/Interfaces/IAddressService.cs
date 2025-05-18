@@ -9,6 +9,6 @@ namespace TrainMaster.Application.Services.Interfaces
         Task<Result<AddressEntity>> Add(AddressEntity addressEntity);
         Task Delete(int userId);
         Task<List<AddressEntity>> Get();
-        Task<Result<AddressEntity>> Update(AddressEntity addressEntity);
+        Task<Result<AddressEntity>> Update(int id, AddressEntity addressEntity);
     }
 }

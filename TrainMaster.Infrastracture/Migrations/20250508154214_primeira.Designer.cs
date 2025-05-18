@@ -12,8 +12,8 @@ using TrainMaster.Infrastracture.Connections;
 namespace TrainMaster.Infrastracture.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250316234709_Primeira")]
-    partial class Primeira
+    [Migration("20250508154214_primeira")]
+    partial class primeira
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -31,9 +31,9 @@ namespace TrainMaster.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> Update([FromBody] ProfessionalProfileEntity professionalProfileEntity)
+        public async Task<IActionResult> Update(int id, [FromBody] ProfessionalProfileEntity professionalProfileEntity)
         {
-            var result = await _serviceUoW.ProfileProfessionalService.Update(professionalProfileEntity);
+            var result = await _serviceUoW.ProfileProfessionalService.Update(id, professionalProfileEntity);
             return result.Success ? Ok(result) : BadRequest(professionalProfileEntity);
         }
 

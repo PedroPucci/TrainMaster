@@ -106,18 +106,19 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<AddressEntity>> Update(AddressEntity addressEntity)
+        public async Task<Result<AddressEntity>> Update(int id, AddressEntity addressEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var addressById = await _repositoryUoW.AddressRepository.GetById(addressEntity.Id);
+                var addressById = await _repositoryUoW.AddressRepository.GetById(id);
                 if (addressById is null)
                     throw new InvalidOperationException("Error updating Address");
 
                 addressById.Street = addressEntity.Street;
                 addressById.City = addressEntity.City;
                 addressById.Uf = addressEntity.Uf;
+                addressById.Neighborhood = addressEntity.Neighborhood;
                 addressById.ModificationDate = DateTime.UtcNow;
 
                 _repositoryUoW.AddressRepository.Update(addressById);

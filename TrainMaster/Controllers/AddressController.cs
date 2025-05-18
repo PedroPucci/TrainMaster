@@ -31,9 +31,9 @@ namespace TrainMaster.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> Update([FromBody] AddressEntity addressEntity)
+        public async Task<IActionResult> Update(int id, [FromBody] AddressEntity addressEntity)
         {
-            var result = await _serviceUoW.AddressService.Update(addressEntity);
+            var result = await _serviceUoW.AddressService.Update(id, addressEntity);
             return result.Success ? Ok(result) : BadRequest(addressEntity);
         }
 

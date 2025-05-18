@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Entity;
@@ -98,12 +99,12 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<ProfessionalProfileEntity>> Update(ProfessionalProfileEntity professionalProfileEntity)
+        public async Task<Result<ProfessionalProfileEntity>> Update(int id, [FromBody] ProfessionalProfileEntity professionalProfileEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var professionalProfileById = await _repositoryUoW.ProfessionalProfileRepository.GetById(professionalProfileEntity.Id);
+                var professionalProfileById = await _repositoryUoW.ProfessionalProfileRepository.GetById(id);
                 if (professionalProfileById is null)
                     throw new InvalidOperationException("Error updating Professional Profile.");
 

@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
+using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 using TrainMaster.Shared.Logging;
@@ -114,12 +115,12 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<PessoalProfileEntity>> Update(PessoalProfileEntity pessoalProfileEntity)
+        public async Task<Result<PessoalProfileEntity>> Update(int id, PessoalProfileEntity pessoalProfileEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var pessoalProfileById = await _repositoryUoW.PessoalProfileRepository.GetById(pessoalProfileEntity.Id);
+                var pessoalProfileById = await _repositoryUoW.PessoalProfileRepository.GetById(id);
                 if (pessoalProfileById is null)
                     throw new InvalidOperationException("Error updating Pessoal Profile");
 
