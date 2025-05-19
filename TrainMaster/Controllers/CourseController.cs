@@ -54,15 +54,6 @@ namespace TrainMaster.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpGet("Edit/{id}")]
-        //public async Task<IActionResult> Edit(CourseEntity course)
-        //{
-        //    var result = await _serviceUoW.CourseService.Update(course);
-        //    if (result?.Data == null)
-        //        return NotFound();
-
-        //    return View(result.Data);
-        //}
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
@@ -70,7 +61,7 @@ namespace TrainMaster.Controllers
             if (result?.Data == null)
                 return NotFound();
 
-            //return View(result.Data);
+            ModelState.Clear();
             return View("~/Views/Course/Edit.cshtml", result.Data);
         }
 
@@ -92,22 +83,6 @@ namespace TrainMaster.Controllers
 
             return RedirectToAction("Index");
         }
-
-        //[HttpPost("Edit/{id}")]
-        //public async Task<IActionResult> Edit(int id, CourseEntity course)
-        //{
-        //    if (id != course.Id || !ModelState.IsValid)
-        //        return View(course);
-
-        //    var result = await _serviceUoW.CourseService.Update(course);
-        //    if (!result.Success)
-        //    {
-        //        ViewBag.ErrorMessage = result.Message;
-        //        return View(course);
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
 
         //[HttpPost("Delete/{id}")]
         //public async Task<IActionResult> Delete(int id)

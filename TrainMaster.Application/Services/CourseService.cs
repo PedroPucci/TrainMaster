@@ -129,7 +129,7 @@ namespace TrainMaster.Application.Services
                     return Result<CourseEntity>.Error("Curso não encontrado");
 
                 _repositoryUoW.Commit();
-                //return Result<CourseEntity>.Ok();
+                
                 return Result<CourseEntity>.Okedit(course);
             }
             catch (Exception ex)
@@ -142,7 +142,6 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
-
 
         public async Task<Result<CourseEntity>> Update(CourseEntity courseEntity)
         {
