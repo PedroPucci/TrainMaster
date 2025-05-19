@@ -21,51 +21,93 @@ namespace TrainMaster.Application.Services
             _crypto = crypto;
         }
 
+        //public async Task<Result<LoginEntity>> Login(string cpf, string password)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrWhiteSpace(cpf) || string.IsNullOrWhiteSpace(password))
+        //            return Result<LoginEntity>.Error("CPF and Password are required.");
+
+        //        var user = await _userRepository.GetByCpf(cpf);
+
+        //        //verificar aqui
+        //        if (user == null || !_crypto.VerifyPassword(password, user.Password))
+        //        {
+        //            Log.Error("CPF or Password is incorrect.");
+        //            return Result<LoginEntity>.Error("CPF and Password are required.");
+        //        }
+
+        //        var token = _tokenService.GenerateToken(user.Id.ToString(), user.Email);
+        //        Log.Information($"User {user.Email} logged in successfully."); 
+
+        //        return Result<LoginEntity>.Ok(token);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Error(LogMessages.AddingUserError(ex));
+        //        return Result<LoginEntity>.Error("CPF or Password is incorrect.");
+        //    }
+        //}
+
         public async Task<Result<LoginEntity>> Login(string cpf, string password)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(cpf) || string.IsNullOrWhiteSpace(password))
-                    return Result<LoginEntity>.Error("CPF and Password are required.");
+                    return Result<LoginEntity>.Error("CPF e senha são obrigatórios.");
 
                 var user = await _userRepository.GetByCpf(cpf);
 
                 if (user == null || !_crypto.VerifyPassword(password, user.Password))
                 {
-                    Log.Error("CPF or Password is incorrect.");
-                    return Result<LoginEntity>.Error("CPF and Password are required.");
-                }                    
+                    Log.Error("CPF ou senha incorretos.");
+                    return Result<LoginEntity>.Error("CPF ou senha incorretos.");
+                }
+
+                if (user.Id <= 0 || string.IsNullOrWhiteSpace(user.Email))
+                {
+                    Log.Error("Dados do usuário inválidos para geração de token.");
+                    return Result<LoginEntity>.Error("Erro ao autenticar usuário.");
+                }
 
                 var token = _tokenService.GenerateToken(user.Id.ToString(), user.Email);
-                Log.Information($"User {user.Email} logged in successfully."); 
 
-                return Result<LoginEntity>.Ok(token);
+                Log.Information($"Usuário {user.Email} autenticado com sucesso.");
+
+                //return Result<LoginEntity>.Ok(user.Cpf.ToString());
+                var loginEntity = new LoginEntity
+                {                    
+                    Cpf = user.Cpf
+                };
+
+                return Result<LoginEntity>.OkLogin(loginEntity);
             }
             catch (Exception ex)
             {
-                Log.Error(LogMessages.AddingUserError(ex));
-                return Result<LoginEntity>.Error("CPF or Password is incorrect.");
+                Log.Error(ex, "Erro inesperado durante login.");
+                return Result<LoginEntity>.Error("Ocorreu um erro ao processar o login.");
             }
         }
 
-        public async Task<Result<string>> Logout(string token)
-        {
-            //// Obter a data de expiração do token
-            //var handler = new JwtSecurityTokenHandler();
-            //var jwtToken = handler.ReadJwtToken(token);
-            //var expiration = jwtToken.ValidTo;
 
-            //// Salvar o token na lista de tokens revogados
-            //var revokedToken = new RevokedToken
-            //{
-            //    Token = token,
-            //    Expiration = expiration
-            //};
+        //public async Task<Result<string>> Logout(string token)
+        //{
+        //    //// Obter a data de expiração do token
+        //    //var handler = new JwtSecurityTokenHandler();
+        //    //var jwtToken = handler.ReadJwtToken(token);
+        //    //var expiration = jwtToken.ValidTo;
 
-            //await _repositoryUoW.RevokedTokenRepository.Add(revokedToken);
-            //await _repositoryUoW.SaveAsync();
+        //    //// Salvar o token na lista de tokens revogados
+        //    //var revokedToken = new RevokedToken
+        //    //{
+        //    //    Token = token,
+        //    //    Expiration = expiration
+        //    //};
 
-            return Result<string>.Ok("User logged out successfully.");
-        }
+        //    //await _repositoryUoW.RevokedTokenRepository.Add(revokedToken);
+        //    //await _repositoryUoW.SaveAsync();
+
+        //    return Result<string>.Ok("User logged out successfully.");
+        //}
     }
 }

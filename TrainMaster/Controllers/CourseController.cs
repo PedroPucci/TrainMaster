@@ -4,8 +4,7 @@ using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
 {
-    [ApiController]
-    [Route("api/v1/course")]
+    [Route("Cursos")]
     public class CourseController : Controller
     {
         private readonly IUnitOfWorkService _serviceUoW;
@@ -15,45 +14,89 @@ namespace TrainMaster.Controllers
             _serviceUoW = unitOfWorkService;
         }
 
-        [HttpPost()]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add([FromBody] CourseEntity courseEntity)
+        //[HttpGet("Index")]
+        //public async Task<IActionResult> Index()
+        //{
+        //    var cursos = await _serviceUoW.CourseService.Get();
+
+        //    if (cursos == null || !cursos.Any())
+        //    {
+        //        ViewBag.ErrorMessage = "Nenhum curso encontrado.";
+        //        return View("Index", new List<CourseEntity>());
+        //    }
+
+        //    return View("Index", cursos);
+        //}
+        [HttpGet("Index")]
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        {
+            var cursos = await _serviceUoW.CourseService.Get(); // traga todos
+            var totalCursos = cursos.Count();
+            var cursosPaginados = cursos
+                .OrderBy(c => c.Name)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCursos / pageSize);
+
+            return View("Index", cursosPaginados);
+        }
+
+        [HttpGet("Create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(CourseEntity course)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return View(course);
+            //course.UserId = 1; // <-- Linha necessária
+            var result = await _serviceUoW.CourseService.Add(course);
+            if (!result.Success)
+            {
+                ViewBag.ErrorMessage = result.Message;
+                return View(course);
+            }
 
-            var result = await _serviceUoW.CourseService.Add(courseEntity);
-            return result.Success ? Ok(result) : BadRequest(result);
+            return RedirectToAction("Index");
         }
 
-        [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        public async Task<IActionResult> Update([FromBody] CourseEntity courseEntity)
-        {
-            var result = await _serviceUoW.CourseService.Update(courseEntity);
-            return result.Success ? Ok(result) : BadRequest(courseEntity);
-        }
+        //[HttpGet("Edit/{id}")]
+        //public async Task<IActionResult> Edit(CourseEntity course)
+        //{
+        //    var result = await _serviceUoW.CourseService.Update(course);
+        //    if (result?.Data == null)
+        //        return NotFound();
 
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _serviceUoW.CourseService.Delete(id);
-            return Ok();
-        }
+        //    return View(result.Data);
+        //}
 
-        [HttpGet("All")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CourseEntity>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get()
-        {
-            var result = await _serviceUoW.CourseService.Get();
-            return Ok(result);
-        }
+        //[HttpPost("Edit/{id}")]
+        //public async Task<IActionResult> Edit(int id, CourseEntity course)
+        //{
+        //    if (id != course.Id || !ModelState.IsValid)
+        //        return View(course);
+
+        //    var result = await _serviceUoW.CourseService.Update(course);
+        //    if (!result.Success)
+        //    {
+        //        ViewBag.ErrorMessage = result.Message;
+        //        return View(course);
+        //    }
+
+        //    return RedirectToAction("Index");
+        //}
+
+        //[HttpPost("Delete/{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    await _serviceUoW.CourseService.Delete(id);
+        //    return RedirectToAction("Index");
+        //}
     }
 }

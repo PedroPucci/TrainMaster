@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using NuGet.Protocol.Core.Types;
+using Serilog;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Entity;
@@ -37,6 +38,7 @@ namespace TrainMaster.Application.Services
                     return Result<CourseEntity>.Error(errorMessage);
                 }
 
+                courseEntity.UserId = courseEntity.Id;
                 courseEntity.ModificationDate = DateTime.UtcNow;
                 courseEntity.IsActive = true;
                 var result = await _repositoryUoW.CourseRepository.Add(courseEntity);

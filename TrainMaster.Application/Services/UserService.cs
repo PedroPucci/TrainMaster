@@ -159,7 +159,7 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<UserEntity>> Update(UserCreateUpdateDto userCreateUpdateDto)
+        public async Task<Result<UserEntity>> Update(UserUpdateDto userCreateUpdateDto)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try

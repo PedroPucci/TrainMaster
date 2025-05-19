@@ -31,13 +31,17 @@ namespace TrainMaster.Infrastracture.Repository.Request
         public async Task<List<CourseEntity>> Get()
         {
             return await _context.CourseEntity
-             .OrderBy(course => course.Id)
-             .Select(course => new CourseEntity
-             {
-                 Id = course.Id,
-                 Name = course.Name,
-                 Description = course.Description,
-             }).ToListAsync();
+                .OrderBy(course => course.Name)
+                .Select(course => new CourseEntity
+                {
+                    Id = course.Id,
+                    Name = course.Name,
+                    Description = course.Description,
+                    StartDate = course.StartDate,
+                    EndDate = course.EndDate,
+                    IsActive = course.IsActive,
+                })
+                .ToListAsync();
         }
 
         public async Task<CourseEntity?> GetById(int? id)

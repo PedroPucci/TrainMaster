@@ -8,6 +8,7 @@ namespace TrainMaster.Application.Services.Interfaces
         Task<Result<CourseEntity>> Add(CourseEntity courseEntity);
         Task Delete(int userId);
         Task<List<CourseEntity>> Get();
+        //Task<Result<List<CourseEntity>>> Get();
         Task<Result<CourseEntity>> Update(CourseEntity courseEntity);
     }
 }

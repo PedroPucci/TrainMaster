@@ -1,0 +1,106 @@
+﻿@model TrainMaster.Domain.Entity.CourseEntity
+@{
+    ViewData["Title"] = "Editar Curso";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>Editar Curso - TrainMaster</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+        }
+
+        .form-container {
+            margin-left: 240px;
+            padding: 40px;
+            background-color: white;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #20b2aa;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .checkbox {
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #20b2aa;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #199b94;
+            }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Editar Curso</h2>
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="error-message">@ViewBag.ErrorMessage</div>
+        }
+
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <label>Nome</label>
+            <input asp-for="Name" />
+
+            <label>Descrição</label>
+            <textarea asp-for="Description"></textarea>
+
+            <label>Data de Início</label>
+            <input asp-for="StartDate" type="date" />
+
+            <label>Data de Fim</label>
+            <input asp-for="EndDate" type="date" />
+
+            <div class="checkbox">
+                <input asp-for="IsActive" type="checkbox" />
+                <label asp-for="IsActive">Curso Ativo</label>
+            </div>
+
+            <button type="submit">Salvar Alterações</button>
+        </form>
+    </div>
+</body>
+</html>

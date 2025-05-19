@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Application.ExtensionError
 {
@@ -31,6 +32,11 @@ namespace TrainMaster.Application.ExtensionError
         public static Result<T> Error(string responseMessage)
         {
             return new Result<T>(success: false, responseMessage, data: default);
+        }
+
+        public static Result<T> OkLogin(T responseData)
+        {
+            return new Result<T>(success: true, message: "Login realizado com sucesso", data: responseData);
         }
     }
 }

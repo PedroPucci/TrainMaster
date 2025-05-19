@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - TrainMaster</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: #20b2aa;
+            color: white;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            padding: 30px 20px;
+        }
+
+            .sidebar h2 {
+                margin-bottom: 30px;
+                font-size: 1.4rem;
+                text-align: center;
+            }
+
+            .sidebar a {
+                display: block;
+                color: white;
+                text-decoration: none;
+                padding: 12px 0;
+                font-weight: 500;
+                transition: background 0.3s;
+            }
+
+                .sidebar a:hover {
+                    background-color: #199b94;
+                    border-radius: 5px;
+                    padding-left: 10px;
+                }
+
+        .content {
+            margin-left: 260px;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .header h1 {
+                color: #20b2aa;
+                margin: 0;
+            }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+            .user-info span {
+                font-size: 1rem;
+                color: #333;
+            }
+
+        .logout a {
+            background-color: #20b2aa;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+            .logout a:hover {
+                background-color: #199b94;
+            }
+
+        .project-description {
+            margin-top: 40px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            line-height: 1.6;
+        }
+
+            .project-description h2 {
+                color: #20b2aa;
+                margin-bottom: 20px;
+            }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>TrainMaster</h2>
+        <a href="/Home/Index"><i class="fas fa-home"></i> Início</a>
+        <a href="/Cursos/Index"><i class="fas fa-book"></i> Cursos</a>
+        <a href="/Departamentos/Create"><i class="fas fa-building"></i> Departamentos</a>
+        <a href="/Perfil/Pessoal"><i class="fas fa-user"></i> Perfil Pessoal</a>
+        <a href="/Perfil/Profissional"><i class="fas fa-id-badge"></i> Perfil Profissional</a>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h1>Seja bem vindo!</h1>
+            <div class="user-info">                
+                <span class="logout"><a href="/Login/Logout"><i class="fas fa-sign-out-alt"></i> Sair</a></span>
+            </div>
+        </div>
+
+        @RenderBody()
+    </div>
+</body>
+</html>

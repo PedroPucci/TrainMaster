@@ -1,0 +1,47 @@
+﻿@model TrainMaster.Domain.Entity.CourseEntity
+
+@{
+    ViewData["Title"] = "Cadastrar Curso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="project-description">
+    <h2>Cadastro de Curso</h2>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div style="color:red; margin-bottom:10px">@ViewBag.ErrorMessage</div>
+    }
+
+    <form asp-action="Create" asp-controller="Course" method="post">
+        <div>
+            <label>Nome</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div>
+            <label>Descrição</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div>
+            <label>Data de Início</label>
+            <input asp-for="StartDate" type="date" class="form-control" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+        <div>
+            <label>Data de Fim</label>
+            <input asp-for="EndDate" type="date" class="form-control" />
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-success">Salvar</button>
+        <a asp-action="Index" asp-controller="Course" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
