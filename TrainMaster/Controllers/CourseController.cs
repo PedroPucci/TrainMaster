@@ -63,6 +63,35 @@ namespace TrainMaster.Controllers
 
         //    return View(result.Data);
         //}
+        [HttpGet("Edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var result = await _serviceUoW.CourseService.GetById(id);
+            if (result?.Data == null)
+                return NotFound();
+
+            //return View(result.Data);
+            return View("~/Views/Course/Edit.cshtml", result.Data);
+        }
+
+        [HttpPost("Edit/{id}")]
+        public async Task<IActionResult> Edit(int id, CourseEntity course)
+        {
+            if (id != course.Id)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return View(course);
+
+            var result = await _serviceUoW.CourseService.Update(course);
+            if (!result.Success)
+            {
+                ViewBag.ErrorMessage = result.Message;
+                return View(course);
+            }
+
+            return RedirectToAction("Index");
+        }
 
         //[HttpPost("Edit/{id}")]
         //public async Task<IActionResult> Edit(int id, CourseEntity course)

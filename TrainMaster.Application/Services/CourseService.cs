@@ -119,6 +119,31 @@ namespace TrainMaster.Application.Services
             }
         }
 
+        public async Task<Result<CourseEntity>> GetById(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var course = await _repositoryUoW.CourseRepository.GetById(id);
+                if (course == null)
+                    return Result<CourseEntity>.Error("Curso não encontrado");
+
+                _repositoryUoW.Commit();
+                //return Result<CourseEntity>.Ok();
+                return Result<CourseEntity>.Okedit(course);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new InvalidOperationException("Erro ao buscar curso por ID", ex);
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
+
         public async Task<Result<CourseEntity>> Update(CourseEntity courseEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();

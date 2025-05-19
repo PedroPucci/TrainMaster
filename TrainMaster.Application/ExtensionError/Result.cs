@@ -18,6 +18,8 @@ namespace TrainMaster.Application.ExtensionError
             Errors = errors;
         }
 
+        public Result() { }
+
         public bool Success { get; set; }
         public T Data { get; set; }
         public string? AccessToken { get; set; }
@@ -43,6 +45,12 @@ namespace TrainMaster.Application.ExtensionError
         {
             return new Result<T>(success: true, message: string.Empty, data: responseData);
         }
+
+        public static Result<T> Okedit(T data)
+        {
+            return new Result<T> { Success = true, Data = data };
+        }
+
 
     }
 }
