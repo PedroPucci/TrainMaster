@@ -12,5 +12,6 @@ namespace TrainMaster.Application.Services.Interfaces
         Task<List<UserDto>> Get();
         Task<List<UserDto>> GetPaginated(int pageNumber, int pageSize);
         Task<List<UserEntity>> GetAllActives();
+        Task<Result<UserEntity>> UpdatePasswordByEmail(string email, string hashedPassword);
     }
 }

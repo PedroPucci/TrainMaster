@@ -46,15 +46,21 @@ namespace TrainMaster.Controllers
         }
 
         [HttpPost("SendRecovery")]
-        public IActionResult SendRecovery(ForgotPasswordDto dto)
+        public async Task<IActionResult> SendRecovery(ForgotPasswordDto dto)
         {
             if (!ModelState.IsValid)
                 return View("ForgotPassword", dto);
 
-            // TODO: lógica de envio do e-mail de recuperação
+            var result = await _unitOfWork.AuthService.ResetPassword(dto.Email);
 
-            TempData["Message"] = "Se o e-mail estiver correto, você receberá instruções para redefinir sua senha.";
-            return RedirectToAction("Index");
+            if (!result.Success)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View("ForgotPassword", dto);
+            }
+
+            ViewBag.NovaSenha = result.Data;
+            return View("ForgotPassword", dto);
         }
 
         [HttpGet]

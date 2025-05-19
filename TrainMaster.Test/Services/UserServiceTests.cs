@@ -194,7 +194,7 @@ namespace TrainMaster.Test.Services
         public async Task Update_ShouldUpdateUser_WhenUserExists()
         {
             // Arrange
-            var userDto = new UserCreateUpdateDto
+            var userDto = new UserUpdateDto
             {
                 Id = 1,
                 Cpf = "12345678900",
@@ -230,7 +230,7 @@ namespace TrainMaster.Test.Services
         public async Task Update_ShouldThrowInvalidOperationException_WhenUserDoesNotExist()
         {
             // Arrange
-            var userDto = new UserCreateUpdateDto
+            var userDto = new UserUpdateDto
             {
                 Id = 1,
                 Cpf = "12345678900",

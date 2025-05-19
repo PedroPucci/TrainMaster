@@ -38,5 +38,11 @@ namespace TrainMaster.Application.ExtensionError
         {
             return new Result<T>(success: true, message: "Login realizado com sucesso", data: responseData);
         }
+
+        public static Result<T> OkWithData(T responseData)
+        {
+            return new Result<T>(success: true, message: string.Empty, data: responseData);
+        }
+
     }
 }

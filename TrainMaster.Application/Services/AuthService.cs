@@ -1,53 +1,27 @@
 ﻿using Serilog;
 using TrainMaster.Application.ExtensionError;
+using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 using TrainMaster.Infrastracture.Security.Cryptography;
 using TrainMaster.Infrastracture.Security.Token.Access;
-using TrainMaster.Shared.Logging;
 
 namespace TrainMaster.Application.Services
 {
     public class AuthService
     {
+        private readonly IUserService _userService;
         private readonly IUserRepository _userRepository;
         private readonly TokenService _tokenService;
         private readonly BCryptoAlgorithm _crypto;
 
-        public AuthService(IUserRepository userRepository, TokenService tokenService, BCryptoAlgorithm crypto)
+        public AuthService(IUserService userService, IUserRepository userRepository, TokenService tokenService, BCryptoAlgorithm crypto)
         {
+            _userService = userService;
             _userRepository = userRepository;
             _tokenService = tokenService;
             _crypto = crypto;
         }
-
-        //public async Task<Result<LoginEntity>> Login(string cpf, string password)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrWhiteSpace(cpf) || string.IsNullOrWhiteSpace(password))
-        //            return Result<LoginEntity>.Error("CPF and Password are required.");
-
-        //        var user = await _userRepository.GetByCpf(cpf);
-
-        //        //verificar aqui
-        //        if (user == null || !_crypto.VerifyPassword(password, user.Password))
-        //        {
-        //            Log.Error("CPF or Password is incorrect.");
-        //            return Result<LoginEntity>.Error("CPF and Password are required.");
-        //        }
-
-        //        var token = _tokenService.GenerateToken(user.Id.ToString(), user.Email);
-        //        Log.Information($"User {user.Email} logged in successfully."); 
-
-        //        return Result<LoginEntity>.Ok(token);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Error(LogMessages.AddingUserError(ex));
-        //        return Result<LoginEntity>.Error("CPF or Password is incorrect.");
-        //    }
-        //}
 
         public async Task<Result<LoginEntity>> Login(string cpf, string password)
         {
@@ -74,7 +48,6 @@ namespace TrainMaster.Application.Services
 
                 Log.Information($"Usuário {user.Email} autenticado com sucesso.");
 
-                //return Result<LoginEntity>.Ok(user.Cpf.ToString());
                 var loginEntity = new LoginEntity
                 {                    
                     Cpf = user.Cpf
@@ -89,25 +62,44 @@ namespace TrainMaster.Application.Services
             }
         }
 
+        public async Task<Result<string>> ResetPassword(string email)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(email))
+                    return Result<string>.Error("O e-mail não pode estar vazio.");
 
-        //public async Task<Result<string>> Logout(string token)
-        //{
-        //    //// Obter a data de expiração do token
-        //    //var handler = new JwtSecurityTokenHandler();
-        //    //var jwtToken = handler.ReadJwtToken(token);
-        //    //var expiration = jwtToken.ValidTo;
+                var user = await _userRepository.GetByEmail(email);
+                if (user == null)
+                {
+                    Log.Warning($"Tentativa de redefinir senha para e-mail não encontrado: {email}");
+                    return Result<string>.Error("Usuário não encontrado com o e-mail fornecido.");
+                }
 
-        //    //// Salvar o token na lista de tokens revogados
-        //    //var revokedToken = new RevokedToken
-        //    //{
-        //    //    Token = token,
-        //    //    Expiration = expiration
-        //    //};
+                var novaSenha = GerarSenhaAleatoria();
 
-        //    //await _repositoryUoW.RevokedTokenRepository.Add(revokedToken);
-        //    //await _repositoryUoW.SaveAsync();
+                var senhaCriptografada = _crypto.HashPassword(novaSenha);
 
-        //    return Result<string>.Ok("User logged out successfully.");
-        //}
+                user.Password = senhaCriptografada;
+                await _userService.UpdatePasswordByEmail(email, senhaCriptografada);
+
+                Log.Information($"Senha redefinida com sucesso para o e-mail: {email}");
+
+                return Result<string>.OkWithData(novaSenha);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Erro ao redefinir senha para o e-mail: {email}");
+                return Result<string>.Error("Erro ao redefinir a senha.");
+            }
+        }
+
+
+        private string GerarSenhaAleatoria(int tamanho = 10)
+        {
+            const string caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&*";
+            var random = new Random();
+            return new string(Enumerable.Repeat(caracteres, tamanho).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
     }
 }

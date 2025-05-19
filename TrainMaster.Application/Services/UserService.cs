@@ -214,12 +214,6 @@ namespace TrainMaster.Application.Services
                     return Result<UserEntity>.Error("Incorrect current password.");
                 }
 
-                //if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 6)
-                //{
-                //    Log.Error(LogMessages.PasswordInvalid());
-                //    return Result<UserEntity>.Error("New password must be at least 6 characters long.");
-                //}
-
                 user.Password = crypto.HashPassword(newPassword);
                 user.ModificationDate = DateTime.UtcNow;
 
@@ -241,6 +235,44 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
+
+        public async Task<Result<UserEntity>> UpdatePasswordByEmail(string email, string hashedPassword)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var normalizedEmail = email?.Trim().ToLower();
+
+                var user = await _repositoryUoW.UserRepository.GetByEmail(normalizedEmail);
+
+                if (user is null)
+                {
+                    Log.Error(LogMessages.UserNotFound());
+                    return Result<UserEntity>.Error("Usuário não encontrado.");
+                }
+
+                user.Password = hashedPassword;
+                user.ModificationDate = DateTime.UtcNow;
+
+                _repositoryUoW.UserRepository.Update(user);
+                await _repositoryUoW.SaveAsync();
+                await transaction.CommitAsync();
+
+                Log.Information($"Senha atualizada com sucesso para o e-mail: {email}");
+                return Result<UserEntity>.Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Erro ao atualizar a senha para o e-mail: {email} - {ex.Message}");
+                await transaction.RollbackAsync();
+                throw new InvalidOperationException("Erro ao atualizar a senha.");
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
         private async Task<Result<UserEntity>> IsValidUserRequest(UserEntity userEntity)
         {
             var requestValidator = await new UserRequestValidator().ValidateAsync(userEntity);
@@ -253,6 +285,7 @@ namespace TrainMaster.Application.Services
 
             return Result<UserEntity>.Ok();
         }
+
         private async Task<bool> UniqueCpf(string cpf)
         {
             return await _repositoryUoW.UserRepository.GetByCpf(cpf) is not null;

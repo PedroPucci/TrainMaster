@@ -114,7 +114,7 @@ namespace TrainMaster.Application.UnitOfWork
             get
             {
                 if (authService is null)
-                    authService = new AuthService(_repositoryUoW.UserRepository, _tokenService, _crypto);
+                    authService = new AuthService(UserService, _repositoryUoW.UserRepository, _tokenService, _crypto);
                 return authService;
             }
         }
