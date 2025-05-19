@@ -14,19 +14,6 @@ namespace TrainMaster.Controllers
             _serviceUoW = unitOfWorkService;
         }
 
-        //[HttpGet("Index")]
-        //public async Task<IActionResult> Index()
-        //{
-        //    var cursos = await _serviceUoW.CourseService.Get();
-
-        //    if (cursos == null || !cursos.Any())
-        //    {
-        //        ViewBag.ErrorMessage = "Nenhum curso encontrado.";
-        //        return View("Index", new List<CourseEntity>());
-        //    }
-
-        //    return View("Index", cursos);
-        //}
         [HttpGet("Index")]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
