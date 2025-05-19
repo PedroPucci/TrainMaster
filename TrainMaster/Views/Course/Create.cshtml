@@ -1,4 +1,5 @@
-﻿@model TrainMaster.Domain.Entity.CourseEntity
+﻿@* @model TrainMaster.Domain.Entity.CourseEntity *@
+@model TrainMaster.Domain.Dto.CourseDto
 @{
     ViewData["Title"] = "Cadastrar Curso";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,33 +14,34 @@
     }
 
     <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
-        <form asp-action="Create" asp-controller="Course" method="post">
+        <form asp-action="Create" method="post">
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="Name">Nome</label>
-                <input asp-for="Name" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <input name="Name" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="Description">Descrição</label>
-                <textarea asp-for="Description" class="form-control" rows="3" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+                <textarea name="Description" class="form-control" rows="3" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="StartDate">Data de Início</label>
-                <input asp-for="StartDate" type="date" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <input name="StartDate" type="date" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label for="EndDate">Data de Fim</label>
-                <input asp-for="EndDate" type="date" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <input name="EndDate" type="date" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
 
             <div class="form-group text-end">
                 <button type="submit" class="btn" style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Salvar</button>
+                <input type="hidden" name="UserId" value="1" />
                 @* <a asp-action="Index" asp-controller="Course" class="btn" style="background-color: #ccc; color: #333; padding: 10px 20px; border-radius: 20px; margin-left: 10px;">Cancelar</a> *@
             </div>
         </form>

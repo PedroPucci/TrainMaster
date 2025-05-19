@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrainMaster.Application.UnitOfWork;
+using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
@@ -17,7 +18,7 @@ namespace TrainMaster.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            var cursos = await _serviceUoW.CourseService.Get(); // traga todos
+            var cursos = await _serviceUoW.CourseService.Get();
             var totalCursos = cursos.Count();
             var cursosPaginados = cursos
                 .OrderBy(c => c.Name)
@@ -38,11 +39,11 @@ namespace TrainMaster.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(CourseEntity course)
+        public async Task<IActionResult> Create(CourseDto course)
         {
             if (!ModelState.IsValid)
                 return View(course);
-            //course.UserId = 1; // <-- Linha necessária
+
             var result = await _serviceUoW.CourseService.Add(course);
             if (!result.Success)
             {

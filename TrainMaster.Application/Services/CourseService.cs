@@ -2,6 +2,7 @@
 using Serilog;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
+using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 using TrainMaster.Shared.Logging;
@@ -18,7 +19,7 @@ namespace TrainMaster.Application.Services
             _repositoryUoW = repositoryUoW;
         }
 
-        public async Task<Result<CourseEntity>> Add(CourseEntity courseEntity)
+        public async Task<Result<CourseDto>> Add(CourseDto courseEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
@@ -28,25 +29,32 @@ namespace TrainMaster.Application.Services
                 if (!isValidAddress.Success)
                 {
                     Log.Error(LogMessages.InvalidAddressInputs());
-                    return Result<CourseEntity>.Error(isValidAddress.Message);
+                    return Result<CourseDto>.Error(isValidAddress.Message);
                 }
 
                 if (courseEntity.EndDate < courseEntity.StartDate)
                 {
                     var errorMessage = "End date cannot be earlier than start date.";
                     Log.Error(LogMessages.InvalidDateRangeCourse());
-                    return Result<CourseEntity>.Error(errorMessage);
+                    return Result<CourseDto>.Error(errorMessage);
                 }
+                
+                var course = new CourseEntity
+                {
+                    Name = courseEntity.Name,
+                    Description = courseEntity.Description,
+                    StartDate = DateTime.SpecifyKind(courseEntity.StartDate, DateTimeKind.Utc),
+                    EndDate = DateTime.SpecifyKind(courseEntity.EndDate, DateTimeKind.Utc),
+                    IsActive = true,
+                    UserId = courseEntity.UserId
+                };
 
-                courseEntity.UserId = courseEntity.Id;
-                courseEntity.ModificationDate = DateTime.UtcNow;
-                courseEntity.IsActive = true;
-                var result = await _repositoryUoW.CourseRepository.Add(courseEntity);
+                var result = await _repositoryUoW.CourseRepository.Add(course);
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
 
-                return Result<CourseEntity>.Ok();
+                return Result<CourseDto>.Ok();
             }
             catch (Exception ex)
             {
@@ -143,17 +151,17 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        private async Task<Result<CourseEntity>> IsValidCourseRequest(CourseEntity courseEntity)
+        private async Task<Result<CourseDto>> IsValidCourseRequest(CourseDto courseEntity)
         {
             var requestValidator = await new CourseRequestValidator().ValidateAsync(courseEntity);
             if (!requestValidator.IsValid)
             {
                 string errorMessage = string.Join(" ", requestValidator.Errors.Select(e => e.ErrorMessage));
                 errorMessage = errorMessage.Replace(Environment.NewLine, "");
-                return Result<CourseEntity>.Error(errorMessage);
+                return Result<CourseDto>.Error(errorMessage);
             }
 
-            return Result<CourseEntity>.Ok();
+            return Result<CourseDto>.Ok();
         }
 
     }
