@@ -38,6 +38,15 @@
                 </select>
                 <span asp-validation-for="Marital" class="text-danger"></span>
             </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Gênero</label>
+                <select name="Gender" class="form-control" asp-items="ViewBag.GenderStatus" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                    <option value="">Selecione</option>
+                    <option value="1" @(Model.Gender == TrainMaster.Domain.Enums.GenderStatus.Male ? "selected" : "")>Homem</option>
+                    <option value="2" @(Model.Gender == TrainMaster.Domain.Enums.GenderStatus.Woman ? "selected" : "")>Mulher</option>
+                </select>
+                <span asp-validation-for="Marital" class="text-danger"></span>
+            </div>
 
             <div class="form-group text-end">
                 <button type="submit" class="btn" style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Salvar</button>
