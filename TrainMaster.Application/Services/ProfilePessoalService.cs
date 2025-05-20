@@ -125,6 +125,12 @@ namespace TrainMaster.Application.Services
 
                 pessoalProfileById.FullName = pessoalProfileEntity.FullName;
                 pessoalProfileById.ModificationDate = DateTime.UtcNow;
+                //pessoalProfileById.DateOfBirth = pessoalProfileEntity.DateOfBirth;
+                pessoalProfileById.DateOfBirth = pessoalProfileEntity.DateOfBirth.Kind == DateTimeKind.Utc
+                    ? pessoalProfileEntity.DateOfBirth
+                    : pessoalProfileEntity.DateOfBirth.ToUniversalTime();
+                //pessoalProfileById.Gender = pessoalProfileEntity.Gender;
+                pessoalProfileById.Marital = pessoalProfileEntity.Marital;
 
                 _repositoryUoW.PessoalProfileRepository.Update(pessoalProfileById);
 
