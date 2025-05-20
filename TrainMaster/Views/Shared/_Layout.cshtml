@@ -12,6 +12,13 @@
             background-color: #f0f2f5;
         }
 
+        .sidebar div {
+            color: #fff;
+            opacity: 0.9;
+            padding-left: 5px;
+            font-size: 0.95rem;
+        }
+
         .sidebar {
             width: 240px;
             background-color: #20b2aa;
@@ -22,26 +29,56 @@
             padding: 30px 20px;
         }
 
-            .sidebar h2 {
-                margin-bottom: 30px;
-                font-size: 1.4rem;
-                text-align: center;
+        .sidebar h2 {
+            margin-bottom: 30px;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px 0;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #199b94;
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+
+        .menu-header {
+            display: block;
+            color: #e0f7f4;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-top: 25px;
+            margin-bottom: 8px;
+            padding-left: 5px;
+            opacity: 0.8;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 8px 0 8px 5px;
+            transition: background 0.3s;
+            border-radius: 4px;
+        }
+
+            .sidebar a:hover {
+                background-color: #199b94;
+                padding-left: 12px;
             }
 
-            .sidebar a {
-                display: block;
-                color: white;
-                text-decoration: none;
-                padding: 12px 0;
-                font-weight: 500;
-                transition: background 0.3s;
-            }
-
-                .sidebar a:hover {
-                    background-color: #199b94;
-                    border-radius: 5px;
-                    padding-left: 10px;
-                }
+        .sidebar i {
+            margin-right: 8px;
+        }
 
         .content {
             margin-left: 260px;
@@ -54,10 +91,10 @@
             align-items: center;
         }
 
-            .header h1 {
-                color: #20b2aa;
-                margin: 0;
-            }
+        .header h1 {
+            color: #20b2aa;
+            margin: 0;
+        }
 
         .user-info {
             display: flex;
@@ -65,10 +102,10 @@
             gap: 20px;
         }
 
-            .user-info span {
-                font-size: 1rem;
-                color: #333;
-            }
+        .user-info span {
+            font-size: 1rem;
+            color: #333;
+        }
 
         .logout a {
             background-color: #20b2aa;
@@ -93,26 +130,31 @@
             line-height: 1.6;
         }
 
-            .project-description h2 {
-                color: #20b2aa;
-                margin-bottom: 20px;
-            }
+        .project-description h2 {
+            color: #20b2aa;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>TrainMaster</h2>
+    <div class="sidebar" role="navigation">
+        <h2 style="text-align: center;">TrainMaster</h2>
+
         <a href="/Home/Index"><i class="fas fa-home"></i> Início</a>
-        <a href="/Cursos/Index"><i class="fas fa-graduation-cap"></i> Cursos</a>
-        <a href="/CursosAvaliacao/Index"><i class="fas fa-poll"></i> Cursos avaliação</a>
-        <a href="/CursosAtividades/Index"><i class="fas fa-tasks"></i> Cursos atividades</a>
-        <a href="/Departamentos/Create"><i class="fas fa-sitemap"></i> Departamentos</a>
-        <a href="/Times/Create"><i class="fas fa-users"></i> Times</a>        
-        <a href="/users/Edit/1"><i class="fas fa-user-cog"></i> Editar informações</a>
-        @* <a href="/Perfil/Pessoal"><i class="fas fa-user-circle"></i> Perfil Pessoal</a> *@
-        @* <a href="/Perfil/Edit/@ViewBag.UserId"><i class="fas fa-user-circle"></i> Perfil Pessoal</a> *@
-        <a href="/Perfil/Edit/1"><i class="fas fa-user-circle"></i> Perfil Pessoal</a>
-        <a href="/Perfil/Profissional"><i class="fas fa-briefcase"></i> Perfil Profissional</a>
+
+        <span class="menu-header">Cursos</span>
+        <a href="/Cursos/Index"><i class="fas fa-graduation-cap"></i>Cursos</a>
+        <a href="/CursosAvaliacao/Index"><i class="fas fa-poll"></i>Avaliações</a>
+        <a href="/CursosAtividades/Index"><i class="fas fa-tasks"></i>Atividades</a>
+
+        <span class="menu-header">Equipes e Setores</span>
+        <a href="/Departamentos/Create"><i class="fas fa-sitemap"></i>Departamentos</a>
+        <a href="/Times/Create"><i class="fas fa-users"></i>Times</a>
+
+        <span class="menu-header">Usuário</span>
+        <a href="/users/Edit/1"><i class="fas fa-user-cog"></i>Informações de acesso</a>
+        <a href="/Perfil/Edit/1"><i class="fas fa-user-circle"></i>Perfil Pessoal</a>
+        <a href="/Perfil/Profissional"><i class="fas fa-briefcase"></i>Perfil Profissional</a>
     </div>
 
     <div class="content">
