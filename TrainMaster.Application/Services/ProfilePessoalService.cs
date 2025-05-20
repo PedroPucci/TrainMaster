@@ -145,6 +145,30 @@ namespace TrainMaster.Application.Services
             }
         }
 
+        public async Task<Result<PessoalProfileEntity>> GetById(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var course = await _repositoryUoW.PessoalProfileRepository.GetById(id);
+                if (course == null)
+                    return Result<PessoalProfileEntity>.Error("Curso não encontrado");
+
+                _repositoryUoW.Commit();
+
+                return Result<PessoalProfileEntity>.Okedit(course);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new InvalidOperationException("Erro ao buscar curso por ID", ex);
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
         private async Task<Result<PessoalProfileEntity>> IsValidPessoalProfileRequest(PessoalProfileEntity pessoalProfileEntity)
         {
             var requestValidator = await new PessoalProfileRequestValidator().ValidateAsync(pessoalProfileEntity);

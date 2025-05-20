@@ -13,22 +13,22 @@
     }
 
     <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
-        <form asp-action="Edit" method="post">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
             <input type="hidden" asp-for="Id" />
 
             <div class="form-group" style="margin-bottom: 15px;">
                 <label>Nome</label>
-                <input asp-for="Name" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <input name="Name" value="@Model.FullName" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">
                 <label>Data de Nascimento</label>
-                <input asp-for="BirthDate" type="date" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <input name="StartDate" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" type="date" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
 
-            <div class="form-group" style="margin-bottom: 15px;">
+@*             <div class="form-group" style="margin-bottom: 15px;">
                 <label>Estado Civil</label>
                 <select asp-for="MaritalStatus" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                     <option value="">Selecione</option>
@@ -37,6 +37,19 @@
                     <option value="Separado">Separado</option>
                 </select>
                 <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+            </div> *@
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Estado Civil</label>
+                <select asp-for="Marital" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                    <option value="">Selecione</option>
+                    @foreach (var status in Enum.GetValues(typeof(TrainMaster.Domain.Enums.MaritalStatus)))
+                    {
+                        <option value="@status" @(Model.Marital == (TrainMaster.Domain.Enums.MaritalStatus)status ? "selected" : "")>
+                            @status
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="Marital" class="text-danger"></span>
             </div>
 
             <div class="form-group text-end">
