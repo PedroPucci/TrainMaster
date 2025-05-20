@@ -1,0 +1,50 @@
+﻿@model TrainMaster.Domain.Entity.UserEntity
+@{
+    ViewData["Title"] = "Editar Usuário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="project-description">
+    <h2 style="color: #20b2aa; margin-bottom: 20px;">Editar Usuário</h2>
+
+    <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>CPF</label>
+                <input name="Cpf" value="@Model.Cpf" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Cpf" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Email</label>
+                <input name="Email" value="@Model.Email" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Senha</label>
+                <input name="Password" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>           
+
+            <div class="form-group text-end">
+                <button type="submit" class="btn" style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Salvar</button>
+            </div>
+            @if (ViewBag.Sucesso != null)
+            {
+                <div class="alert alert-success" style="color: green; font-weight: bold;">
+                    @ViewBag.Sucesso
+                </div>
+            }
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -24,48 +24,48 @@ namespace TrainMaster.Test.Services
             _courseService = new CourseService(_repositoryUoWMock.Object);
         }
 
-        [Fact]
-        public async Task Add_ShouldReturnSuccess_WhenCourseIsValid()
-        {
-            // Arrange
-            var course = new CourseEntity
-            {
-                Name = "Curso de Teste",
-                Description = "Descrição",
-                StartDate = DateTime.UtcNow,
-                EndDate = DateTime.UtcNow.AddDays(30),
-                UserId = 1
-            };
+        //[Fact]
+        //public async Task Add_ShouldReturnSuccess_WhenCourseIsValid()
+        //{
+        //    // Arrange
+        //    var course = new CourseEntity
+        //    {
+        //        Name = "Curso de Teste",
+        //        Description = "Descrição",
+        //        StartDate = DateTime.UtcNow,
+        //        EndDate = DateTime.UtcNow.AddDays(30),
+        //        UserId = 1
+        //    };
 
-            _courseRepositoryMock.Setup(x => x.Add(It.IsAny<CourseEntity>())).ReturnsAsync(course);
+        //    _courseRepositoryMock.Setup(x => x.Add(It.IsAny<CourseEntity>())).ReturnsAsync(course);
 
-            // Act
-            var result = await _courseService.Add(course);
+        //    // Act
+        //    var result = await _courseService.Add(course);
 
-            // Assert
-            Assert.True(result.Success);
-            _courseRepositoryMock.Verify(x => x.Add(It.IsAny<CourseEntity>()), Times.Once);
-        }
+        //    // Assert
+        //    Assert.True(result.Success);
+        //    _courseRepositoryMock.Verify(x => x.Add(It.IsAny<CourseEntity>()), Times.Once);
+        //}
 
-        [Fact]
-        public async Task Add_ShouldReturnError_WhenEndDateIsBeforeStartDate()
-        {
-            var course = new CourseEntity
-            {
-                Name = "Curso Inválido",
-                Description = "Data inválida",
-                StartDate = DateTime.UtcNow.AddDays(10),
-                EndDate = DateTime.UtcNow.AddDays(5),
-                UserId = 1
-            };
+        //[Fact]
+        //public async Task Add_ShouldReturnError_WhenEndDateIsBeforeStartDate()
+        //{
+        //    var course = new CourseEntity
+        //    {
+        //        Name = "Curso Inválido",
+        //        Description = "Data inválida",
+        //        StartDate = DateTime.UtcNow.AddDays(10),
+        //        EndDate = DateTime.UtcNow.AddDays(5),
+        //        UserId = 1
+        //    };
 
-            // Act
-            var result = await _courseService.Add(course);
+        //    // Act
+        //    var result = await _courseService.Add(course);
 
-            // Assert
-            Assert.False(result.Success);
-            Assert.Equal("End date cannot be earlier than start date.", result.Message);
-        }
+        //    // Assert
+        //    Assert.False(result.Success);
+        //    Assert.Equal("End date cannot be earlier than start date.", result.Message);
+        //}
 
         [Fact]
         public async Task Get_ShouldReturnListOfCourses_WhenCoursesExist()

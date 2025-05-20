@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using BCrypt.Net;
+using Serilog;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Dto;
@@ -266,6 +267,35 @@ namespace TrainMaster.Application.Services
                 Log.Error($"Erro ao atualizar a senha para o e-mail: {email} - {ex.Message}");
                 await transaction.RollbackAsync();
                 throw new InvalidOperationException("Erro ao atualizar a senha.");
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
+        public async Task<Result<UserEntity>> GetById(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var user = await _repositoryUoW.UserRepository.GetById(id);
+                if (user == null)
+                {
+                    Log.Error($"Usuário com ID {id} não encontrado.");
+                    return Result<UserEntity>.Error("Usuário não encontrado.");
+                }
+
+                user.Email = user.Email.Trim().ToLower();
+                user.Cpf = user.Cpf.Trim();
+                _repositoryUoW.Commit();
+                return Result<UserEntity>.Okedit(user);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Erro ao buscar usuário por ID: {ex.Message}");
+                transaction.Rollback();
+                throw new InvalidOperationException("Erro ao buscar usuário por ID.", ex);
             }
             finally
             {

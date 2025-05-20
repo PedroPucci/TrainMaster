@@ -29,7 +29,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Add_ShouldReturnError_WhenCpfAlreadyExists()
         {
-            // Arrange
             var user = new UserEntity
             {
                 Cpf = "12345678900",
@@ -39,19 +38,16 @@ namespace TrainMaster.Test.Services
             };
 
             _userRepositoryMock.Setup(x => x.GetByCpf(It.IsAny<string>()))
-                .ReturnsAsync(new UserEntity()); // simula CPF existente
+                .ReturnsAsync(new UserEntity());
 
-            // Act
             var result = await _userService.Add(user);
 
-            // Assert
             Assert.False(result.Success);            
         }
 
         [Fact]
         public async Task Add_ShouldReturnSuccess_WhenCpfDoesNotExist()
         {
-            // Arrange
             var user = new UserEntity
             {
                 Cpf = "12345678900",
@@ -63,10 +59,8 @@ namespace TrainMaster.Test.Services
             _userRepositoryMock.Setup(x => x.GetByCpf(It.IsAny<string>())).ReturnsAsync((UserEntity?)null);
             _userRepositoryMock.Setup(x => x.Add(It.IsAny<UserEntity>())).ReturnsAsync(user);
 
-            // Act
             var result = await _userService.Add(user);
 
-            // Assert
             Assert.True(result.Success);
             _userRepositoryMock.Verify(x => x.Add(It.IsAny<UserEntity>()), Times.Once);
         }
@@ -74,7 +68,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Get_ShouldReturnListOfUsers_WhenCalledSuccessfully()
         {
-            // Arrange
             var expectedUsers = new List<UserDto>
             {
                 new UserDto { Id = 1, Email = "joao@example.com" },
@@ -83,10 +76,8 @@ namespace TrainMaster.Test.Services
 
             _userRepositoryMock.Setup(x => x.Get()).ReturnsAsync(expectedUsers);
 
-            // Act
             var result = await _userService.Get();
 
-            // Assert
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);            
             _userRepositoryMock.Verify(x => x.Get(), Times.Once);
@@ -95,25 +86,21 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Get_ShouldReturnEmptyList_WhenNoUsersExist()
         {
-            // Arrange
             var emptyList = new List<UserDto>();
 
             _userRepositoryMock.Setup(x => x.Get()).ReturnsAsync(emptyList);
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
 
-            // Act
             var result = await _userService.Get();
 
-            // Assert
-            Assert.NotNull(result); // A lista não é nula
-            Assert.Empty(result);   // Mas está vazia
+            Assert.NotNull(result);
+            Assert.Empty(result);
             _userRepositoryMock.Verify(x => x.Get(), Times.Once);
         }
 
         [Fact]
         public async Task GetAllActives_ShouldReturnListOfActiveUsers_WhenCalledSuccessfully()
         {
-            // Arrange
             var activeUsers = new List<UserEntity>
             {
                 new UserEntity { Id = 1, Email = "pedro@example.com", IsActive = true },
@@ -123,10 +110,8 @@ namespace TrainMaster.Test.Services
             _userRepositoryMock.Setup(x => x.GetAllActives()).ReturnsAsync(activeUsers);
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
 
-            // Act
             var result = await _userService.GetAllActives();
 
-            // Assert
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
             Assert.All(result, u => Assert.True(u.IsActive));
@@ -136,14 +121,12 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task GetAllActives_ShouldThrowInvalidOperationException_WhenRepositoryThrowsException()
         {
-            // Arrange
             _userRepositoryMock
                 .Setup(x => x.GetAllActives())
                 .ThrowsAsync(new Exception("Erro de acesso ao banco"));
 
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
 
-            // Act & Assert
             var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _userService.GetAllActives());
 
             Assert.Equal("Error to loading the list User Actives", exception.Message);
@@ -153,7 +136,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Delete_ShouldDeactivateUser_WhenUserExists()
         {
-            // Arrange
             var userId = 1;
             var existingUser = new UserEntity { Id = userId, IsActive = true };
 
@@ -162,10 +144,8 @@ namespace TrainMaster.Test.Services
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
             _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask).Verifiable();
 
-            // Act
             await _userService.Delete(userId);
 
-            // Assert
             _userRepositoryMock.Verify(x => x.GetById(userId), Times.Once);
             _userRepositoryMock.Verify(x => x.UpdateByActive(userId, existingUser.IsActive), Times.Once);
             _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
@@ -174,7 +154,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Delete_ShouldThrowInvalidOperationException_WhenExceptionIsThrown()
         {
-            // Arrange
             var userId = 1;
 
             _userRepositoryMock
@@ -183,7 +162,6 @@ namespace TrainMaster.Test.Services
 
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
 
-            // Act & Assert
             var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _userService.Delete(userId));
 
             Assert.Equal("Error to delete a User.", exception.Message);
@@ -193,7 +171,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Update_ShouldUpdateUser_WhenUserExists()
         {
-            // Arrange
             var userDto = new UserUpdateDto
             {
                 Id = 1,
@@ -214,10 +191,8 @@ namespace TrainMaster.Test.Services
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
             _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
 
-            // Act
             var result = await _userService.Update(userDto);
 
-            // Assert
             Assert.True(result.Success);
             _userRepositoryMock.Verify(x => x.GetById(userDto.Id), Times.Once);
             _userRepositoryMock.Verify(x => x.Update(It.Is<UserEntity>(
@@ -229,7 +204,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Update_ShouldThrowInvalidOperationException_WhenUserDoesNotExist()
         {
-            // Arrange
             var userDto = new UserUpdateDto
             {
                 Id = 1,
@@ -240,7 +214,6 @@ namespace TrainMaster.Test.Services
             _userRepositoryMock.Setup(x => x.GetById(userDto.Id)).ReturnsAsync((UserEntity?)null);
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
 
-            // Act & Assert
             var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _userService.Update(userDto));
 
             Assert.Equal("Error updating User", exception.Message);
@@ -252,7 +225,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task ChangePassword_ShouldUpdatePassword_WhenCredentialsAreValid()
         {
-            // Arrange
             var email = "usuario@teste.com";
             var currentPassword = "SenhaAntiga123";
             var newPassword = "SenhaNova123";
@@ -270,10 +242,8 @@ namespace TrainMaster.Test.Services
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
             _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask).Verifiable();
 
-            // Act
             var result = await _userService.ChangePassword(email, currentPassword, newPassword);
 
-            // Assert
             Assert.True(result.Success);
             _userRepositoryMock.Verify(x => x.GetByEmail(email.ToLower()), Times.Once);
             _userRepositoryMock.Verify(x => x.Update(It.Is<UserEntity>(u =>
@@ -285,7 +255,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task ChangePassword_ShouldReturnError_WhenCurrentPasswordIsInvalid()
         {
-            // Arrange
             var email = "usuario@teste.com";
             var currentPassword = "SenhaIncorreta";
             var newPassword = "SenhaNova123";
@@ -301,10 +270,8 @@ namespace TrainMaster.Test.Services
             _userRepositoryMock.Setup(x => x.GetByEmail(email.ToLower())).ReturnsAsync(user);
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
 
-            // Act
             var result = await _userService.ChangePassword(email, currentPassword, newPassword);
 
-            // Assert
             Assert.False(result.Success);
             Assert.Equal("Incorrect current password.", result.Message);
             _userRepositoryMock.Verify(x => x.GetByEmail(email.ToLower()), Times.Once);
@@ -315,7 +282,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task GetPaginated_ShouldReturnPagedUsers_WhenCalledSuccessfully()
         {
-            // Arrange
             int pageNumber = 1;
             int pageSize = 2;
 
@@ -332,10 +298,8 @@ namespace TrainMaster.Test.Services
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
             _repositoryUoWMock.Setup(x => x.Commit());
 
-            // Act
             var result = await _userService.GetPaginated(pageNumber, pageSize);
 
-            // Assert
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
             _userRepositoryMock.Verify(x => x.GetPaginated(pageNumber, pageSize), Times.Once);
@@ -345,7 +309,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task GetPaginated_ShouldThrowInvalidOperationException_WhenRepositoryThrowsException()
         {
-            // Arrange
             int pageNumber = 1;
             int pageSize = 10;
 
@@ -355,7 +318,6 @@ namespace TrainMaster.Test.Services
 
             _repositoryUoWMock.Setup(x => x.UserRepository).Returns(_userRepositoryMock.Object);
 
-            // Act & Assert
             var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 _userService.GetPaginated(pageNumber, pageSize));
 

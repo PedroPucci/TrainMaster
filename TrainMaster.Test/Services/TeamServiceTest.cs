@@ -28,7 +28,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Add_ShouldReturnSuccess_WhenTeamIsValidAndNameIsUnique()
         {
-            // Arrange
             var team = new TeamEntity
             {
                 Name = "Time de Inovação",
@@ -39,7 +38,6 @@ namespace TrainMaster.Test.Services
             var mockTeamRepository = new Mock<ITeamRepository>();
             var mockRepositoryUoW = new Mock<IRepositoryUoW>();
 
-            // Setup mocks
             mockTeamRepository.Setup(x => x.GetByName(team.Name)).ReturnsAsync((TeamEntity?)null);
             mockTeamRepository.Setup(x => x.Add(It.IsAny<TeamEntity>())).ReturnsAsync(team);
             mockRepositoryUoW.Setup(x => x.TeamRepository).Returns(mockTeamRepository.Object);
@@ -48,10 +46,8 @@ namespace TrainMaster.Test.Services
 
             var service = new Mock<TeamService>(mockRepositoryUoW.Object) { CallBase = true };            
 
-            // Act
             var result = await service.Object.Add(team);
 
-            // Assert
             Assert.True(result.Success);
             mockTeamRepository.Verify(x => x.GetByName(team.Name), Times.Once);
             mockTeamRepository.Verify(x => x.Add(It.Is<TeamEntity>(t =>
@@ -66,7 +62,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Add_ShouldReturnError_WhenTeamNameAlreadyExists()
         {
-            // Arrange
             var team = new TeamEntity
             {
                 Name = "Time de Inovação",
@@ -89,10 +84,8 @@ namespace TrainMaster.Test.Services
 
             var service = new Mock<TeamService>(mockRepositoryUoW.Object) { CallBase = true };
 
-            // Act
             var result = await service.Object.Add(team);
 
-            // Assert
             Assert.False(result.Success);
             Assert.Equal($"Já existe um time com o nome \"{team.Name}\".", result.Message);
             mockTeamRepository.Verify(x => x.GetByName(team.Name), Times.Once);
@@ -103,7 +96,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Delete_ShouldSetTeamAsActive_WhenTeamExists()
         {
-            // Arrange
             int teamId = 1;
 
             var existingTeam = new TeamEntity
@@ -123,10 +115,8 @@ namespace TrainMaster.Test.Services
 
             var service = new TeamService(mockRepositoryUoW.Object);
 
-            // Act
             await service.Delete(teamId);
 
-            // Assert
             mockTeamRepository.Verify(x => x.GetById(teamId), Times.Once);
             mockTeamRepository.Verify(x => x.Update(It.Is<TeamEntity>(t =>
                 t.Id == teamId && t.IsActive == true
@@ -137,7 +127,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Delete_ShouldThrowInvalidOperationException_WhenRepositoryThrowsException()
         {
-            // Arrange
             int teamId = 1;
 
             var mockTeamRepository = new Mock<ITeamRepository>();
@@ -152,7 +141,6 @@ namespace TrainMaster.Test.Services
 
             var service = new TeamService(mockRepositoryUoW.Object);
 
-            // Act & Assert
             var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => service.Delete(teamId));
 
             Assert.Equal("Error to delete a team.", exception.Message);
