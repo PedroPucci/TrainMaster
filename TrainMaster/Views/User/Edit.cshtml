@@ -7,6 +7,13 @@
 <div class="project-description">
     <h2 style="color: #20b2aa; margin-bottom: 20px;">Editar Usuário</h2>
 
+    @if (ViewBag.Sucesso != null)
+    {
+        <div class="alert alert-success" style="color: green; font-weight: bold;">
+            @ViewBag.Sucesso
+        </div>
+    }
+
     <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
         <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
             <input type="hidden" asp-for="Id" />
@@ -32,13 +39,6 @@
             <div class="form-group text-end">
                 <button type="submit" class="btn" style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Salvar</button>
             </div>
-            @if (ViewBag.Sucesso != null)
-            {
-                <div class="alert alert-success" style="color: green; font-weight: bold;">
-                    @ViewBag.Sucesso
-                </div>
-            }
-
         </form>
     </div>
 </div>

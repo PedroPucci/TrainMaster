@@ -40,21 +40,20 @@ public class PerfilController : Controller
     }
 
     [HttpPost("Edit/{id}")]
-    public async Task<IActionResult> Edit(int id, PessoalProfileEntity course)
+    public async Task<IActionResult> Edit(int id, ProfessionalProfileEntity model)
     {
-        if (id != course.Id)
-            return BadRequest();
-
         if (!ModelState.IsValid)
-            return View(course);
+            return View("~/Views/PerfilProfessional/Professional.cshtml", model);
 
-        var result = await _serviceUoW.ProfilePessoalService.Update(id, course);
+        var result = await _serviceUoW.ProfileProfessionalService.Update(id, model);
+
         if (!result.Success)
         {
             ViewBag.ErrorMessage = result.Message;
-            return View(course);
+            return View("~/Views/PerfilProfessional/Professional.cshtml", model);
         }
 
-        return RedirectToAction("Edit", new { id = course.Id });
+        ViewBag.Sucesso = "Perfil profissional atualizado com sucesso!";
+        return View("~/Views/PerfilProfessional/Professional.cshtml", model);
     }
 }
