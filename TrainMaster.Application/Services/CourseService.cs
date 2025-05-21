@@ -142,7 +142,7 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
-
+        
         public async Task<Result<CourseEntity>> Update(CourseEntity courseEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
@@ -155,6 +155,14 @@ namespace TrainMaster.Application.Services
                 courseById.ModificationDate = DateTime.UtcNow;
                 courseById.Name = courseEntity.Name;
                 courseById.Description = courseEntity.Description;
+
+                courseById.StartDate = courseEntity.StartDate.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(courseEntity.StartDate, DateTimeKind.Utc)
+                    : courseEntity.StartDate.ToUniversalTime();
+
+                courseById.EndDate = courseEntity.EndDate.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(courseEntity.EndDate, DateTimeKind.Utc)
+                    : courseEntity.EndDate.ToUniversalTime();
 
                 _repositoryUoW.CourseRepository.Update(courseById);
 
@@ -174,6 +182,7 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
+
 
         private async Task<Result<CourseDto>> IsValidCourseRequest(CourseDto courseEntity)
         {
