@@ -99,18 +99,52 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<ProfessionalProfileEntity>> Update(int id, [FromBody] ProfessionalProfileEntity professionalProfileEntity)
+        public async Task<Result<ProfessionalProfileEntity>> GetById(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var result = await _repositoryUoW.ProfessionalProfileRepository.GetById(id);
+                if (result == null)
+                    return Result<ProfessionalProfileEntity>.Error("Perfil Profissional não encontrado");
+
+                _repositoryUoW.Commit();
+
+                return Result<ProfessionalProfileEntity>.Okedit(result);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new InvalidOperationException("Erro ao buscar curso por ID", ex);
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
+        public async Task<Result<ProfessionalProfileEntity>> Update(int id, ProfessionalProfileEntity professionalProfileEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
                 var professionalProfileById = await _repositoryUoW.ProfessionalProfileRepository.GetById(id);
+
                 if (professionalProfileById is null)
-                    throw new InvalidOperationException("Error updating Professional Profile.");
+                {
+                    professionalProfileEntity.ModificationDate = DateTime.UtcNow;
+
+                    await _repositoryUoW.ProfessionalProfileRepository.Add(professionalProfileEntity);
+                    await _repositoryUoW.SaveAsync();
+                    await transaction.CommitAsync();
+
+                    return Result<ProfessionalProfileEntity>.Ok("Professional profile created successfully.", professionalProfileEntity);
+                }
 
                 professionalProfileById.YearsOfExperience = professionalProfileEntity.YearsOfExperience;
                 professionalProfileById.Skills = professionalProfileEntity.Skills;
                 professionalProfileById.Certifications = professionalProfileEntity.Certifications;
+                professionalProfileById.JobTitle = professionalProfileEntity.JobTitle;
                 professionalProfileById.ModificationDate = DateTime.UtcNow;
 
                 _repositoryUoW.ProfessionalProfileRepository.Update(professionalProfileById);
@@ -118,7 +152,7 @@ namespace TrainMaster.Application.Services
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
 
-                return Result<ProfessionalProfileEntity>.Ok();
+                return Result<ProfessionalProfileEntity>.Ok("Professional profile updated successfully.", professionalProfileById);
             }
             catch (Exception ex)
             {

@@ -10,5 +10,6 @@ namespace TrainMaster.Application.Services.Interfaces
         Task<Result<ProfessionalProfileEntity>> Update(int id, [FromBody] ProfessionalProfileEntity professionalProfileEntity);
         Task Delete(int professionalProfileEntity);
         Task<List<ProfessionalProfileEntity>> Get();
+        Task<Result<ProfessionalProfileEntity>> GetById(int id);
     }
 }
