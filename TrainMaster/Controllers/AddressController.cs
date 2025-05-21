@@ -4,8 +4,7 @@ using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
 {
-    [ApiController]
-    [Route("api/v1/address")]
+    [Route("Endereco")]
     public class AddressController : Controller
     {
         private readonly IUnitOfWorkService _serviceUoW;
@@ -13,56 +12,87 @@ namespace TrainMaster.Controllers
         public AddressController(IUnitOfWorkService unitOfWorkService)
         {
             _serviceUoW = unitOfWorkService;
-        }        
+        }
 
-        [HttpPost()]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add([FromBody] AddressEntity addressEntity)
+
+        [HttpGet("GetByPostalCode")]
+        public async Task<IActionResult> GetByPostalCode(string postalCode)
+        {
+            if (string.IsNullOrEmpty(postalCode))
+                return BadRequest("CEP inválido.");
+
+            var result = await _serviceUoW.AddressService.GetAddressByZipCode(postalCode);
+            if (result.Success)
+                return Json(result.Data);
+
+            return NotFound(result.Message);
+        }
+
+        [HttpGet("Edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var result = await _serviceUoW.AddressService.GetById(id);
+            if (result?.Data == null)
+                return NotFound();
+
+            return View("~/Views/Address/Edit.cshtml", result.Data);
+        }
+
+        [HttpPost("Edit/{id}")]
+        public async Task<IActionResult> Edit(int id, AddressEntity model)
+        {
+            if (id != model.Id)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _serviceUoW.AddressService.Update(id, model);
+            if (!result.Success)
+            {
+                ViewBag.ErrorMessage = result.Message;
+                return View(model);
+            }
+
+            ViewBag.Sucesso = "Endereço atualizado com sucesso!";
+            return View("~/Views/Address/Edit.cshtml", model);
+        }
+
+        [HttpGet("Create")]
+        public IActionResult Create()
+        {
+            var model = new AddressEntity();
+            return View("~/Views/Address/Create.cshtml", model);
+        }
+
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(AddressEntity model)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return View(model);
 
-            var result = await _serviceUoW.AddressService.Add(addressEntity);
-            return result.Success ? Ok(result) : BadRequest(result);
+            var result = await _serviceUoW.AddressService.Add(model);
+            if (!result.Success)
+            {
+                ViewBag.ErrorMessage = result.Message;
+                return View(model);
+            }
+
+            return RedirectToAction("List");
         }
 
-        [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        public async Task<IActionResult> Update(int id, [FromBody] AddressEntity addressEntity)
+        [HttpGet("List")]
+        public async Task<IActionResult> List()
         {
-            var result = await _serviceUoW.AddressService.Update(id, addressEntity);
-            return result.Success ? Ok(result) : BadRequest(addressEntity);
+            var result = await _serviceUoW.AddressService.Get();
+            return View("~/Views/Address/List.cshtml", result);
         }
 
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
+        [HttpPost("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _serviceUoW.AddressService.Delete(id);
-            return Ok();
-        }
-
-        [HttpGet("All")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AddressEntity>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get()
-        {
-            var result = await _serviceUoW.AddressService.Get();
-            return Ok(result);
-        }
-
-        [HttpGet("postalCode")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddressEntity))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get([FromQuery] string postalCode)
-        {
-            var result = await _serviceUoW.AddressService.GetAddressByZipCode(postalCode);
-            return Ok(result);
+            return RedirectToAction("List");
         }
     }
 }

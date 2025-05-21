@@ -106,6 +106,30 @@ namespace TrainMaster.Application.Services
             }
         }
 
+        public async Task<Result<AddressEntity>> GetById(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var result = await _repositoryUoW.AddressRepository.GetById(id);
+                if (result == null)
+                    return Result<AddressEntity>.Error("Curso não encontrado");
+
+                _repositoryUoW.Commit();
+
+                return Result<AddressEntity>.Okedit(result);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new InvalidOperationException("Erro ao buscar ednereço por ID", ex);
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
         public async Task<Result<AddressEntity>> Update(int id, AddressEntity addressEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
@@ -115,6 +139,7 @@ namespace TrainMaster.Application.Services
                 if (addressById is null)
                     throw new InvalidOperationException("Error updating Address");
 
+                addressById.PostalCode = addressEntity.PostalCode;
                 addressById.Street = addressEntity.Street;
                 addressById.City = addressEntity.City;
                 addressById.Uf = addressEntity.Uf;

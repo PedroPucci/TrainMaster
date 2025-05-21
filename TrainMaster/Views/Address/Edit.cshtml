@@ -1,0 +1,99 @@
+﻿@model TrainMaster.Domain.Entity.AddressEntity
+@{
+    ViewData["Title"] = "Editar Endereço";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="project-description">
+    <h2 style="color: #20b2aa; margin-bottom: 20px;">Editar Endereço</h2>
+
+    @if (ViewBag.Sucesso != null)
+    {
+        <div style="color: green; font-weight: bold; margin-bottom: 15px;">@ViewBag.Sucesso</div>
+    }
+
+    <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <input type="hidden" asp-for="Id" />
+            @* <input type="hidden" name="UserId" value="@Model.UserId" /> *@
+            <input type="hidden" name="UserId" value="1" />            
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>CEP</label>
+                <div style="display: flex; gap: 10px;">
+                    <input id="PostalCode" name="PostalCode" value="@Model.PostalCode"
+                           class="form-control"
+                           style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                    <button type="button" onclick="buscarCep()"
+                            class="btn"
+                            style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
+                        Buscar
+                    </button>
+                </div>
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Rua</label>
+                <input name="Street" value="@Model.Street" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Bairro</label>
+                <input name="Neighborhood" value="@Model.Neighborhood" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Neighborhood" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Cidade</label>
+                <input name="City" value="@Model.City" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>UF</label>
+                <input name="Uf" value="@Model.Uf" class="form-control" maxlength="2" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Ex: SP, RJ, MG" />
+                <span asp-validation-for="Uf" class="text-danger"></span>
+            </div>
+
+            <div class="form-group text-end">
+                <button type="submit" class="btn" style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function buscarCep() {
+            var cep = document.getElementById('PostalCode').value.replace(/\D/g, '');
+
+            if (cep === '') {
+                alert('Digite um CEP.');
+                return;
+            }
+
+            fetch(`/Endereco/GetByPostalCode?postalCode=${cep}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('CEP não encontrado.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.querySelector('input[name="Street"]').value = data.street || '';
+                    document.querySelector('input[name="Neighborhood"]').value = data.neighborhood || '';
+                    document.querySelector('input[name="City"]').value = data.city || '';
+                    document.querySelector('input[name="Uf"]').value = data.uf || '';
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        }
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
