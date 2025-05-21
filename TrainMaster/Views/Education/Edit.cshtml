@@ -1,0 +1,64 @@
+﻿@model TrainMaster.Domain.Entity.EducationLevelEntity
+@{
+    ViewData["Title"] = "Editar Educação";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="project-description">
+    <h2 style="color: #20b2aa; margin-bottom: 20px;">Editar Educação</h2>
+
+    @if (ViewBag.Sucesso != null)
+    {
+        <div style="color: green; font-weight: bold; margin-bottom: 15px;">@ViewBag.Sucesso</div>
+    }
+
+    <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" name="UserId" value="1" />
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Título</label>
+                <input name="Title" value="@Model.Title" class="form-control"
+                       style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Instituição</label>
+                <input name="Institution" value="@Model.Institution" class="form-control"
+                       style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Institution" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Data de Início</label>
+                <input name="StartedAt" type="date" value="@(Model.StartedAt?.ToString("yyyy-MM-dd"))"
+                       class="form-control"
+                       style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="StartedAt" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Data de Conclusão</label>
+                <input name="EndedAt" type="date" value="@(Model.EndeedAt?.ToString("yyyy-MM-dd"))"
+                       class="form-control"
+                       style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="EndedAt" class="text-danger"></span>
+            </div>
+
+            <div class="form-group text-end">
+                <button type="submit" class="btn"
+                        style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

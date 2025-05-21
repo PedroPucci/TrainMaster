@@ -8,6 +8,7 @@ namespace TrainMaster.Application.Services.Interfaces
         Task<Result<EducationLevelEntity>> Add(EducationLevelEntity educationLevelEntity);
         Task Delete(int educationLevelId);
         Task<List<EducationLevelEntity>> Get();
+        Task<Result<EducationLevelEntity>> GetById(int id);
         Task<Result<EducationLevelEntity>> Update(EducationLevelEntity educationLevelEntity);
     }
 }
