@@ -75,6 +75,7 @@ Essa estrutura garante organização, modularidade e escalabilidade ao projeto.
 Contém os endpoints para acesso e execução das funcionalidades:
 1. Organização das pastas:
 - **Controllers**: Controladores da aplicação.
+- **Views**: Front enn da aplicação.
 - **Extensions**:  
   - SwaggerDocumentation: Documentação do swagger.
   - ExtensionsLogs:       Classe para gerar logs.
