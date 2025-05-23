@@ -16,7 +16,8 @@ a qualquer hora, de qualquer lugar e em qualquer dispositivo, para fornecer aula
 - **Entity Framework (ORM)**: Para mapeamento e interação com o banco de dados.
 - **Unit of Work**: Padrão de design para gerenciar transações e persistência de dados de forma coesa.
 - **Migrations**: Gerenciamento de alterações no banco de dados.
-- **Swagger**: Para documentação e teste interativo dos endpoints da API.
+- **Xunit**: Para criação de testes unitários.
+- **Razor**: Para criação do front da aplicação.
 ---
 ## **Como Executar o Projeto**
 ### **1. Configuração Inicial do Banco de Dados**
@@ -74,6 +75,7 @@ Essa estrutura garante organização, modularidade e escalabilidade ao projeto.
 Contém os endpoints para acesso e execução das funcionalidades:
 1. Organização das pastas:
 - **Controllers**: Controladores da aplicação.
+- **Views**: Front enn da aplicação.
 - **Extensions**:  
   - SwaggerDocumentation: Documentação do swagger.
   - ExtensionsLogs:       Classe para gerar logs.
@@ -110,6 +112,12 @@ Biblioteca utilizada para validações e compartilhamento de recursos comuns:
 - **Enums**: Classes de enums para erros.
 - **Helpers**: Classe auxiliar para validação de erros.
 - **Validator**: Regras de validação para as entidades.
+---
+### **6. TrainMaster.Tests**
+Biblioteca utilizada para crição de testes unitário com Xunit e Moq:
+1. Organização das pastas:
+- **Entity**: Classes de testes para as entidades.
+- **Services**: Classe de testes para o service.
 ---
 ### **Bibliotecas (packages) para .NET, instaladas via NuGet**
 1. coverlet.collector – Biblioteca para cobertura de código em testes unitários no .NET.
