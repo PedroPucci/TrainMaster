@@ -44,7 +44,7 @@ Acessar tela de cadastro de curso
   Capture Page Screenshot
 
 Preencher dados do curso
-    Input Text      ${INPUT_NOME}        Curso de Robot Framework Avançado
+    Input Text      ${INPUT_NOME}        11111111111111111111111111111111111111111111
     Input Text      ${INPUT_DESCRICAO}   Automação de testes com Robot Framework Avançado
     Input Text      ${INPUT_START_DATE}  22/05/2025
     Input Text      ${INPUT_END_DATE}    31/05/2025    
