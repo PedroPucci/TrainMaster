@@ -111,6 +111,30 @@ namespace TrainMaster.Application.Services
             }
         }
 
+        public async Task<Result<DepartmentEntity>> GetById(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var result = await _repositoryUoW.DepartmentRepository.GetById(id);
+                if (result == null)
+                    return Result<DepartmentEntity>.Error("departamento não encontrado");
+
+                _repositoryUoW.Commit();
+
+                return Result<DepartmentEntity>.Okedit(result);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new InvalidOperationException("Erro ao buscar departamento por ID", ex);
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
         public async Task<Result<DepartmentEntity>> Update(DepartmentEntity departmentEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
@@ -123,6 +147,7 @@ namespace TrainMaster.Application.Services
                 departmentById.ModificationDate = DateTime.UtcNow;
                 departmentById.Name = departmentEntity.Name;
                 departmentById.Description = departmentEntity.Description;
+                departmentById.IsActive = departmentEntity.IsActive;
 
                 _repositoryUoW.DepartmentRepository.Update(departmentById);
 

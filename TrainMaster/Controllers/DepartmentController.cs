@@ -54,16 +54,16 @@ namespace TrainMaster.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpGet("Edit/{id}")]
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var result = await _serviceUoW.DepartmentService.GetById(id);
-        //    if (result?.Data == null)
-        //        return NotFound();
+        [HttpGet("Edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var result = await _serviceUoW.DepartmentService.GetById(id);
+            if (result?.Data == null)
+                return NotFound();
 
-        //    ModelState.Clear();
-        //    return View("~/Views/Department/Edit.cshtml", result.Data);
-        //}
+            ModelState.Clear();
+            return View("~/Views/Department/Edit.cshtml", result.Data);
+        }
 
         [HttpPost("Edit/{id}")]
         public async Task<IActionResult> Edit(int id, DepartmentEntity department)

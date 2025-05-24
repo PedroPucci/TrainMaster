@@ -37,6 +37,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
                  Id = department.Id,
                  Name = department.Name,
                  Description = department.Description,
+                 IsActive = department.IsActive,
              }).ToListAsync();
         }
 
