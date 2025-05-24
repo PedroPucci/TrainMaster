@@ -17,10 +17,10 @@
     <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <thead>
             <tr style="background-color: #20b2aa; color: white;">
-                <th style="padding: 10px;">Nome</th>
-                <th style="padding: 10px;">Descrição</th>
-                <th style="padding: 10px;">Ativo</th>
-                <th style="padding: 10px;">Ações</th>
+                <th style="padding: 10px; width: 25%; text-align: left; vertical-align: middle;">Nome</th>
+                <th style="padding: 10px; width: 35%; text-align: left; vertical-align: middle;">Descrição</th>
+                <th style="padding: 10px; width: 20%; text-align: center; vertical-align: middle;">Ativo</th>
+                <th style="padding: 10px; width: 20%; text-align: center; vertical-align: middle;">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -29,14 +29,12 @@
                 foreach (var departamento in Model)
                 {
                     <tr>
-                        <td style="padding: 10px;">@departamento.Name</td>
-                        <td style="padding: 10px;">@departamento.Description</td>
-                        <td style="padding: 10px;">@(departamento.IsActive ? "Sim" : "Não")</td>
-                        <td style="padding: 10px;">
-@*                             <a href="@Url.Action("Edit", "Department", new { id = departamento.Id })"
-                               style="background-color: #20b2aa; color: white; padding: 6px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none;">
-                                Editar
-                            </a> *@
+                        <td style="padding: 10px; width: 25%; vertical-align: middle;">@departamento.Name</td>
+                        <td style="padding: 10px; width: 35%; vertical-align: middle;">@departamento.Description</td>
+                        <td style="padding: 10px; width: 20%; text-align: center; vertical-align: middle;">
+                            @(departamento.IsActive ? "Sim" : "Não")
+                        </td>
+                        <td style="padding: 10px; width: 20%; text-align: center; vertical-align: middle;">
                             <button onclick="location.href='/Departamentos/Edit/@departamento.Id'"
                                     style="background-color: #20b2aa; color: white; padding: 6px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
                                 Editar
@@ -48,7 +46,7 @@
             else
             {
                 <tr>
-                    <td colspan="3" style="text-align: center; padding: 20px; color: #999;">
+                    <td colspan="4" style="text-align: center; padding: 20px; color: #999;">
                         Não existem registros válidos.
                     </td>
                 </tr>
