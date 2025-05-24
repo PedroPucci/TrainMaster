@@ -18,6 +18,7 @@ a qualquer hora, de qualquer lugar e em qualquer dispositivo, para fornecer aula
 - **Migrations**: Gerenciamento de alterações no banco de dados.
 - **Xunit**: Para criação de testes unitários.
 - **Razor**: Para criação do front da aplicação.
+- **Robot Framework**: Automação de teste de software para testes de aceitação e desenvolvimento orientado a testes de aceitação. 
 ---
 ## **Como Executar o Projeto**
 ### **1. Configuração Inicial do Banco de Dados**
@@ -118,6 +119,12 @@ Biblioteca utilizada para crição de testes unitário com Xunit e Moq:
 1. Organização das pastas:
 - **Entity**: Classes de testes para as entidades.
 - **Services**: Classe de testes para o service.
+---
+### **7. Robot**
+Biblioteca utilizada para automação de testes Robot Framework.
+1. Organização das pastas:
+- **Robot**: Contém o arquivo de teste responsável pela automação do fluxo correto de cadastro de curso, validando que o caminho funciona conforme o esperado.
+- **Robot_bug**: Contém o arquivo de teste automatizado com foco na identificação de falhas no cadastro de curso, simulando cenários com comportamentos inesperados ou entradas inválidas, permitindo detectar possíveis bugs no sistema.
 ---
 ### **Bibliotecas (packages) para .NET, instaladas via NuGet**
 1. coverlet.collector – Biblioteca para cobertura de código em testes unitários no .NET.
