@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TrainMaster.Domain.Entity.TeamEntity>
+@{
+    ViewData["Title"] = "Times";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hasRecords = Model != null && Model.Any();
+}
+
+<div class="project-description">
+    <h2>Gerenciamento de Times</h2>
+
+    <div class="actions" style="margin-bottom: 15px;">
+        <button onclick="location.href='/Times/Create'"
+                style="background-color: #20b2aa; color: white; padding: 8px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+            + Novo Time
+        </button>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background-color: #20b2aa; color: white;">
+                <th style="padding: 12px; width: 30%; text-align: left; vertical-align: middle;">Nome</th>
+                <th style="padding: 12px; width: 50%; text-align: left; vertical-align: middle;">Descrição</th>
+                <th style="padding: 12px; width: 10%; text-align: center; vertical-align: middle;">Ativo</th>
+                <th style="padding: 12px; width: 10%; text-align: center; vertical-align: middle;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (hasRecords)
+            {
+                foreach (var time in Model)
+                {
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 10px; vertical-align: middle;">@time.Name</td>
+                        <td style="padding: 10px; vertical-align: middle;">@time.Description</td>
+                        <td style="padding: 10px; text-align: center; vertical-align: middle;">
+                            @(time.IsActive ? "Sim" : "Não")
+                        </td>
+                        <td style="padding: 10px; text-align: center; vertical-align: middle;">
+                            <button onclick="location.href='/Times/Edit/@time.Id'"
+                                    style="background-color: #20b2aa; color: white; padding: 6px 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                                Editar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 20px; color: #999;">
+                        Não existem registros válidos.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px; text-align: center;">
+        @if (ViewBag.TotalPages > 1)
+        {
+            for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+            {
+                if (i == (int)ViewBag.CurrentPage)
+                {
+                    <span style="margin: 0 5px; font-weight: bold; color: #20b2aa;">@i</span>
+                }
+                else
+                {
+                    <a href="@Url.Action("Index", "Team", new { page = i })"
+                       style="margin: 0 5px; color: #20b2aa; text-decoration: none; font-weight: bold;">
+                        @i
+                    </a>
+                }
+            }
+        }
+    </div>
+</div>

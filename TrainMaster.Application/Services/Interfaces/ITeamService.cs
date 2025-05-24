@@ -8,6 +8,7 @@ namespace TrainMaster.Application.Services.Interfaces
         Task<Result<TeamEntity>> Add(TeamEntity teamEntity);
         Task Delete(int teamId);
         Task<List<TeamEntity>> Get();
+        Task<Result<TeamEntity>> GetById(int id);
         Task<Result<TeamEntity>> Update(TeamEntity teamEntity);
     }
 }

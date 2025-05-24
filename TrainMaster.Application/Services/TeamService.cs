@@ -111,6 +111,30 @@ namespace TrainMaster.Application.Services
             }
         }
 
+        public async Task<Result<TeamEntity>> GetById(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var result = await _repositoryUoW.TeamRepository.GetById(id);
+                if (result == null)
+                    return Result<TeamEntity>.Error("Time não encontrado");
+
+                _repositoryUoW.Commit();
+
+                return Result<TeamEntity>.Okedit(result);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new InvalidOperationException("Erro ao buscar o time por ID", ex);
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
         public async Task<Result<TeamEntity>> Update(TeamEntity teamEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();

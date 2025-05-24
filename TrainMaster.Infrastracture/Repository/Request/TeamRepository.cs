@@ -37,7 +37,8 @@ namespace TrainMaster.Infrastracture.Repository.Request
                     Id = team.Id,
                     Name = team.Name,
                     Description = team.Description,
-                    CreateDate = team.CreateDate,                    
+                    CreateDate = team.CreateDate,  
+                    IsActive = team.IsActive,
                 }).ToListAsync();
         }
 
