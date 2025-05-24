@@ -8,18 +8,21 @@
 <div class="project-description">
     <h2>Gerenciamento de Cursos</h2>
     <div class="actions" style="margin-bottom: 10px;">
-        <button onclick="location.href='/Cursos/Create'" style="background-color: #20b2aa; color: white; padding: 8px 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">+ Novo Curso</button>
+        <button onclick="location.href='/Cursos/Create'"
+                style="background-color: #20b2aa; color: white; padding: 8px 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+            + Novo Curso
+        </button>
     </div>
 
     <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <thead>
             <tr style="background-color: #20b2aa; color: white;">
-                <th style="padding: 10px;">Nome</th>
-                <th style="padding: 10px;">Descrição</th>
-                <th style="padding: 10px;">Data Início</th>
-                <th style="padding: 10px;">Data Fim</th>
-                <th style="padding: 10px;">Ativo</th>
-                <th style="padding: 10px;">Ações</th>
+                <th style="padding: 10px; width: 20%; text-align: left; vertical-align: middle;">Nome</th>
+                <th style="padding: 10px; width: 30%; text-align: left; vertical-align: middle;">Descrição</th>
+                <th style="padding: 10px; width: 15%; text-align: center; vertical-align: middle;">Data Início</th>
+                <th style="padding: 10px; width: 15%; text-align: center; vertical-align: middle;">Data Fim</th>
+                <th style="padding: 10px; width: 10%; text-align: center; vertical-align: middle;">Ativo</th>
+                <th style="padding: 10px; width: 10%; text-align: center; vertical-align: middle;">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -28,16 +31,22 @@
                 foreach (var curso in Model)
                 {
                     <tr>
-                        <td style="padding: 10px;">@curso.Name</td>
-                        <td style="padding: 10px;">@curso.Description</td>
-                        <td>@(curso.StartDate != DateTime.MinValue ? curso.StartDate.ToString("dd/MM/yyyy") : "-")</td>
-                        <td>@(curso.EndDate != DateTime.MinValue ? curso.EndDate.ToString("dd/MM/yyyy") : "-")</td>
-                        <td style="padding: 10px;">@(curso.IsActive ? "Sim" : "Não")</td>
-                        <td style="padding: 10px;">
-                            <a href="@Url.Action("Edit", "Course", new { id = curso.Id })"
-                               style="background-color: #20b2aa; color: white; padding: 6px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none;">
+                        <td style="padding: 10px; width: 20%; vertical-align: middle;">@curso.Name</td>
+                        <td style="padding: 10px; width: 30%; vertical-align: middle;">@curso.Description</td>
+                        <td style="padding: 10px; width: 15%; text-align: center; vertical-align: middle;">
+                            @(curso.StartDate != DateTime.MinValue ? curso.StartDate.ToString("dd/MM/yyyy") : "-")
+                        </td>
+                        <td style="padding: 10px; width: 15%; text-align: center; vertical-align: middle;">
+                            @(curso.EndDate != DateTime.MinValue ? curso.EndDate.ToString("dd/MM/yyyy") : "-")
+                        </td>
+                        <td style="padding: 10px; width: 10%; text-align: center; vertical-align: middle;">
+                            @(curso.IsActive ? "Sim" : "Não")
+                        </td>
+                        <td style="padding: 10px; width: 10%; text-align: center; vertical-align: middle;">
+                            <button onclick="location.href='/Cursos/Edit/@curso.Id'"
+                                    style="background-color: #20b2aa; color: white; padding: 6px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
                                 Editar
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 }
@@ -45,11 +54,14 @@
             else
             {
                 <tr>
-                    <td colspan="6" style="text-align: center; padding: 20px; color: #999;">Não existem registros válidos.</td>
+                    <td colspan="6" style="text-align: center; padding: 20px; color: #999;">
+                        Não existem registros válidos.
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
+
     <div style="margin-top: 20px; text-align: center;">
         @if (ViewBag.TotalPages > 1)
         {
