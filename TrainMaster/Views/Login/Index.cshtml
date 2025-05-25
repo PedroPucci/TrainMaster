@@ -168,7 +168,8 @@
             }
             <form asp-action="Index" method="post">
                 <div class="input-field">
-                    <input asp-for="Cpf" placeholder="CPF" />
+                    @* <input asp-for="Cpf" id="cpf" placeholder="CPF" /> *@
+                    <input asp-for="Cpf" id="cpf" placeholder="CPF" />
                     <i class="fas fa-envelope"></i>
                     <span asp-validation-for="Cpf" class="validation-message"></span>
                 </div>
@@ -194,7 +195,8 @@
     @section Scripts {
         @{
             await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
+        }       
     }
+    <script src="@(Url.Content("~/js/maskCpf.js"))"></script>
 </body>
 </html>

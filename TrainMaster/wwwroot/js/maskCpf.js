@@ -1,5 +1,5 @@
 ﻿const cpfInput = document.getElementById('cpf');
-
+//impede letras no CPF, limita para 11 números e já aplica a máscara 000.000.000-00 enquanto o usuário digita.
 if (cpfInput) {
     cpfInput.addEventListener('input', function (e) {
         let value = e.target.value.replace(/\D/g, '');

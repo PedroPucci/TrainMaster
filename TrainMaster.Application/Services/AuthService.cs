@@ -1,6 +1,8 @@
 ﻿using Serilog;
+using System.Text.RegularExpressions;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
+using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 using TrainMaster.Infrastracture.Security.Cryptography;
@@ -29,8 +31,8 @@ namespace TrainMaster.Application.Services
             {
                 if (string.IsNullOrWhiteSpace(cpf) || string.IsNullOrWhiteSpace(password))
                     return Result<LoginEntity>.Error("CPF e senha são obrigatórios.");
-
-                var user = await _userRepository.GetByCpf(cpf);
+                var Cpf = Regex.Replace(cpf, "[^0-9]", "");
+                var user = await _userRepository.GetByCpf(Cpf);
 
                 if (user == null || !_crypto.VerifyPassword(password, user.Password))
                 {
