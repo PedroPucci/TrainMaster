@@ -77,8 +77,9 @@ namespace TrainMaster.Application.Services
                 var courseEntity = await _repositoryUoW.CourseRepository.GetById(courseId);
                 if (courseEntity is not null)
                 {
-                    courseEntity.IsActive = true;
-                    _repositoryUoW.CourseRepository.Update(courseEntity);
+                    courseEntity.IsActive = false;
+                    //_repositoryUoW.CourseRepository.Update(courseEntity);
+                    _repositoryUoW.CourseRepository.Delete(courseEntity);
                 }                    
 
                 await _repositoryUoW.SaveAsync();

@@ -83,5 +83,12 @@ namespace TrainMaster.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _serviceUoW.CourseService.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
