@@ -26,7 +26,7 @@
                     <input id="PostalCode" name="PostalCode" value="@Model.PostalCode"
                            class="form-control"
                            style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
-                    <button type="button" onclick="buscarCep()"
+                    <button type="button" id="buscarCep"
                             class="btn"
                             style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
                         Buscar
@@ -74,33 +74,8 @@
 </div>
 
 @section Scripts {
-    <script>
-        function buscarCep() {
-            var cep = document.getElementById('PostalCode').value.replace(/\D/g, '');
-
-            if (cep === '') {
-                alert('Digite um CEP.');
-                return;
-            }
-
-            fetch(`/Endereco/GetByPostalCode?postalCode=${cep}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('CEP não encontrado.');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    document.querySelector('input[name="Street"]').value = data.street || '';
-                    document.querySelector('input[name="Neighborhood"]').value = data.neighborhood || '';
-                    document.querySelector('input[name="City"]').value = data.city || '';
-                    document.querySelector('input[name="Uf"]').value = data.uf || '';
-                })
-                .catch(error => {
-                    alert(error.message);
-                });
-        }
-    </script>
+    <script src="~/js/maskCep.js"></script>
+    <script src="~/js/buscarCep.js"></script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
