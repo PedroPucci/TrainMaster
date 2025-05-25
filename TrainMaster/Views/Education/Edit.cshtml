@@ -9,7 +9,9 @@
 
     @if (ViewBag.Sucesso != null)
     {
-        <div style="color: green; font-weight: bold; margin-bottom: 15px;">@ViewBag.Sucesso</div>
+        <div class="alert alert-success" style="color: green; font-weight: bold;">
+            @ViewBag.Sucesso
+        </div>
     }
 
     <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">

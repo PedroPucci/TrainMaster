@@ -40,7 +40,7 @@ namespace TrainMaster.Controllers
                 return View(model);
             }
 
-            ViewBag.Sucesso = "Educação atualizada com sucesso!";
+            ViewBag.Sucesso = "Seus dados de educação foram atualizados com sucesso!";
             return View("~/Views/Education/Edit.cshtml", model);
         }
 

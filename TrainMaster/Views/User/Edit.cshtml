@@ -35,9 +35,16 @@
                 <input name="Password" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>           
-
-            <div class="form-group text-end">
+            <div class="button-group">
                 <button type="submit" class="btn" style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Salvar</button>
+
+                <a href="/Home/Index"
+                   class="btn"
+                   style="background-color: #ccc; color: #333; padding: 10px 20px; border-radius: 20px; font-weight: bold; text-decoration: none;">
+                    Cancelar
+                </a>
+
+                <input type="hidden" name="UserId" value="1" />
             </div>
         </form>
     </div>
@@ -47,21 +54,5 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
-    <script>
-        const cpfInput = document.getElementById('cpf');
-
-        cpfInput.addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, '');
-
-            if (value.length > 11) value = value.slice(0, 11);
-
-            value = value
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-
-            e.target.value = value;
-        });
-    </script>
+    <script src="~/js/maskCpf.js"></script>
 }

@@ -9,7 +9,9 @@
 
     @if (ViewBag.Sucesso != null)
     {
-        <div style="color: green; font-weight: bold; margin-bottom: 15px;">@ViewBag.Sucesso</div>
+        <div class="alert alert-success" style="color: green; font-weight: bold;">
+            @ViewBag.Sucesso
+        </div>
     }
 
     <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
@@ -56,9 +58,16 @@
                 <input name="Uf" value="@Model.Uf" class="form-control" maxlength="2" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Ex: SP, RJ, MG" />
                 <span asp-validation-for="Uf" class="text-danger"></span>
             </div>
-
-            <div class="form-group text-end">
+            <div class="button-group">
                 <button type="submit" class="btn" style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Salvar</button>
+
+                <a href="/Home/Index"
+                   class="btn"
+                   style="background-color: #ccc; color: #333; padding: 10px 20px; border-radius: 20px; font-weight: bold; text-decoration: none;">
+                    Cancelar
+                </a>
+
+                <input type="hidden" name="UserId" value="1" />
             </div>
         </form>
     </div>
