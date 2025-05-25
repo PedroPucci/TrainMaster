@@ -34,4 +34,8 @@
     <ProjectReference Include="..\TrainMaster.Application\TrainMaster.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\css\site.css" />
+  </ItemGroup>
+
 </Project>

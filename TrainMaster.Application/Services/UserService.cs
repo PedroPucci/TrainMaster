@@ -1,5 +1,6 @@
 ﻿using BCrypt.Net;
 using Serilog;
+using System.Text.RegularExpressions;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Dto;
@@ -168,8 +169,9 @@ namespace TrainMaster.Application.Services
                 var userById = await _repositoryUoW.UserRepository.GetById(userCreateUpdateDto.Id);
                 if (userById is null)
                     throw new InvalidOperationException("Error updating User");
-                
-                userById.Cpf = userCreateUpdateDto.Cpf;
+
+                //userById.Cpf = userCreateUpdateDto.Cpf;
+                userById.Cpf = Regex.Replace(userCreateUpdateDto.Cpf, "[^0-9]", "");
                 userById.Email = userCreateUpdateDto.Email;
                 userById.ModificationDate = DateTime.UtcNow;
 
@@ -287,7 +289,8 @@ namespace TrainMaster.Application.Services
                 }
 
                 user.Email = user.Email.Trim().ToLower();
-                user.Cpf = user.Cpf.Trim();
+                //user.Cpf = user.Cpf.Trim();
+                user.Cpf = FormatCpf(user.Cpf);
                 _repositoryUoW.Commit();
                 return Result<UserEntity>.Okedit(user);
             }
@@ -302,6 +305,17 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
+
+        private string FormatCpf(string cpf)
+        {
+            cpf = cpf?.Trim();
+
+            if (string.IsNullOrEmpty(cpf) || cpf.Length != 11)
+                return cpf;
+
+            return Convert.ToUInt64(cpf).ToString(@"000\.000\.000\-00");
+        }
+
 
         private async Task<Result<UserEntity>> IsValidUserRequest(UserEntity userEntity)
         {
