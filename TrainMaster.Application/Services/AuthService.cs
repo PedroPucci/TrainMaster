@@ -52,7 +52,8 @@ namespace TrainMaster.Application.Services
 
                 var loginEntity = new LoginEntity
                 {                    
-                    Cpf = user.Cpf
+                    Cpf = user.Cpf,
+                    Id = user.Id,
                 };
 
                 return Result<LoginEntity>.OkLogin(loginEntity);

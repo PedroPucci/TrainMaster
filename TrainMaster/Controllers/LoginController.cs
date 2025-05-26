@@ -35,7 +35,10 @@ namespace TrainMaster.Controllers
                 return View(login);
             }
 
-            HttpContext.Session.SetString("UserId", result.Data.Cpf.ToString());
+            HttpContext.Session.SetString("UserId", result.Data.Id.ToString());
+
+            var userId = HttpContext.Session.GetString("UserId");
+            ViewBag.UserId = userId;
             return RedirectToAction("Index", "Home");
         }
 

@@ -13,7 +13,9 @@
             + Novo Curso
         </button>
     </div>
-
+    <p style="margin-bottom: 15px; color: #333;">
+        Total de cursos cadastrados: <strong>@ViewBag.TotalCursos</strong>
+    </p>
     <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <thead>
             <tr style="background-color: #20b2aa; color: white;">
@@ -32,7 +34,6 @@
                 {
                     <tr>
                         <td>@curso.Name</td>
-                        @* <td>@curso.Description</td> *@
                         <td class="descricao">
                             @(
                                 string.IsNullOrWhiteSpace(curso.Description)
@@ -42,7 +43,6 @@
                         </td>
                         <td>@(curso.StartDate != DateTime.MinValue ? curso.StartDate.ToString("dd/MM/yyyy") : "-")</td>
                         <td>@(curso.EndDate != DateTime.MinValue ? curso.EndDate.ToString("dd/MM/yyyy") : "-")</td>
-                        @* <td>@(curso.IsActive ? "Sim" : "Não")</td> *@
                         <td>
                             @(
                                 curso.EndDate != DateTime.MinValue

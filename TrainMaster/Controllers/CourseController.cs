@@ -18,18 +18,17 @@ namespace TrainMaster.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            var cursos = await _serviceUoW.CourseService.Get();
+            var userId = HttpContext.Session.GetString("UserId");
+            ViewBag.UserId = userId;
+
+            var cursos = await _serviceUoW.CourseService.GetByUserId(Convert.ToInt32(userId));
             var totalCursos = cursos.Count();
-            var cursosPaginados = cursos
-                .OrderBy(c => c.Name)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalCursos / pageSize);
+            ViewBag.TotalCursos = totalCursos;
 
-            return View("Index", cursosPaginados);
+            return View("Index", cursos);
         }
 
         [HttpGet("Create")]

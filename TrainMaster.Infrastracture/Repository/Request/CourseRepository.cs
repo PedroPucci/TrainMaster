@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Connections;
 using TrainMaster.Infrastracture.Repository.Interfaces;
@@ -47,6 +48,13 @@ namespace TrainMaster.Infrastracture.Repository.Request
         public async Task<CourseEntity?> GetById(int? id)
         {
             return await _context.CourseEntity.FirstOrDefaultAsync(courseEntity => courseEntity.Id == id);
+        }
+
+        public async Task<List<CourseEntity>> GetByUserId(int? id)
+        {
+            return await _context.CourseEntity
+                .Where(course => course.UserId == id)
+                .ToListAsync();
         }
 
         public CourseEntity Update(CourseEntity courseEntity)

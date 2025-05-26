@@ -19,6 +19,8 @@ namespace TrainMaster.Controllers
         [HttpGet("register")]
         public IActionResult Register()
         {
+            var userId = HttpContext.Session.GetString("UserId");
+            ViewBag.UserId = userId;
             return View("Register");
         }
 

@@ -143,7 +143,29 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
-        
+
+        public async Task<List<CourseEntity>> GetByUserId(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                List<CourseEntity> courseEntities = await _repositoryUoW.CourseRepository.GetByUserId(id);
+                _repositoryUoW.Commit();
+                return courseEntities;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(LogMessages.GetAllCourseError(ex));
+                transaction.Rollback();
+                throw new InvalidOperationException("Error to loading the list course");
+            }
+            finally
+            {
+                Log.Error(LogMessages.GetAllCourseSuccess());
+                transaction.Dispose();
+            }
+        }
+
         public async Task<Result<CourseEntity>> Update(CourseEntity courseEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
