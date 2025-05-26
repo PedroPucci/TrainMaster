@@ -34,6 +34,8 @@ namespace TrainMaster.Controllers
         [HttpGet("Create")]
         public IActionResult Create()
         {
+            var userId = HttpContext.Session.GetString("UserId");
+            ViewBag.UserId = userId;
             return View();
         }
 
