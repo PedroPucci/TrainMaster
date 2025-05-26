@@ -8,7 +8,7 @@ namespace TrainMaster.Infrastracture.Repository.Interfaces
         PessoalProfileEntity Update(PessoalProfileEntity pessoalProfileEntity);
         PessoalProfileEntity Delete(PessoalProfileEntity pessoalProfileEntity);
         Task<List<PessoalProfileEntity>> Get();
-        Task<PessoalProfileEntity?> GetById(int? id);
+        Task<PessoalProfileEntity?> GetById(int id);
         Task<PessoalProfileEntity?> GetByFullName(string? fullName);
     }
 }

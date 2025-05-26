@@ -155,18 +155,14 @@ namespace TrainMaster.Application.Services
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var course = await _repositoryUoW.PessoalProfileRepository.GetById(id);
-                if (course == null)
-                    return Result<PessoalProfileEntity>.Error("Curso não encontrado");
-
+                var result = await _repositoryUoW.PessoalProfileRepository.GetById(id);
                 _repositoryUoW.Commit();
-
-                return Result<PessoalProfileEntity>.Okedit(course);
+                return Result<PessoalProfileEntity>.Okedit(result);
             }
             catch (Exception ex)
             {
                 transaction.Rollback();
-                throw new InvalidOperationException("Erro ao buscar curso por ID", ex);
+                throw new InvalidOperationException("Erro ao buscar perfil por ID", ex);
             }
             finally
             {

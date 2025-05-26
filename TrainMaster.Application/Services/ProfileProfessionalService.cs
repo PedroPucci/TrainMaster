@@ -129,7 +129,8 @@ namespace TrainMaster.Application.Services
             try
             {
                 var professionalProfileById = await _repositoryUoW.ProfessionalProfileRepository.GetById(id);
-
+                professionalProfileEntity.UserId = id;
+                
                 if (professionalProfileById is null)
                 {
                     professionalProfileEntity.ModificationDate = DateTime.UtcNow;
@@ -165,6 +166,7 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
+
 
         private async Task<Result<ProfessionalProfileEntity>> IsValidProfessionalProfileRequest(ProfessionalProfileEntity professionalProfileEntity)
         {

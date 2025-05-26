@@ -42,9 +42,10 @@ namespace TrainMaster.Infrastracture.Repository.Request
                 }).ToListAsync();
         }
 
-        public async Task<PessoalProfileEntity?> GetById(int? id)
+        public async Task<PessoalProfileEntity?> GetById(int id)
         {
-            return await _context.PessoalProfileEntity.FirstOrDefaultAsync(pessoalProfileEntity => pessoalProfileEntity.Id == id);
+            return await _context.PessoalProfileEntity
+                .FirstOrDefaultAsync(p => p.UserId == id);
         }
 
         public async Task<PessoalProfileEntity?> GetByFullName(string? fullName)

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Entity;
-using TrainMaster.Domain.Enums;
 
 [Route("perfil")]
 public class PerfilController : Controller
@@ -17,6 +15,8 @@ public class PerfilController : Controller
     [HttpGet("Pessoal")]
     public IActionResult Pessoal()
     {
+        var userId = HttpContext.Session.GetString("UserId");
+        ViewBag.UserId = userId;
         var model = new PessoalProfileEntity();
         return View("~/Views/Perfil/Pessoal.cshtml", model);
     }
@@ -29,15 +29,22 @@ public class PerfilController : Controller
     }
 
     [HttpGet("Edit/{id}")]
-    public async Task<IActionResult> Edit(int id)
+    public async Task<IActionResult> Edit()
     {
-        var result = await _serviceUoW.ProfilePessoalService.GetById(id);
-        if (result?.Data == null)
-            return NotFound();
+        var userId = HttpContext.Session.GetString("UserId");
+        ViewBag.UserId = userId;
 
-        ModelState.Clear();
-        return View("~/Views/Perfil/Pessoal.cshtml", result.Data);
+        int id = Convert.ToInt32(userId);
+
+        var result = await _serviceUoW.ProfilePessoalService.GetById(id);
+
+        var model = result?.Data ?? new PessoalProfileEntity();
+
+        ViewBag.UserId = id;
+
+        return View("~/Views/Perfil/Pessoal.cshtml", model);
     }
+
 
     [HttpPost("Edit/{id}")]
     public async Task<IActionResult> Edit(int id, ProfessionalProfileEntity model)
