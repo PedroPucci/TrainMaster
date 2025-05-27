@@ -33,7 +33,7 @@ namespace TrainMaster.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = await _serviceUoW.EducationLevelService.Update(model);
+            var result = await _serviceUoW.EducationLevelService.Update(id, model);
             if (!result.Success)
             {
                 ViewBag.ErrorMessage = result.Message;

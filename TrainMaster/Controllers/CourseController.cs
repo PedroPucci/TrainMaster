@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
@@ -18,8 +19,9 @@ namespace TrainMaster.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            var userId = HttpContext.Session.GetString("UserId");
-            ViewBag.UserId = userId;
+            //var userId = HttpContext.Session.GetString("UserId");
+            //ViewBag.UserId = userId;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var cursos = await _serviceUoW.CourseService.GetByUserId(Convert.ToInt32(userId));
             var totalCursos = cursos.Count();
@@ -36,8 +38,15 @@ namespace TrainMaster.Controllers
         {
             var userId = HttpContext.Session.GetString("UserId");
             ViewBag.UserId = userId;
-            return View();
+
+            var model = new CourseDto
+            {
+                UserId = Convert.ToInt32(userId)
+            };
+
+            return View(model);
         }
+
 
         [HttpPost("Create")]
         public async Task<IActionResult> Create(CourseDto course)

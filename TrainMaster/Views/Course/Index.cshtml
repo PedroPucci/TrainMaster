@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<TrainMaster.Domain.Entity.CourseEntity>
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Cursos";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var hasRecords = Model != null && Model.Any();
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="project-description">
@@ -33,6 +35,7 @@
                 foreach (var curso in Model)
                 {
                     <tr>
+                        <input type="hidden" name="UserId" value="@userId" />
                         <td>@curso.Name</td>
                         <td class="descricao">
                             @(

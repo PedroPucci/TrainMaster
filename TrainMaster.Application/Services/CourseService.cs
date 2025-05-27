@@ -1,5 +1,4 @@
-﻿using NuGet.Protocol.Core.Types;
-using Serilog;
+﻿using Serilog;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Dto;

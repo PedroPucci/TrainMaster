@@ -122,7 +122,7 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<EducationLevelEntity>> Update(EducationLevelEntity educationLevelEntity)
+        public async Task<Result<EducationLevelEntity>> Update(int id, EducationLevelEntity educationLevelEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
@@ -140,6 +140,7 @@ namespace TrainMaster.Application.Services
                 if (educationLevelById is null)
                 {
                     educationLevelEntity.ModificationDate = DateTime.UtcNow;
+                    educationLevelEntity.ProfessionalProfileId = id;
 
                     await _repositoryUoW.EducationLevelRepository.Add(educationLevelEntity);
                 }

@@ -1,7 +1,9 @@
-﻿@model TrainMaster.Domain.Dto.CourseDto
+﻿@using System.Security.Claims
+@model TrainMaster.Domain.Dto.CourseDto
 @{
     ViewData["Title"] = "Cadastrar Curso";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="project-description">
@@ -14,6 +16,7 @@
 
     <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
         <form asp-action="Create" method="post">
+            <input type="hidden" name="UserId" value="@userId" />
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="Name">Nome</label>
                 <input name="Name" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
@@ -49,7 +52,6 @@
                    style="background-color: #ccc; color: #333; padding: 10px 20px; border-radius: 20px; font-weight: bold; text-decoration: none;">
                     Cancelar
                 </a>
-                <input type="hidden" name="UserId" value="@ViewBag.UserId" />
             </div>
         </form>
     </div>
