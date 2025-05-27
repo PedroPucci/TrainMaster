@@ -57,5 +57,12 @@ namespace TrainMaster.Infrastracture.Repository.Request
             var response = _context.TeamEntity.Update(teamEntity);
             return response.Entity;
         }
+
+        public async Task<List<TeamEntity>> GetByDepartmentId(int departmentId)
+        {
+            return await _context.TeamEntity
+                .Where(t => t.DepartmentId == departmentId)
+                .ToListAsync();
+        }
     }
 }

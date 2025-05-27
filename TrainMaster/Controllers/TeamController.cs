@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TrainMaster.Application.UnitOfWork;
-using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
@@ -18,7 +18,8 @@ namespace TrainMaster.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            var times = await _serviceUoW.TeamService.Get();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var times = await _serviceUoW.TeamService.GetByUserId(Convert.ToInt32(userId));
             var totalTimes = times.Count();
             var timesPaginados = times
                 .OrderBy(c => c.Name)

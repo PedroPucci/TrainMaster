@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
-using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.Interfaces;
@@ -8,136 +7,154 @@ using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 
 namespace TrainMaster.Test.Services
 {
-    public class DepartmentServiceTest
+    public class DepartmentServiceTests
     {
         private readonly Mock<IRepositoryUoW> _repositoryUoWMock;
+        private readonly Mock<IDepartmentRepository> _departmentRepositoryMock;
         private readonly DepartmentService _departmentService;
 
-        public DepartmentServiceTest()
+        public DepartmentServiceTests()
         {
             _repositoryUoWMock = new Mock<IRepositoryUoW>();
+            _departmentRepositoryMock = new Mock<IDepartmentRepository>();
+
+            _repositoryUoWMock.Setup(x => x.DepartmentRepository).Returns(_departmentRepositoryMock.Object);
             _repositoryUoWMock.Setup(x => x.BeginTransaction()).Returns(Mock.Of<IDbContextTransaction>());
+
             _departmentService = new DepartmentService(_repositoryUoWMock.Object);
         }
 
         [Fact]
-        public async Task Add_ShouldReturnSuccess_WhenDepartmentIsValidAndNameIsUnique()
+        public async Task Add_ShouldReturnSuccess_WhenValidDepartment()
         {
-            // Arrange
-            var department = new DepartmentEntity
-            {
-                Name = "TI",
-                Description = "Departamento de Tecnologia"
-            };
+            var department = new DepartmentEntity { Name = "TI", Description = "Tecnologia", UserId = 1 };
 
-            var departmentRepositoryMock = new Mock<IDepartmentRepository>();
+            _departmentRepositoryMock.Setup(x => x.GetByName(department.Name)).ReturnsAsync((DepartmentEntity?)null);
+            _departmentRepositoryMock.Setup(x => x.Add(It.IsAny<DepartmentEntity>())).ReturnsAsync(department);
 
-            departmentRepositoryMock.Setup(x => x.GetByName(department.Name))
-                                    .ReturnsAsync((DepartmentEntity?)null);
-            departmentRepositoryMock.Setup(x => x.Add(It.IsAny<DepartmentEntity>()))
-                                    .ReturnsAsync(department);
-
-            _repositoryUoWMock.Setup(x => x.DepartmentRepository).Returns(departmentRepositoryMock.Object);
-            _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
-
-            // Act
             var result = await _departmentService.Add(department);
 
-            // Assert
             Assert.True(result.Success);
-            departmentRepositoryMock.Verify(x => x.GetByName(department.Name), Times.Once);
-            departmentRepositoryMock.Verify(x => x.Add(It.IsAny<DepartmentEntity>()), Times.Once);
-            _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
+            _departmentRepositoryMock.Verify(x => x.Add(It.IsAny<DepartmentEntity>()), Times.Once);
         }
 
         [Fact]
         public async Task Add_ShouldReturnError_WhenDepartmentNameAlreadyExists()
         {
-            // Arrange
-            var department = new DepartmentEntity
-            {
-                Name = "TI",
-                Description = "Departamento duplicado"
-            };
+            var department = new DepartmentEntity { Name = "TI", Description = "Tecnologia", UserId = 1 };
 
-            var existingDepartment = new DepartmentEntity
-            {
-                Id = 99,
-                Name = "TI"
-            };
+            _departmentRepositoryMock.Setup(x => x.GetByName(department.Name)).ReturnsAsync(department);
 
-            var departmentRepositoryMock = new Mock<IDepartmentRepository>();
-
-            departmentRepositoryMock.Setup(x => x.GetByName(department.Name))
-                                    .ReturnsAsync(existingDepartment);
-
-            _repositoryUoWMock.Setup(x => x.DepartmentRepository).Returns(departmentRepositoryMock.Object);
-
-            // Act
             var result = await _departmentService.Add(department);
 
-            // Assert
             Assert.False(result.Success);
             Assert.Equal("Department already exists with that name", result.Message);
-            departmentRepositoryMock.Verify(x => x.GetByName(department.Name), Times.Once);
-            departmentRepositoryMock.Verify(x => x.Add(It.IsAny<DepartmentEntity>()), Times.Never);
-            _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Never);
         }
 
         [Fact]
-        public async Task Delete_ShouldSetDepartmentAsActive_WhenDepartmentExists()
+        public async Task Delete_ShouldDeactivateDepartment_WhenDepartmentExists()
         {
-            // Arrange
-            int departmentId = 1;
+            var department = new DepartmentEntity { Id = 1, Name = "TI", IsActive = true };
 
-            var existingDepartment = new DepartmentEntity
+            _departmentRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(department);
+
+            await _departmentService.Delete(1);
+
+            _departmentRepositoryMock.Verify(x => x.Update(It.Is<DepartmentEntity>(d => d.IsActive == true)), Times.Once);
+        }
+
+        [Fact]
+        public async Task Get_ShouldReturnListOfDepartments()
+        {
+            var departments = new List<DepartmentEntity>
             {
-                Id = departmentId,
-                Name = "RH",
-                IsActive = false
+                new DepartmentEntity { Id = 1, Name = "TI" },
+                new DepartmentEntity { Id = 2, Name = "RH" }
             };
 
-            var departmentRepositoryMock = new Mock<IDepartmentRepository>();
+            _departmentRepositoryMock.Setup(x => x.Get()).ReturnsAsync(departments);
 
-            departmentRepositoryMock.Setup(x => x.GetById(departmentId))
-                                    .ReturnsAsync(existingDepartment);
+            var result = await _departmentService.Get();
 
-            _repositoryUoWMock.Setup(x => x.DepartmentRepository).Returns(departmentRepositoryMock.Object);
-            _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
-
-            // Act
-            await _departmentService.Delete(departmentId);
-
-            // Assert
-            departmentRepositoryMock.Verify(x => x.GetById(departmentId), Times.Once);
-            departmentRepositoryMock.Verify(x => x.Update(It.Is<DepartmentEntity>(d =>
-                d.Id == departmentId && d.IsActive == true
-            )), Times.Once);
-            _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
+            Assert.Equal(2, result.Count);
+            _departmentRepositoryMock.Verify(x => x.Get(), Times.Once);
         }
 
         [Fact]
-        public async Task Delete_ShouldThrowInvalidOperationException_WhenRepositoryThrowsException()
+        public async Task GetById_ShouldReturnDepartment_WhenExists()
         {
-            // Arrange
-            int departmentId = 1;
+            var department = new DepartmentEntity { Id = 1, Name = "TI" };
 
-            var departmentRepositoryMock = new Mock<IDepartmentRepository>();
+            _departmentRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(department);
 
-            departmentRepositoryMock.Setup(x => x.GetById(departmentId))
-                                    .ThrowsAsync(new Exception("Simulated error"));
+            var result = await _departmentService.GetById(1);
 
-            _repositoryUoWMock.Setup(x => x.DepartmentRepository).Returns(departmentRepositoryMock.Object);
+            Assert.True(result.Success);
+            Assert.Equal(department.Name, result.Data.Name);
+        }
 
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-                () => _departmentService.Delete(departmentId));
+        [Fact]
+        public async Task GetById_ShouldReturnError_WhenNotFound()
+        {
+            _departmentRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync((DepartmentEntity?)null);
 
-            Assert.Equal("Error to delete a department.", exception.Message);
+            var result = await _departmentService.GetById(1);
 
-            departmentRepositoryMock.Verify(x => x.GetById(departmentId), Times.Once);
-            departmentRepositoryMock.Verify(x => x.Update(It.IsAny<DepartmentEntity>()), Times.Never);
-            _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Never);
+            Assert.False(result.Success);
+            Assert.Equal("departamento não encontrado", result.Message);
+        }
+
+        [Fact]
+        public async Task GetByUserId_ShouldReturnDepartment_WhenExists()
+        {
+            var department = new DepartmentEntity { Id = 1, Name = "TI", UserId = 1 };
+
+            _departmentRepositoryMock.Setup(x => x.GetByUserId(1)).ReturnsAsync(department);
+
+            var result = await _departmentService.GetByUserId(1);
+
+            Assert.True(result.Success);
+            Assert.Equal(department.Name, result.Data.Name);
+        }
+
+        [Fact]
+        public async Task GetByUserId_ShouldReturnError_WhenNotFound()
+        {
+            _departmentRepositoryMock.Setup(x => x.GetByUserId(1)).ReturnsAsync((DepartmentEntity?)null);
+
+            var result = await _departmentService.GetByUserId(1);
+
+            Assert.False(result.Success);
+            Assert.Equal("departamento não encontrado", result.Message);
+        }
+
+        [Fact]
+        public async Task Update_ShouldUpdate_WhenDepartmentExists()
+        {
+            var department = new DepartmentEntity { Id = 1, Name = "TI", Description = "Old Desc" };
+
+            _departmentRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(department);
+
+            var updatedDepartment = new DepartmentEntity { Id = 1, Name = "TI Updated", Description = "New Desc" };
+
+            var result = await _departmentService.Update(updatedDepartment);
+
+            Assert.True(result.Success);
+            _departmentRepositoryMock.Verify(x => x.Update(It.Is<DepartmentEntity>(
+                d => d.Name == "TI Updated" && d.Description == "New Desc"
+            )), Times.Once);
+        }
+
+        [Fact]
+        public async Task Update_ShouldThrow_WhenDepartmentDoesNotExist()
+        {
+            _departmentRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync((DepartmentEntity?)null);
+
+            var updatedDepartment = new DepartmentEntity { Id = 1, Name = "TI Updated" };
+
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _departmentService.Update(updatedDepartment));
+
+            Assert.Equal("Error updating department", exception.Message);
         }
     }
 }

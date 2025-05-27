@@ -10,5 +10,6 @@ namespace TrainMaster.Infrastracture.Repository.Interfaces
         Task<List<TeamEntity>> Get();
         Task<TeamEntity?> GetById(int? id);
         Task<TeamEntity?> GetByName(string? name);
+        Task<List<TeamEntity>> GetByDepartmentId(int departmentId);
     }
 }

@@ -135,6 +135,38 @@ namespace TrainMaster.Application.Services
             }
         }
 
+        public async Task<List<TeamEntity>> GetByUserId(int userId)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                // Busca o departamento relacionado ao usuário
+                var departmentResult = await _repositoryUoW.DepartmentRepository.GetByUserId(userId);
+
+                if (departmentResult == null)
+                    throw new InvalidOperationException("Departamento não encontrado para este usuário.");
+
+                var departmentId = departmentResult.Id;
+
+                // Busca os times pelo departamento
+                var teams = await _repositoryUoW.TeamRepository.GetByDepartmentId(departmentId);
+
+                _repositoryUoW.Commit();
+
+                return teams;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Log.Error($"Erro ao buscar times: {ex.Message}");
+                throw new InvalidOperationException("Erro ao buscar times", ex);
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
         public async Task<Result<TeamEntity>> Update(TeamEntity teamEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();

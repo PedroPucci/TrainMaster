@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
-using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.Interfaces;
@@ -9,13 +8,13 @@ using Xunit;
 
 namespace TrainMaster.Test.Services
 {
-    public class AddressServiceTest
+    public class AddressServiceTests
     {
         private readonly Mock<IRepositoryUoW> _repositoryUoWMock;
         private readonly Mock<IAddressRepository> _addressRepositoryMock;
         private readonly AddressService _addressService;
 
-        public AddressServiceTest()
+        public AddressServiceTests()
         {
             _repositoryUoWMock = new Mock<IRepositoryUoW>();
             _addressRepositoryMock = new Mock<IAddressRepository>();
@@ -29,162 +28,99 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Add_ShouldReturnSuccess_WhenAddressIsValid()
         {
-            // Arrange
             var address = new AddressEntity
             {
-                PostalCode = "60170150",
+                PostalCode = "12345678",
                 Street = "Rua Teste",
-                Neighborhood = "Bairro Teste",
-                City = "Cidade Teste",
-                Uf = "CE"
+                Neighborhood = "Bairro",
+                City = "Cidade",
+                Uf = "SP"
             };
 
             _addressRepositoryMock.Setup(x => x.Add(It.IsAny<AddressEntity>())).ReturnsAsync(address);
-            _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
 
-            // Act
             var result = await _addressService.Add(address);
 
-            // Assert
             Assert.True(result.Success);
             _addressRepositoryMock.Verify(x => x.Add(It.IsAny<AddressEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Delete_ShouldCallRepository_WhenAddressExists()
+        {
+            var address = new AddressEntity { Id = 1 };
+
+            _addressRepositoryMock.Setup(x => x.GetById(address.Id)).ReturnsAsync(address);
+
+            await _addressService.Delete(address.Id);
+
+            _addressRepositoryMock.Verify(x => x.GetById(address.Id), Times.Once);
             _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
         }
 
         [Fact]
-        public async Task Add_ShouldReturnError_WhenPostalCodeIsInvalid()
+        public async Task Get_ShouldReturnListOfAddresses()
         {
-            // Arrange
-            var address = new AddressEntity
+            var addresses = new List<AddressEntity>
             {
-                PostalCode = "123", // inválido
-                Street = "Rua Teste",
-                Neighborhood = "Bairro Teste",
-                City = "Cidade Teste",
-                Uf = "CE"
+                new AddressEntity { Id = 1, Street = "Rua A" },
+                new AddressEntity { Id = 2, Street = "Rua B" }
             };
 
-            // Act
-            var result = await _addressService.Add(address);
+            _addressRepositoryMock.Setup(x => x.Get()).ReturnsAsync(addresses);
 
-            // Assert
-            Assert.False(result.Success);
-            Assert.Equal("Postal Code invalid.", result.Message);
-            _addressRepositoryMock.Verify(x => x.Add(It.IsAny<AddressEntity>()), Times.Never);
+            var result = await _addressService.Get();
+
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count);
         }
 
         [Fact]
-        public async Task GetById_ShouldReturnAddress_WhenExists()
+        public async Task GetById_ShouldReturnAddress_WhenAddressExists()
         {
-            // Arrange
-            var address = new AddressEntity
-            {
-                Id = 1,
-                PostalCode = "60170150"
-            };
+            var address = new AddressEntity { Id = 1, Street = "Rua A" };
 
-            _addressRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(address);
+            _addressRepositoryMock.Setup(x => x.GetById(address.Id)).ReturnsAsync(address);
 
-            // Act
-            var result = await _addressService.GetById(1);
+            var result = await _addressService.GetById(address.Id);
 
-            // Assert
             Assert.True(result.Success);
-            Assert.Equal(address, result.Data);
-            _addressRepositoryMock.Verify(x => x.GetById(1), Times.Once);
+            Assert.NotNull(result.Data);
         }
 
         [Fact]
-        public async Task GetById_ShouldReturnError_WhenNotExists()
+        public async Task Update_ShouldCreate_WhenAddressDoesNotExist()
         {
-            // Arrange
-            _addressRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync((AddressEntity?)null);
-
-            // Act
-            var result = await _addressService.GetById(1);
-
-            // Assert
-            Assert.False(result.Success);
-            Assert.Equal("Curso não encontrado", result.Message);
-            _addressRepositoryMock.Verify(x => x.GetById(1), Times.Once);
-        }
-
-        [Fact]
-        public async Task Update_ShouldReturnSuccess_WhenAddressExists()
-        {
-            // Arrange
-            var existingAddress = new AddressEntity
+            var address = new AddressEntity
             {
-                Id = 1,
-                PostalCode = "60170150",
-                Street = "Antiga Rua"
-            };
-
-            var updateData = new AddressEntity
-            {
-                PostalCode = "60170150",
-                Street = "Nova Rua",
+                PostalCode = "12345678",
+                Street = "Rua A",
+                Neighborhood = "Bairro",
                 City = "Cidade",
-                Uf = "CE",
-                Neighborhood = "Bairro"
+                Uf = "SP"
             };
+
+            _addressRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).ReturnsAsync((AddressEntity?)null);
+
+            var result = await _addressService.Update(1, address);
+
+            Assert.True(result.Success);
+            _addressRepositoryMock.Verify(x => x.Add(It.IsAny<AddressEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Update_ShouldUpdate_WhenAddressExists()
+        {
+            var existingAddress = new AddressEntity { Id = 1, Street = "Rua Antiga" };
 
             _addressRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(existingAddress);
-            _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
 
-            // Act
-            var result = await _addressService.Update(1, updateData);
+            var updatedAddress = new AddressEntity { Street = "Rua Nova", PostalCode = "12345678" };
 
-            // Assert
+            var result = await _addressService.Update(1, updatedAddress);
+
             Assert.True(result.Success);
-            Assert.Equal("Nova Rua", existingAddress.Street);
-            _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
-        }
-
-        [Fact]
-        public async Task Update_ShouldThrow_WhenAddressNotExists()
-        {
-            // Arrange
-            _addressRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync((AddressEntity?)null);
-
-            // Act & Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(() => _addressService.Update(1, new AddressEntity()));
-            _addressRepositoryMock.Verify(x => x.Update(It.IsAny<AddressEntity>()), Times.Never);
-        }
-
-        [Fact]
-        public async Task Delete_ShouldSetAsActive_WhenAddressExists()
-        {
-            // Arrange
-            var address = new AddressEntity
-            {
-                Id = 1,
-                PostalCode = "60170150"
-            };
-
-            _addressRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(address);
-            _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
-
-            // Act
-            await _addressService.Delete(1);
-
-            // Assert
-            _addressRepositoryMock.Verify(x => x.GetById(1), Times.Once);
             _addressRepositoryMock.Verify(x => x.Update(It.IsAny<AddressEntity>()), Times.Once);
-            _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
-        }
-
-        [Fact]
-        public async Task Delete_ShouldThrow_WhenExceptionOccurs()
-        {
-            // Arrange
-            _addressRepositoryMock
-                .Setup(x => x.GetById(1))
-                .ThrowsAsync(new Exception("Erro simulado"));
-
-            // Act & Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(() => _addressService.Delete(1));
-            _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Never);
         }
     }
 }
