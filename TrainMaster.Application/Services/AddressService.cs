@@ -128,23 +128,33 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        public async Task<Result<AddressEntity>> Update(int id, AddressEntity addressEntity)
+        public async Task<Result<AddressEntity>> Update(int id,AddressEntity addressEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
                 var addressById = await _repositoryUoW.AddressRepository.GetById(id);
+
                 if (addressById is null)
-                    throw new InvalidOperationException("Error updating Address");
+                {
+                    // Se não existir, cria
+                    addressEntity.CreateDate = DateTime.UtcNow;
+                    addressEntity.ModificationDate = DateTime.UtcNow;
+                    addressEntity.PessoalProfileId = id;
+                    await _repositoryUoW.AddressRepository.Add(addressEntity);
+                }
+                else
+                {
+                    // Se existir, atualiza
+                    addressById.PostalCode = addressEntity.PostalCode;
+                    addressById.Street = addressEntity.Street;
+                    addressById.City = addressEntity.City;
+                    addressById.Uf = addressEntity.Uf;
+                    addressById.Neighborhood = addressEntity.Neighborhood;
+                    addressById.ModificationDate = DateTime.UtcNow;
 
-                addressById.PostalCode = addressEntity.PostalCode;
-                addressById.Street = addressEntity.Street;
-                addressById.City = addressEntity.City;
-                addressById.Uf = addressEntity.Uf;
-                addressById.Neighborhood = addressEntity.Neighborhood;
-                addressById.ModificationDate = DateTime.UtcNow;
-
-                _repositoryUoW.AddressRepository.Update(addressById);
+                    _repositoryUoW.AddressRepository.Update(addressById);
+                }
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
@@ -154,14 +164,15 @@ namespace TrainMaster.Application.Services
             catch (Exception ex)
             {
                 Log.Error(LogMessages.UpdatingErrorAddress(ex));
-                transaction.Rollback();
-                throw new InvalidOperationException("Error updating Address", ex);
+                await transaction.RollbackAsync();
+                throw new InvalidOperationException("Error creating or updating Address", ex);
             }
             finally
             {
-                transaction.Dispose();
+                await transaction.DisposeAsync();
             }
         }
+
 
         public async Task<Result<AddressEntity>> GetAddressByZipCode(string postalCode)
         {
