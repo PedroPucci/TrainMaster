@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<TrainMaster.Domain.Entity.TeamEntity>
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Times";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var hasRecords = Model != null && Model.Any();
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="project-description">

@@ -51,6 +51,14 @@ namespace TrainMaster.Application.ExtensionError
             return new Result<T> { Success = true, Data = data };
         }
 
-
+        public static Result<DepartmentEntity> OkDepartment(DepartmentEntity data)
+        {
+            return new Result<DepartmentEntity>
+            {
+                Success = true,
+                Message = "Departamento carregado com sucesso",
+                Data = data
+            };
+        }
     }
 }

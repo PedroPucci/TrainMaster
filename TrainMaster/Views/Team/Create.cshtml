@@ -1,7 +1,9 @@
 ﻿@model TrainMaster.Domain.Entity.TeamEntity
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Cadastrar Time";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="project-description">
@@ -14,6 +16,7 @@
 
     <div class="form-container">
         <form asp-action="Create" method="post" class="form-box">
+            <input type="hidden" name="userId" value="@userId" />
             <div class="form-group">
                 <label asp-for="Name">Nome</label>
                 <input name="Name" class="input-field" />

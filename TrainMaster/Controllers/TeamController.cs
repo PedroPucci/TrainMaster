@@ -35,20 +35,28 @@ namespace TrainMaster.Controllers
         [HttpGet("Create")]
         public IActionResult Create()
         {
+            var userId = HttpContext.Session.GetString("UserId");
+            ViewBag.UserId = userId;
             return View();
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(TeamEntity team)
+        public async Task<IActionResult> Create(int userId, TeamEntity team)
         {
             if (!ModelState.IsValid)
                 return View(team);
 
-            var result = await _serviceUoW.TeamService.Add(team);
-            if (!result.Success)
+            var resultId = await _serviceUoW.DepartmentService.GetByUserId(userId);
+
+            if (resultId is not null)
             {
-                ViewBag.ErrorMessage = result.Message;
-                return View(team);
+                team.DepartmentId = resultId.Data.Id;
+                var result = await _serviceUoW.TeamService.Add(team);
+                if (!result.Success)
+                {
+                    ViewBag.ErrorMessage = result.Message;
+                    return View(team);
+                }
             }
 
             return RedirectToAction("Index");
