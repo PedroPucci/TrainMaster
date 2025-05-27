@@ -135,6 +135,29 @@ namespace TrainMaster.Application.Services
             }
         }
 
+        public async Task<List<DepartmentEntity>> GetByUserListId(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                List<DepartmentEntity> departmentEntities = await _repositoryUoW.DepartmentRepository.GetByUserId(id);
+                _repositoryUoW.Commit();
+                return departmentEntities;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error to loading the list of departments: {ex.Message}");
+                transaction.Rollback();
+                throw new InvalidOperationException("Error to load the list of departments", ex);
+            }
+            finally
+            {
+                Log.Information("GetByUserId for Department executed.");
+                transaction.Dispose();
+            }
+        }
+
+
         public async Task<Result<DepartmentEntity>> Update(DepartmentEntity departmentEntity)
         {
             using var transaction = _repositoryUoW.BeginTransaction();

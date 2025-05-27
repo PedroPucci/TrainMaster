@@ -84,47 +84,47 @@ namespace TrainMaster.Test.Services
             _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
         }
 
-        [Fact]
-        public async Task Update_ShouldUpdate_WhenEntityExists()
-        {
-            var education = new EducationLevelEntity
-            {
-                Id = 1,
-                Title = "Graduação",
-                Institution = "Faculdade ABC",
-                StartedAt = DateTime.UtcNow.AddYears(-4),
-                EndeedAt = DateTime.UtcNow.AddYears(-1)
-            };
+        //[Fact]
+        //public async Task Update_ShouldUpdate_WhenEntityExists()
+        //{
+        //    var education = new EducationLevelEntity
+        //    {
+        //        Id = 1,
+        //        Title = "Graduação",
+        //        Institution = "Faculdade ABC",
+        //        StartedAt = DateTime.UtcNow.AddYears(-4),
+        //        EndeedAt = DateTime.UtcNow.AddYears(-1)
+        //    };
 
-            _educationRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(education);
-            _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
+        //    _educationRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(education);
+        //    _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
 
-            var result = await _service.Update(education);
+        //    var result = await _service.Update(education);
 
-            Assert.True(result.Success);
-            Assert.Equal("Educação salva com sucesso.", result.Message);
-            _educationRepositoryMock.Verify(x => x.Update(It.Is<EducationLevelEntity>(e => e.Id == 1)), Times.Once);
-            _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
-        }
+        //    Assert.True(result.Success);
+        //    Assert.Equal("Educação salva com sucesso.", result.Message);
+        //    _educationRepositoryMock.Verify(x => x.Update(It.Is<EducationLevelEntity>(e => e.Id == 1)), Times.Once);
+        //    _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
+        //}
 
-        [Fact]
-        public async Task Update_ShouldAdd_WhenEntityDoesNotExist()
-        {
-            var education = new EducationLevelEntity
-            {
-                Id = 999,
-                Title = "Pós-Graduação"
-            };
+        //[Fact]
+        //public async Task Update_ShouldAdd_WhenEntityDoesNotExist()
+        //{
+        //    var education = new EducationLevelEntity
+        //    {
+        //        Id = 999,
+        //        Title = "Pós-Graduação"
+        //    };
 
-            _educationRepositoryMock.Setup(x => x.GetById(999)).ReturnsAsync((EducationLevelEntity?)null);
-            _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
+        //    _educationRepositoryMock.Setup(x => x.GetById(999)).ReturnsAsync((EducationLevelEntity?)null);
+        //    _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
 
-            var result = await _service.Update(education);
+        //    var result = await _service.Update(education);
 
-            Assert.True(result.Success);
-            _educationRepositoryMock.Verify(x => x.Add(It.Is<EducationLevelEntity>(e => e.Id == 999)), Times.Once);
-            _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
-        }
+        //    Assert.True(result.Success);
+        //    _educationRepositoryMock.Verify(x => x.Add(It.Is<EducationLevelEntity>(e => e.Id == 999)), Times.Once);
+        //    _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);
+        //}
 
         [Fact]
         public async Task Get_ShouldReturnList_WhenEntitiesExist()

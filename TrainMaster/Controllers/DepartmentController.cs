@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TrainMaster.Application.UnitOfWork;
-using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
@@ -18,6 +18,8 @@ namespace TrainMaster.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var departamentos = await _serviceUoW.DepartmentService.Get();
             var totalDepartamentos = departamentos.Count();
             var departamentosPaginados = departamentos
@@ -28,6 +30,7 @@ namespace TrainMaster.Controllers
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalDepartamentos / pageSize);
+            //ViewBag.TotalCursos = totalDepartamentos;
 
             return View("Index", departamentosPaginados);
         }
@@ -35,6 +38,8 @@ namespace TrainMaster.Controllers
         [HttpGet("Create")]
         public IActionResult Create()
         {
+            var userId = HttpContext.Session.GetString("UserId");
+            ViewBag.UserId = userId;
             return View();
         }
 

@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<TrainMaster.Domain.Entity.DepartmentEntity>
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Departamentos";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var hasRecords = Model != null && Model.Any();
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="project-description">
@@ -13,7 +15,6 @@
             + Novo Departamento
         </button>
     </div>
-
     <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <thead>
             <tr style="background-color: #20b2aa; color: white;">

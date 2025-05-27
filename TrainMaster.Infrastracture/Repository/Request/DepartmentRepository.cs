@@ -46,6 +46,13 @@ namespace TrainMaster.Infrastracture.Repository.Request
             return await _context.DepartmentEntity.FirstOrDefaultAsync(department => department.Id == id);
         }
 
+        public async Task<List<DepartmentEntity>> GetByUserId(int userId)
+        {
+            return await _context.DepartmentEntity
+                .Where(d => d.UserId == userId)
+                .ToListAsync();
+        }
+
         public async Task<DepartmentEntity?> GetByName(string? name)
         {
             return await _context.DepartmentEntity.FirstOrDefaultAsync(department => department.Name == name);
