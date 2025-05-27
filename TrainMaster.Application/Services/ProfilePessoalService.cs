@@ -120,18 +120,28 @@ namespace TrainMaster.Application.Services
             try
             {
                 var pessoalProfileById = await _repositoryUoW.PessoalProfileRepository.GetById(id);
+
+                // Se não existir, cria
                 if (pessoalProfileById is null)
-                    throw new InvalidOperationException("Error updating Pessoal Profile");
+                {                    
+                    pessoalProfileEntity.ModificationDate = DateTime.UtcNow;
+                    pessoalProfileEntity.CreateDate = DateTime.UtcNow;
+                    pessoalProfileEntity.UserId = id;
+                    pessoalProfileEntity.DateOfBirth = DateTime.SpecifyKind(pessoalProfileEntity.DateOfBirth, DateTimeKind.Utc);
 
-                pessoalProfileById.FullName = pessoalProfileEntity.FullName;
-                pessoalProfileById.ModificationDate = DateTime.UtcNow;
-                pessoalProfileById.DateOfBirth = pessoalProfileEntity.DateOfBirth.Kind == DateTimeKind.Utc
-                    ? pessoalProfileEntity.DateOfBirth
-                    : pessoalProfileEntity.DateOfBirth.ToUniversalTime();
-                pessoalProfileById.Gender = pessoalProfileEntity.Gender;
-                pessoalProfileById.Marital = pessoalProfileEntity.Marital;
+                    await _repositoryUoW.PessoalProfileRepository.Add(pessoalProfileEntity);
+                }
+                else
+                {
+                    // Se existir, atualiza
+                    pessoalProfileById.FullName = pessoalProfileEntity.FullName;
+                    pessoalProfileById.ModificationDate = DateTime.UtcNow;
+                    pessoalProfileById.DateOfBirth = DateTime.SpecifyKind(pessoalProfileEntity.DateOfBirth, DateTimeKind.Utc);
+                    pessoalProfileById.Gender = pessoalProfileEntity.Gender;
+                    pessoalProfileById.Marital = pessoalProfileEntity.Marital;
 
-                _repositoryUoW.PessoalProfileRepository.Update(pessoalProfileById);
+                    _repositoryUoW.PessoalProfileRepository.Update(pessoalProfileById);
+                }
 
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
@@ -141,14 +151,15 @@ namespace TrainMaster.Application.Services
             catch (Exception ex)
             {
                 Log.Error(LogMessages.UpdatingErrorPessoalProfile(ex));
-                transaction.Rollback();
-                throw new InvalidOperationException("Error updating Pessoal Profile", ex);
+                await transaction.RollbackAsync();
+                throw new InvalidOperationException("Error creating or updating Pessoal Profile", ex);
             }
             finally
             {
-                transaction.Dispose();
+                await transaction.DisposeAsync();
             }
         }
+
 
         public async Task<Result<PessoalProfileEntity>> GetById(int id)
         {

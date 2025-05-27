@@ -19,7 +19,7 @@
 
     <div class="form-container">
         <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="form-box">
-            <input type="hidden" asp-for="Id" />
+            @* <input type="hidden" asp-for="Id" /> *@
 
             <div class="form-group">
                 <label asp-for="Name">Nome</label>

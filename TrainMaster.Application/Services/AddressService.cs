@@ -111,18 +111,16 @@ namespace TrainMaster.Application.Services
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var result = await _repositoryUoW.AddressRepository.GetById(id);
-                if (result == null)
-                    return Result<AddressEntity>.Error("Curso não encontrado");
+                var result = await _repositoryUoW.AddressRepository.GetById(id)
+                             ?? new AddressEntity();
 
                 _repositoryUoW.Commit();
-
                 return Result<AddressEntity>.Okedit(result);
             }
             catch (Exception ex)
             {
                 transaction.Rollback();
-                throw new InvalidOperationException("Erro ao buscar ednereço por ID", ex);
+                throw new InvalidOperationException("Erro ao buscar endereço por ID", ex);
             }
             finally
             {

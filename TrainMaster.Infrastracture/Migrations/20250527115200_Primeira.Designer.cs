@@ -12,8 +12,8 @@ using TrainMaster.Infrastracture.Connections;
 namespace TrainMaster.Infrastracture.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250508154214_primeira")]
-    partial class primeira
+    [Migration("20250527115200_Primeira")]
+    partial class Primeira
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,7 @@ namespace TrainMaster.Infrastracture.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("EndDate")

@@ -6,10 +6,10 @@ ${URL_LOGIN}          http://127.0.0.1:5215/Login
 ${URL_CURSOS}         http://127.0.0.1:5215/Cursos
 ${BROWSER}            chrome
 
-${CPF}                04052972384
+${cpf}                10286651334
 ${SENHA}              qwer12
 
-${INPUT_CPF}          //*[@id='Cpf']
+${INPUT_CPF}          //*[@id='cpf']
 ${INPUT_SENHA}        //*[@id='Password']
 ${BOTAO_ENTRAR}       //button[contains(text(),'Entrar')]
 
@@ -26,7 +26,7 @@ Abrir o navegador e fazer login
     Open Browser    ${URL_LOGIN}    ${BROWSER}
     Maximize Browser Window
     Sleep           2s
-    Input Text      ${INPUT_CPF}    ${CPF}
+    Input Text      ${INPUT_CPF}    ${cpf}
     Input Text      ${INPUT_SENHA}  ${SENHA}
     Click Button    ${BOTAO_ENTRAR}
     Sleep           2s

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Entity;
 
@@ -31,8 +32,10 @@ public class PerfilController : Controller
     [HttpGet("Edit/{id}")]
     public async Task<IActionResult> Edit()
     {
-        var userId = HttpContext.Session.GetString("UserId");
-        ViewBag.UserId = userId;
+        //var userId = HttpContext.Session.GetString("UserId");
+        //ViewBag.UserId = userId;
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
 
         int id = Convert.ToInt32(userId);
 
@@ -47,20 +50,20 @@ public class PerfilController : Controller
 
 
     [HttpPost("Edit/{id}")]
-    public async Task<IActionResult> Edit(int id, ProfessionalProfileEntity model)
+    public async Task<IActionResult> Edit(int id, PessoalProfileEntity model)
     {
         if (!ModelState.IsValid)
-            return View("~/Views/PerfilProfessional/Professional.cshtml", model);
+            return View("~/Views/Perfil/Pessoal.cshtml", model);
 
-        var result = await _serviceUoW.ProfileProfessionalService.Update(id, model);
+        var result = await _serviceUoW.ProfilePessoalService.Update(id, model);
 
         if (!result.Success)
         {
             ViewBag.ErrorMessage = result.Message;
-            return View("~/Views/PerfilProfessional/Professional.cshtml", model);
+            return View("~/Views/Perfil/Pessoal.cshtml", model);
         }
 
-        ViewBag.Sucesso = "Perfil profissional atualizado com sucesso!";
-        return View("~/Views/PerfilProfessional/Professional.cshtml", model);
+        ViewBag.Sucesso = "Perfil pessoal atualizado com sucesso!";
+        return View("~/Views/Perfil/Pessoal.cshtml", model);
     }
 }

@@ -79,6 +79,7 @@ namespace TrainMaster.Infrastracture.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("EndDate")

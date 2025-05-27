@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using TrainMaster.Extensions;
 using TrainMaster.Extensions.ExtensionsLogs;
 using TrainMaster.Infrastracture.Connections;
@@ -19,6 +20,16 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Index";
+        options.LogoutPath = "/Login/Logout";
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    });
+
+builder.Services.AddAuthorization();
 
 LogExtension.InitializeLogger();
 var loggerSerialLog = LogExtension.GetLogger();
@@ -41,6 +52,7 @@ app.UseCors("CorsPolicy");
 app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 
 //app.MapControllers();

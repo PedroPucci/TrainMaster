@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Dto;
 
@@ -24,22 +27,35 @@ namespace TrainMaster.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "Os campos CPF e email estão incorretos.");
+                ModelState.AddModelError(string.Empty, "Os campos CPF e senha estão incorretos.");
                 return View(login);
             }
 
             var result = await _unitOfWork.AuthService.Login(login.Cpf, login.Password);
+
             if (!result.Success)
             {
-                ModelState.AddModelError(string.Empty, "Os campos CPF e email estão incorretos.");
+                ModelState.AddModelError(string.Empty, "Os campos CPF e senha estão incorretos.");
                 return View(login);
             }
 
-            HttpContext.Session.SetString("UserId", result.Data.Id.ToString());
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString()),
+            };
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
 
-            var userId = HttpContext.Session.GetString("UserId");
-            ViewBag.UserId = userId;
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpGet()]
@@ -64,13 +80,6 @@ namespace TrainMaster.Controllers
 
             ViewBag.NovaSenha = result.Data;
             return View("ForgotPassword", dto);
-        }
-
-        [HttpGet]
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Login");
         }
     }
 }
