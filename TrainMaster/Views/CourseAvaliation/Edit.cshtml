@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model TrainMaster.Domain.Entity.CourseAvaliationEntity
+@{
+    ViewData["Title"] = "Editar Avaliação";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var courses = ViewBag.Courses as List<SelectListItem>;
+}
+
+<div class="project-description">
+    <h2 style="color: #20b2aa; margin-bottom: 20px;">Editar Avaliação de Curso</h2>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="error-message" style="color:red;">@ViewBag.ErrorMessage</div>
+    }
+
+    <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+@*             <div class="form-group" style="margin-bottom: 15px;">
+                <label>Curso</label>
+                @Html.DropDownListFor(model => model.CourseId, courses, "-- Selecione um Curso --", new
+                    {
+                        @class = "form-control",
+                        style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
+                    })
+                <span asp-validation-for="CourseId" class="text-danger"></span>
+            </div> *@
+            <!-- no lugar do input de CourseId -->
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Curso</label>
+@*                 @Html.DropDownListFor(model => model.CourseId, courses, "-- Selecione um Curso --", new
+                    {
+                        @class = "form-control",
+                        style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
+                    }) *@
+                @Html.DropDownListFor(model => model.CourseId, courses ?? new List<SelectListItem>(), "-- Selecione um Curso --", new
+                    {
+                        @class = "form-control",
+                        style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
+                    })
+                <span asp-validation-for="CourseId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Nota (1 a 5)</label>
+                <input name="Rating" type="number" min="1" max="5" value="@Model.Rating" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Comentário</label>
+                @Html.TextAreaFor(model => model.Comment, new { @class = "form-control", rows = "3", style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" })
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Data da Avaliação</label>
+                <input name="ReviewDate" type="date" value="@Model.ReviewDate.ToString("yyyy-MM-dd")" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="ReviewDate" class="text-danger"></span>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn" style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Salvar</button>
+
+                <a href="/avaliacoes/index"
+                   class="btn"
+                   style="background-color: #ccc; color: #333; padding: 10px 20px; border-radius: 20px; font-weight: bold; text-decoration: none;">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .text-vermelho {
+        color: red;
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

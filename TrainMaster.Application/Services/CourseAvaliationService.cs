@@ -94,7 +94,7 @@ namespace TrainMaster.Application.Services
 
                 existing.Rating = entity.Rating;
                 existing.Comment = entity.Comment;
-                existing.ReviewDate = entity.ReviewDate;
+                existing.ReviewDate = DateTime.SpecifyKind(entity.ReviewDate, DateTimeKind.Utc);
                 existing.ModificationDate = DateTime.UtcNow;
 
                 _repositoryUoW.CourseAvaliationRepository.Update(existing);
