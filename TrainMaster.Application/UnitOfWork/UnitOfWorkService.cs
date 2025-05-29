@@ -1,4 +1,5 @@
 ﻿using TrainMaster.Application.Services;
+using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 using TrainMaster.Infrastracture.Security.Cryptography;
 using TrainMaster.Infrastracture.Security.Token.Access;
@@ -21,6 +22,7 @@ namespace TrainMaster.Application.UnitOfWork
         private DepartmentService departmentService;
         private TeamService teamService;
         private HistoryPasswordService historyPasswordService;
+        private CourseAvaliationService courseAvaliationService;
 
         public UnitOfWorkService(IRepositoryUoW repositoryUoW, TokenService tokenService, BCryptoAlgorithm crypto)
         {
@@ -126,6 +128,16 @@ namespace TrainMaster.Application.UnitOfWork
                 if (userService is null)
                     userService = new UserService(_repositoryUoW);
                 return userService;
+            }
+        }
+
+        public CourseAvaliationService CourseAvaliationService
+        {
+            get
+            {
+                if (courseAvaliationService is null)
+                    courseAvaliationService = new CourseAvaliationService(_repositoryUoW);
+                return courseAvaliationService;
             }
         }
     }

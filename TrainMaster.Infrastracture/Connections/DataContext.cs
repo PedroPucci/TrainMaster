@@ -27,6 +27,7 @@ namespace TrainMaster.Infrastracture.Connections
         public DbSet<DepartmentEntity> DepartmentEntity { get; set; }
         public DbSet<TeamEntity> TeamEntity { get; set; }
         public DbSet<HistoryPasswordEntity> HistoryPasswordEntity { get; set; }
+        public DbSet<CourseAvaliationEntity> CourseAvaliationEntity { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

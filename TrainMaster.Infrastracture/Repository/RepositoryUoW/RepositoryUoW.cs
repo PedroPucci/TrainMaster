@@ -19,6 +19,7 @@ namespace TrainMaster.Infrastracture.Repository.RepositoryUoW
         private IDepartmentRepository _departmentRepository = null;
         private ITeamRepository _teamRepository = null;
         private IHistoryPasswordRepository _historyPasswordRepository = null;
+        private ICourseAvaliationRepository _courseAvaliationRepository = null;
 
         public RepositoryUoW(DataContext context)
         {
@@ -130,6 +131,18 @@ namespace TrainMaster.Infrastracture.Repository.RepositoryUoW
                     _educationLevelRepository = new EducationLevelRepository(_context);
                 }
                 return _educationLevelRepository;
+            }
+        }
+
+        public ICourseAvaliationRepository CourseAvaliationRepository
+        {
+            get
+            {
+                if (_courseAvaliationRepository is null)
+                {
+                    _courseAvaliationRepository = new CourseAvaliationRepository(_context);
+                }
+                return _courseAvaliationRepository;
             }
         }
 
