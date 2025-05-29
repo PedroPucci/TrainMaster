@@ -28,8 +28,9 @@ namespace TrainMaster.Infrastracture.Repository.Request
         public async Task<List<CourseAvaliationEntity>> Get()
         {
             return await _context.CourseAvaliationEntity
+                .Include(a => a.Course)
                 .AsNoTracking()
-                .OrderBy(a => a.Id)
+                .OrderBy(a => a.ReviewDate)
                 .ToListAsync();
         }
 
