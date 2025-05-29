@@ -4,6 +4,7 @@
     ViewData["Title"] = "Cadastrar Avaliação";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var courses = ViewBag.Courses as List<SelectListItem>;
 }
 
 <div class="project-description">
@@ -18,7 +19,11 @@
         <form asp-action="Create" method="post">
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="CourseId">Curso</label>
-                <input name="CourseId" class="form-control" type="number" placeholder="ID do Curso" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                @Html.DropDownListFor(model => model.CourseId, courses, "-- Selecione um Curso --", new
+                    {
+                        @class = "form-control",
+                        style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
+                    })
                 <span asp-validation-for="CourseId" class="text-danger"></span>
             </div>
 

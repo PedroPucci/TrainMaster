@@ -12,7 +12,7 @@ using TrainMaster.Infrastracture.Connections;
 namespace TrainMaster.Infrastracture.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250529121234_First")]
+    [Migration("20250529125736_First")]
     partial class First
     {
         /// <inheritdoc />

@@ -21,6 +21,7 @@ namespace TrainMaster.Application.Services
             try
             {                
                 entity.ModificationDate = DateTime.UtcNow;
+                entity.ReviewDate = DateTime.SpecifyKind(entity.ReviewDate, DateTimeKind.Utc);
 
                 await _repositoryUoW.CourseAvaliationRepository.Add(entity);
                 await _repositoryUoW.SaveAsync();

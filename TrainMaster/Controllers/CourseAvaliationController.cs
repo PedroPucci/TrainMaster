@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Entity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TrainMaster.Controllers
 {
@@ -14,9 +15,40 @@ namespace TrainMaster.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        //[HttpGet("create")]
+        //public IActionResult Create()
+        //{
+        //    return View("Create");
+        //}
+
+        //[HttpPost("create")]
+        //public async Task<IActionResult> Create(CourseAvaliationEntity entity)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return View("Create", entity);
+
+        //    var result = await _unitOfWork.CourseAvaliationService.Add(entity);
+
+        //    if (!result.Success)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "Erro ao registrar avaliação.");
+        //        return View("Create", entity);
+        //    }
+
+        //    return RedirectToAction("Index");
+        //}
+
         [HttpGet("create")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var courses = await _unitOfWork.CourseService.Get();
+
+            ViewBag.Courses = courses.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
             return View("Create");
         }
 
@@ -24,18 +56,33 @@ namespace TrainMaster.Controllers
         public async Task<IActionResult> Create(CourseAvaliationEntity entity)
         {
             if (!ModelState.IsValid)
+            {
+                await CarregarCursosAsync();
                 return View("Create", entity);
+            }
 
             var result = await _unitOfWork.CourseAvaliationService.Add(entity);
 
             if (!result.Success)
             {
+                await CarregarCursosAsync();
                 ModelState.AddModelError(string.Empty, "Erro ao registrar avaliação.");
                 return View("Create", entity);
             }
 
             return RedirectToAction("Index");
         }
+
+        private async Task CarregarCursosAsync()
+        {
+            var courses = await _unitOfWork.CourseService.Get();
+            ViewBag.Courses = courses.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+        }
+
 
         [HttpGet("index")]
         public async Task<IActionResult> Index()
