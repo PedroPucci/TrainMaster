@@ -12,8 +12,8 @@ using TrainMaster.Infrastracture.Connections;
 namespace TrainMaster.Infrastracture.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250527115200_Primeira")]
-    partial class Primeira
+    [Migration("20250529121234_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,80 @@ namespace TrainMaster.Infrastracture.Migrations
                         .IsUnique();
 
                     b.ToTable("AddressEntity");
+                });
+
+            modelBuilder.Entity("TrainMaster.Domain.Entity.CourseActivitieEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("MaxScore")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseActivitieEntity");
+                });
+
+            modelBuilder.Entity("TrainMaster.Domain.Entity.CourseAvaliationEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ReviewDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseAvaliationEntity");
                 });
 
             modelBuilder.Entity("TrainMaster.Domain.Entity.CourseEntity", b =>
@@ -376,6 +450,28 @@ namespace TrainMaster.Infrastracture.Migrations
                     b.Navigation("PessoalProfile");
                 });
 
+            modelBuilder.Entity("TrainMaster.Domain.Entity.CourseActivitieEntity", b =>
+                {
+                    b.HasOne("TrainMaster.Domain.Entity.CourseEntity", "Course")
+                        .WithMany("Activities")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("TrainMaster.Domain.Entity.CourseAvaliationEntity", b =>
+                {
+                    b.HasOne("TrainMaster.Domain.Entity.CourseEntity", "Course")
+                        .WithMany("Avaliations")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("TrainMaster.Domain.Entity.CourseEntity", b =>
                 {
                     b.HasOne("TrainMaster.Domain.Entity.UserEntity", "User")
@@ -451,6 +547,13 @@ namespace TrainMaster.Infrastracture.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("TrainMaster.Domain.Entity.CourseEntity", b =>
+                {
+                    b.Navigation("Activities");
+
+                    b.Navigation("Avaliations");
                 });
 
             modelBuilder.Entity("TrainMaster.Domain.Entity.DepartmentEntity", b =>

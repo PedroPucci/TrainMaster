@@ -146,6 +146,35 @@ namespace TrainMaster.Infrastracture.Connections
                       .HasForeignKey(t => t.DepartmentId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
+
+            modelBuilder.Entity<CourseAvaliationEntity>(entity =>
+            {
+                entity.HasKey(a => a.Id);
+                entity.Property(a => a.Rating).IsRequired();
+                entity.Property(a => a.Comment).HasColumnType("text");
+                entity.Property(a => a.ReviewDate).IsRequired();
+
+                entity.HasOne(a => a.Course)
+                      .WithMany(c => c.Avaliations)
+                      .HasForeignKey(a => a.CourseId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<CourseActivitieEntity>(entity =>
+            {
+                entity.HasKey(a => a.Id);
+                entity.Property(a => a.Title).IsRequired().HasMaxLength(255);
+                entity.Property(a => a.Description).HasColumnType("text");
+                entity.Property(a => a.StartDate).IsRequired();
+                entity.Property(a => a.DueDate).IsRequired();
+                entity.Property(a => a.MaxScore).IsRequired();
+
+                entity.HasOne(a => a.Course)
+                      .WithMany(c => c.Activities)
+                      .HasForeignKey(a => a.CourseId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
         }
     }
 }

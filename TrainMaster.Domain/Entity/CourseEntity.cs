@@ -17,5 +17,10 @@ namespace TrainMaster.Domain.Entity
         [JsonIgnore]
         public UserEntity? User { get; set; }
         public int UserId { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<CourseAvaliationEntity> Avaliations { get; set; } = new List<CourseAvaliationEntity>();
+        [JsonIgnore]
+        public virtual ICollection<CourseActivitieEntity> Activities { get; set; } = new List<CourseActivitieEntity>();
     }
 }

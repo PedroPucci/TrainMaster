@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TrainMaster.Infrastracture.Migrations
 {
     /// <inheritdoc />
-    public partial class Primeira : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -153,6 +153,56 @@ namespace TrainMaster.Infrastracture.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CourseActivitieEntity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    MaxScore = table.Column<int>(type: "integer", nullable: false),
+                    CourseId = table.Column<int>(type: "integer", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ModificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseActivitieEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseActivitieEntity_CourseEntity_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "CourseEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseAvaliationEntity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Rating = table.Column<int>(type: "integer", nullable: false),
+                    Comment = table.Column<string>(type: "text", nullable: true),
+                    ReviewDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CourseId = table.Column<int>(type: "integer", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ModificationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseAvaliationEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseAvaliationEntity_CourseEntity_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "CourseEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TeamEntity",
                 columns: table => new
                 {
@@ -234,6 +284,16 @@ namespace TrainMaster.Infrastracture.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CourseActivitieEntity_CourseId",
+                table: "CourseActivitieEntity",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseAvaliationEntity_CourseId",
+                table: "CourseAvaliationEntity",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CourseEntity_UserId",
                 table: "CourseEntity",
                 column: "UserId");
@@ -280,7 +340,10 @@ namespace TrainMaster.Infrastracture.Migrations
                 name: "AddressEntity");
 
             migrationBuilder.DropTable(
-                name: "CourseEntity");
+                name: "CourseActivitieEntity");
+
+            migrationBuilder.DropTable(
+                name: "CourseAvaliationEntity");
 
             migrationBuilder.DropTable(
                 name: "EducationLevelEntity");
@@ -293,6 +356,9 @@ namespace TrainMaster.Infrastracture.Migrations
 
             migrationBuilder.DropTable(
                 name: "PessoalProfileEntity");
+
+            migrationBuilder.DropTable(
+                name: "CourseEntity");
 
             migrationBuilder.DropTable(
                 name: "ProfessionalProfileEntity");
