@@ -1,0 +1,121 @@
+﻿using Serilog;
+using TrainMaster.Application.ExtensionError;
+using TrainMaster.Application.Services.Interfaces;
+using TrainMaster.Domain.Entity;
+using TrainMaster.Infrastracture.Repository.RepositoryUoW;
+using TrainMaster.Shared.Logging;
+using TrainMaster.Shared.Validator;
+
+namespace TrainMaster.Application.Services
+{
+    public class CourseActivitieService : ICourseActivitieService
+    {
+        private readonly IRepositoryUoW _repositoryUoW;
+
+        public CourseActivitieService(IRepositoryUoW repositoryUoW)
+        {
+            _repositoryUoW = repositoryUoW;
+        }
+
+        public async Task<Result<CourseActivitieEntity>> Add(CourseActivitieEntity entity)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                entity.ModificationDate = DateTime.UtcNow;
+
+                await _repositoryUoW.CourseActivitieRepository.Add(entity);
+                await _repositoryUoW.SaveAsync();
+                await transaction.CommitAsync();
+
+                return Result<CourseActivitieEntity>.Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Erro ao adicionar atividade: {ex.Message}");
+                transaction.Rollback();
+                return Result<CourseActivitieEntity>.Error("Erro ao adicionar atividade.");
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
+        public async Task<List<CourseActivitieEntity>> GetAll()
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var list = await _repositoryUoW.CourseActivitieRepository.Get();
+                _repositoryUoW.Commit();
+                return list;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Erro ao listar atividades: {ex.Message}");
+                transaction.Rollback();
+                throw new InvalidOperationException("Erro ao listar atividades.");
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
+        public async Task<CourseActivitieEntity?> GetById(int id)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var entity = await _repositoryUoW.CourseActivitieRepository.GetById(id);
+                _repositoryUoW.Commit();
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Erro ao buscar atividade por ID: {ex.Message}");
+                transaction.Rollback();
+                throw new InvalidOperationException("Erro ao buscar atividade.");
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+
+        public async Task<Result<CourseActivitieEntity>> Update(CourseActivitieEntity entity)
+        {
+            using var transaction = _repositoryUoW.BeginTransaction();
+            try
+            {
+                var existing = await _repositoryUoW.CourseActivitieRepository.GetById(entity.Id);
+                if (existing == null)
+                    return Result<CourseActivitieEntity>.Error("Atividade não encontrada.");
+
+                existing.Title = entity.Title;
+                existing.Description = entity.Description;
+                existing.StartDate = entity.StartDate;
+                existing.DueDate = entity.DueDate;
+                existing.MaxScore = entity.MaxScore;
+                existing.ModificationDate = DateTime.UtcNow;
+
+                _repositoryUoW.CourseActivitieRepository.Update(existing);
+                await _repositoryUoW.SaveAsync();
+                await transaction.CommitAsync();
+
+                return Result<CourseActivitieEntity>.Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Erro ao atualizar atividade: {ex.Message}");
+                transaction.Rollback();
+                return Result<CourseActivitieEntity>.Error("Erro ao atualizar atividade.");
+            }
+            finally
+            {
+                transaction.Dispose();
+            }
+        }
+    }
+}

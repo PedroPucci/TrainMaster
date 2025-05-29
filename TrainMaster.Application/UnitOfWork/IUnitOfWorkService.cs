@@ -15,5 +15,6 @@ namespace TrainMaster.Application.UnitOfWork
         TeamService TeamService { get; }
         HistoryPasswordService HistoryPasswordService { get; }
         CourseAvaliationService CourseAvaliationService { get; }
+        CourseActivitieService CourseActivitieService { get; }
     }
 }
