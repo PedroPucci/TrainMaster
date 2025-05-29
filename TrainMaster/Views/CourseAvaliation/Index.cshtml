@@ -1,0 +1,61 @@
+﻿@model IEnumerable<TrainMaster.Domain.Entity.CourseAvaliationEntity>
+@{
+    ViewData["Title"] = "Avaliações de Cursos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hasRecords = Model != null && Model.Any();
+}
+
+<div class="project-description">
+    <h2>Avaliações de Cursos</h2>
+    <div class="actions" style="margin-bottom: 10px;">
+        <button onclick="location.href='/avaliacoes/create'"
+                style="background-color: #20b2aa; color: white; padding: 8px 16px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+            + Nova Avaliação
+        </button>
+    </div>
+    <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background-color: #20b2aa; color: white;">
+                <th style="padding: 10px; width: 25%; text-align: left;">Curso</th>
+                <th style="padding: 10px; width: 10%; text-align: left;">Nota</th>
+                <th style="padding: 10px; width: 35%; text-align: left;">Comentário</th>
+                <th style="padding: 10px; width: 20%; text-align: left;">Data Avaliação</th>
+                <th style="padding: 10px; width: 10%; text-align: center;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (hasRecords)
+            {
+                foreach (var avaliacao in Model)
+                {
+                    <tr>
+                        <td>@avaliacao.Course?.Name</td>
+                        <td>@avaliacao.Rating</td>
+                        <td>
+                            @(
+                                string.IsNullOrWhiteSpace(avaliacao.Comment)
+                                ? "-"
+                                : string.Join(" ", avaliacao.Comment.Split(' ').Take(10)) + (avaliacao.Comment.Split(' ').Length > 10 ? "..." : "")
+                                )
+                        </td>
+                        <td>@avaliacao.ReviewDate.ToString("dd/MM/yyyy")</td>
+                        <td style="text-align: center;">
+                            <button onclick="location.href='/avaliacoes/edit/@avaliacao.Id'"
+                                    style="background-color: #20b2aa; color: white; padding: 6px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                                Editar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 20px; color: #999;">
+                        Nenhuma avaliação encontrada.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

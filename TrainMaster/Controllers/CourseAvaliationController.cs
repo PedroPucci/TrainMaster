@@ -4,7 +4,7 @@ using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
 {
-    [Route("avaliacoes")]
+    [Route("Avaliacoes")]
     public class CourseAvaliationController : Controller
     {
         private readonly IUnitOfWorkService _unitOfWork;
