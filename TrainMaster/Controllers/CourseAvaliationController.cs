@@ -35,6 +35,7 @@ namespace TrainMaster.Controllers
             if (!ModelState.IsValid)
             {
                 await CarregarCursosAsync();
+                ViewBag.ErrorMessage = "Todos os campos devem ser preenchidos.";
                 return View("Create", entity);
             }
 

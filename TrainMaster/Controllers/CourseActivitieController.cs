@@ -15,11 +15,6 @@ namespace TrainMaster.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        //[HttpGet("create")]
-        //public IActionResult Create()
-        //{
-        //    return View("Create");
-        //}
         [HttpGet("create")]
         public async Task<IActionResult> Create()
         {
@@ -33,28 +28,13 @@ namespace TrainMaster.Controllers
             return View("Create");
         }
 
-        //[HttpPost("create")]
-        //public async Task<IActionResult> Create(CourseActivitieEntity model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return View("Create", model);
-
-        //    var result = await _unitOfWork.CourseActivitieService.Add(model);
-
-        //    if (!result.Success)
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Erro ao cadastrar atividade.");
-        //        return View("Create", model);
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
         [HttpPost("create")]
         public async Task<IActionResult> Create(CourseActivitieEntity entity)
         {
             if (!ModelState.IsValid)
             {
                 await LoadCoursesAsync();
+                ViewBag.ErrorMessage = "Todos os campos devem ser preenchidos.";
                 return View("Create", entity);
             }
 

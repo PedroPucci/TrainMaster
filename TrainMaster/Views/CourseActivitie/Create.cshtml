@@ -12,11 +12,11 @@
 
     @if (ViewBag.ErrorMessage != null)
     {
-        <div class="error-message" style="color:red;">@ViewBag.ErrorMessage</div>
+        <div class="alert">@ViewBag.ErrorMessage</div>
     }
 
-    <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
-        <form asp-action="Create" method="post">
+    <div class="form-container">
+        <form asp-action="Create" method="post" class="form-box">
             <div class="form-group" style="margin-bottom: 15px;">
                 <label>Curso</label>
                 @Html.DropDownListFor(model => model.CourseId, courses ?? new List<SelectListItem>(), "-- Selecione um Curso --", new
@@ -24,17 +24,19 @@
                         @class = "form-control",
                         style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
                     })
-                <span asp-validation-for="CourseId" class="text-danger"></span>
+                @* <span asp-validation-for="CourseId" class="text-danger"></span> *@
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">
                 <label>Título</label>
-                @Html.TextBoxFor(model => model.Title, new
+@*                 @Html.TextBoxFor(model => model.Title, new
                     {
                         @class = "form-control",
                         style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
-                    })
-                <span asp-validation-for="Title" class="text-danger"></span>
+                    }) *@
+                @Html.TextBoxFor(model => model.Title, new { @class = "input-field" })
+                @* <span asp-validation-for="Title" class="text-danger"></span> *@
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">
@@ -45,7 +47,8 @@
                         rows = "3",
                         style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
                     })
-                <span asp-validation-for="Description" class="text-danger"></span>
+                @* <span asp-validation-for="Description" class="text-danger"></span> *@
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">

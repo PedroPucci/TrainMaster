@@ -12,7 +12,7 @@
 
     @if (ViewBag.ErrorMessage != null)
     {
-        <div style="color:red; margin-bottom:10px">@ViewBag.ErrorMessage</div>
+        <div class="alert">@ViewBag.ErrorMessage</div>
     }
 
     <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
@@ -24,25 +24,27 @@
                         @class = "form-control",
                         style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
                     })
-                <span asp-validation-for="CourseId" class="text-danger"></span>
+                @* <span asp-validation-for="CourseId" class="text-danger"></span> *@
+                @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="Rating">Nota (1 a 5)</label>
                 <input name="Rating" type="number" min="1" max="5" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
+                @* <span asp-validation-for="Rating" class="text-danger"></span> *@
+                @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="Comment">Comentário</label>
                 <textarea name="Comment" class="form-control" rows="3" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
-                <span asp-validation-for="Comment" class="text-danger"></span>
+                @* <span asp-validation-for="Comment" class="text-danger"></span> *@
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label for="ReviewDate">Data da Avaliação</label>
                 <input name="ReviewDate" type="date" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
-                <span asp-validation-for="ReviewDate" class="text-danger"></span>
+                @* <span asp-validation-for="ReviewDate" class="text-danger"></span> *@
             </div>
 
             <div class="button-group">

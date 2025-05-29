@@ -15,25 +15,6 @@ namespace TrainMaster.Controllers
             _serviceUoW = unitOfWorkService;
         }
 
-        //[HttpGet("Index")]
-        //public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
-        //{
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        //    var departamentos = await _serviceUoW.DepartmentService.Get();
-        //    var totalDepartamentos = departamentos.Count();
-        //    var departamentosPaginados = departamentos
-        //        .OrderBy(d => d.Name)
-        //        .Skip((page - 1) * pageSize)
-        //        .Take(pageSize)
-        //        .ToList();
-
-        //    ViewBag.CurrentPage = page;
-        //    ViewBag.TotalPages = (int)Math.Ceiling((double)totalDepartamentos / pageSize);
-        //    //ViewBag.TotalCursos = totalDepartamentos;
-
-        //    return View("Index", departamentosPaginados);
-        //}
         [HttpGet("Index")]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
@@ -44,7 +25,7 @@ namespace TrainMaster.Controllers
             if (!result.Success || result.Data == null)
             {
                 ViewBag.ErrorMessage = result.Message ?? "Nenhum departamento encontrado.";
-                return View("Index", new List<DepartmentEntity>()); // Retorna lista vazia
+                return View("Index", new List<DepartmentEntity>());
             }
 
             var departamentos = new List<DepartmentEntity> { result.Data };
