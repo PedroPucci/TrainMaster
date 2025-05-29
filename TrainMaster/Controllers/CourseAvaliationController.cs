@@ -91,6 +91,7 @@ namespace TrainMaster.Controllers
             if (existing == null)
                 return NotFound();
 
+            existing.CourseId = model.CourseId;
             existing.Rating = model.Rating;
             existing.Comment = model.Comment;
             existing.ReviewDate = model.ReviewDate;

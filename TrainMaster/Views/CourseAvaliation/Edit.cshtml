@@ -16,23 +16,8 @@
 
     <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
         <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
-@*             <div class="form-group" style="margin-bottom: 15px;">
-                <label>Curso</label>
-                @Html.DropDownListFor(model => model.CourseId, courses, "-- Selecione um Curso --", new
-                    {
-                        @class = "form-control",
-                        style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
-                    })
-                <span asp-validation-for="CourseId" class="text-danger"></span>
-            </div> *@
-            <!-- no lugar do input de CourseId -->
             <div class="form-group" style="margin-bottom: 15px;">
                 <label>Curso</label>
-@*                 @Html.DropDownListFor(model => model.CourseId, courses, "-- Selecione um Curso --", new
-                    {
-                        @class = "form-control",
-                        style = "width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
-                    }) *@
                 @Html.DropDownListFor(model => model.CourseId, courses ?? new List<SelectListItem>(), "-- Selecione um Curso --", new
                     {
                         @class = "form-control",
