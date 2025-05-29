@@ -3,8 +3,6 @@ using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
-using TrainMaster.Shared.Logging;
-using TrainMaster.Shared.Validator;
 
 namespace TrainMaster.Application.Services
 {
@@ -23,6 +21,8 @@ namespace TrainMaster.Application.Services
             try
             {
                 entity.ModificationDate = DateTime.UtcNow;
+                entity.StartDate = DateTime.SpecifyKind(entity.StartDate, DateTimeKind.Utc);
+                entity.DueDate = DateTime.SpecifyKind(entity.DueDate, DateTimeKind.Utc);
 
                 await _repositoryUoW.CourseActivitieRepository.Add(entity);
                 await _repositoryUoW.SaveAsync();

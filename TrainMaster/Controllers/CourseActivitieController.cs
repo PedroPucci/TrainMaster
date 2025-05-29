@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
 {
-    [Route("atividades")]
+    [Route("Atividades")]
     public class CourseActivitieController : Controller
     {
         private readonly IUnitOfWorkService _unitOfWork;
@@ -14,27 +15,69 @@ namespace TrainMaster.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        //[HttpGet("create")]
+        //public IActionResult Create()
+        //{
+        //    return View("Create");
+        //}
         [HttpGet("create")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var courses = await _unitOfWork.CourseService.Get();
+            ViewBag.Courses = courses.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
             return View("Create");
         }
 
+        //[HttpPost("create")]
+        //public async Task<IActionResult> Create(CourseActivitieEntity model)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return View("Create", model);
+
+        //    var result = await _unitOfWork.CourseActivitieService.Add(model);
+
+        //    if (!result.Success)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "Erro ao cadastrar atividade.");
+        //        return View("Create", model);
+        //    }
+
+        //    return RedirectToAction("Index");
+        //}
         [HttpPost("create")]
-        public async Task<IActionResult> Create(CourseActivitieEntity model)
+        public async Task<IActionResult> Create(CourseActivitieEntity entity)
         {
             if (!ModelState.IsValid)
-                return View("Create", model);
+            {
+                await LoadCoursesAsync();
+                return View("Create", entity);
+            }
 
-            var result = await _unitOfWork.CourseActivitieService.Add(model);
+            var result = await _unitOfWork.CourseActivitieService.Add(entity);
 
             if (!result.Success)
             {
-                ModelState.AddModelError(string.Empty, "Erro ao cadastrar atividade.");
-                return View("Create", model);
+                await LoadCoursesAsync();
+                ViewBag.ErrorMessage = "Erro ao registrar atividade.";
+                return View("Create", entity);
             }
 
             return RedirectToAction("Index");
+        }
+
+        private async Task LoadCoursesAsync()
+        {
+            var courses = await _unitOfWork.CourseService.Get();
+            ViewBag.Courses = courses.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
         }
 
         [HttpGet("index")]
