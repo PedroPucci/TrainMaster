@@ -70,6 +70,13 @@ namespace TrainMaster.Controllers
         [HttpGet("edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
+            var courses = await _unitOfWork.CourseService.Get();
+            ViewBag.Courses = courses.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
             var atividade = await _unitOfWork.CourseActivitieService.GetById(id);
             if (atividade == null)
                 return NotFound();

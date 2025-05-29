@@ -95,8 +95,8 @@ namespace TrainMaster.Application.Services
 
                 existing.Title = entity.Title;
                 existing.Description = entity.Description;
-                existing.StartDate = entity.StartDate;
-                existing.DueDate = entity.DueDate;
+                entity.StartDate = DateTime.SpecifyKind(entity.StartDate, DateTimeKind.Utc);
+                entity.DueDate = DateTime.SpecifyKind(entity.DueDate, DateTimeKind.Utc);
                 existing.MaxScore = entity.MaxScore;
                 existing.ModificationDate = DateTime.UtcNow;
 

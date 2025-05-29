@@ -7,7 +7,7 @@
 }
 
 <div class="project-description">
-    <h2>Atividades de Cursos</h2>
+    <h2 style="color: #20b2aa; margin-bottom: 20px;">Atividades de Cursos</h2>
 
     <div class="actions" style="margin-bottom: 10px;">
         <button onclick="location.href='/atividades/create'"
@@ -24,8 +24,8 @@
                 <th style="padding: 10px;">Descrição</th>
                 <th style="padding: 10px;">Início</th>
                 <th style="padding: 10px;">Prazo</th>
-                <th style="padding: 10px;">Nota Máxima</th>
-                <th style="padding: 10px; text-align: center;">Ações</th>
+                <th style="padding: 10px; width: 90px;">Nota</th>
+                <th style="padding: 10px; text-align: center; width: 100px;">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -34,19 +34,19 @@
                 foreach (var atividade in Model)
                 {
                     <tr>
-                        <td>@atividade.Course?.Name</td>
-                        <td>@atividade.Title</td>
-                        <td>
+                        <td style="padding: 10px;">@atividade.Course?.Name</td>
+                        <td style="padding: 10px;">@atividade.Title</td>
+                        <td style="padding: 10px;">
                             @(
                                 string.IsNullOrWhiteSpace(atividade.Description)
                                 ? "-"
                                 : string.Join(" ", atividade.Description.Split(' ').Take(10)) + (atividade.Description.Split(' ').Length > 10 ? "..." : "")
                                 )
                         </td>
-                        <td>@atividade.StartDate.ToString("dd/MM/yyyy")</td>
-                        <td>@atividade.DueDate.ToString("dd/MM/yyyy")</td>
-                        <td>@atividade.MaxScore</td>
-                        <td style="text-align: center;">
+                        <td style="padding: 10px;">@atividade.StartDate.ToString("dd/MM/yyyy")</td>
+                        <td style="padding: 10px;">@atividade.DueDate.ToString("dd/MM/yyyy")</td>
+                        <td style="padding: 10px; text-align: center;">@atividade.MaxScore</td>
+                        <td style="padding: 10px; text-align: center;">
                             <button onclick="location.href='/atividades/edit/@atividade.Id'"
                                     style="background-color: #20b2aa; color: white; padding: 6px 12px; border: none; border-radius: 5px; font-weight: bold;">
                                 Editar
