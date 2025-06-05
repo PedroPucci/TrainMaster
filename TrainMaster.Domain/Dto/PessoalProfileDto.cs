@@ -9,8 +9,8 @@ namespace TrainMaster.Domain.Dto
         public int Id { get; set; }
         public string? FullName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public GenderStatus Gender { get; set; }
-        public MaritalStatus Marital { get; set; }
+        public EGenderStatus Gender { get; set; }
+        public EMaritalStatus Marital { get; set; }
 
         [JsonIgnore]
         public UserEntity? User { get; set; }

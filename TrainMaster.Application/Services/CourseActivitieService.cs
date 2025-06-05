@@ -2,6 +2,7 @@
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 
 namespace TrainMaster.Application.Services
@@ -21,8 +22,11 @@ namespace TrainMaster.Application.Services
             try
             {
                 entity.ModificationDate = DateTime.UtcNow;
-                entity.StartDate = DateTime.SpecifyKind(entity.StartDate, DateTimeKind.Utc);
-                entity.DueDate = DateTime.SpecifyKind(entity.DueDate, DateTimeKind.Utc);
+                //entity.StartDate = DateTime.SpecifyKind(entity.StartDate, DateTimeKind.Utc);
+                //entity.DueDate = DateTime.SpecifyKind(entity.DueDate, DateTimeKind.Utc);
+                var startUtc = DateTime.SpecifyKind(entity.Period.StartDate, DateTimeKind.Utc);
+                var dueUtc = DateTime.SpecifyKind(entity.Period.DueDate, DateTimeKind.Utc);
+                entity.SetPeriod(new Period(startUtc, dueUtc));
 
                 await _repositoryUoW.CourseActivitieRepository.Add(entity);
                 await _repositoryUoW.SaveAsync();
@@ -95,8 +99,11 @@ namespace TrainMaster.Application.Services
 
                 existing.Title = entity.Title;
                 existing.Description = entity.Description;
-                entity.StartDate = DateTime.SpecifyKind(entity.StartDate, DateTimeKind.Utc);
-                entity.DueDate = DateTime.SpecifyKind(entity.DueDate, DateTimeKind.Utc);
+                //entity.StartDate = DateTime.SpecifyKind(entity.StartDate, DateTimeKind.Utc);
+                //entity.DueDate = DateTime.SpecifyKind(entity.DueDate, DateTimeKind.Utc);
+                var startUtc = DateTime.SpecifyKind(entity.Period.StartDate, DateTimeKind.Utc);
+                var dueUtc = DateTime.SpecifyKind(entity.Period.DueDate, DateTimeKind.Utc);
+                entity.SetPeriod(new Period(startUtc, dueUtc));
                 existing.MaxScore = entity.MaxScore;
                 existing.ModificationDate = DateTime.UtcNow;
 

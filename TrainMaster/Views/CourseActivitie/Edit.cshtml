@@ -49,7 +49,7 @@
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
 
-            <div class="form-group" style="margin-bottom: 15px;">
+@*             <div class="form-group" style="margin-bottom: 15px;">
                 <label>Data de Início</label>
                 <input name="StartDate" type="date" value="@Model.StartDate.ToString("yyyy-MM-dd")" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
@@ -59,6 +59,19 @@
                 <label>Data de Entrega</label>
                 <input name="DueDate" type="date" value="@Model.DueDate.ToString("yyyy-MM-dd")" class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
                 <span asp-validation-for="DueDate" class="text-danger"></span>
+            </div> *@
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Data de Início</label>
+                <input name="Period.StartDate" type="date" value="@Model.Period.StartDate.ToString("yyyy-MM-dd")"
+                       class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Period.StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Data de Entrega</label>
+                <input name="Period.DueDate" type="date" value="@Model.Period.DueDate.ToString("yyyy-MM-dd")"
+                       class="form-control" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+                <span asp-validation-for="Period.DueDate" class="text-danger"></span>
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">

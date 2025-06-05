@@ -1,6 +1,6 @@
 ﻿namespace TrainMaster.Domain.Enums
 {
-    public enum GenderStatus
+    public enum EGenderStatus
     {
         Default = 0,
         Male = 1,

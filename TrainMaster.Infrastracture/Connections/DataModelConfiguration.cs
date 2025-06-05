@@ -46,8 +46,8 @@ namespace TrainMaster.Infrastracture.Connections
                 entity.HasKey(p => p.Id);
                 entity.Property(p => p.FullName).IsRequired().HasMaxLength(255);
                 entity.Property(p => p.DateOfBirth).IsRequired();
-                entity.Property(p => p.Gender).IsRequired().HasMaxLength(50);
-                entity.Property(p => p.Marital).IsRequired().HasMaxLength(50);
+                entity.Property(p => p.EGenderStatus).IsRequired().HasMaxLength(50);
+                entity.Property(p => p.EMaritalStatus).IsRequired().HasMaxLength(50);
 
                 entity.HasOne(p => p.Address)
                       .WithOne(a => a.PessoalProfile)
@@ -165,8 +165,18 @@ namespace TrainMaster.Infrastracture.Connections
                 entity.HasKey(a => a.Id);
                 entity.Property(a => a.Title).IsRequired().HasMaxLength(255);
                 entity.Property(a => a.Description).HasColumnType("text");
-                entity.Property(a => a.StartDate).IsRequired();
-                entity.Property(a => a.DueDate).IsRequired();
+                //entity.Property(a => a.StartDate).IsRequired();
+                //entity.Property(a => a.DueDate).IsRequired();
+                entity.OwnsOne(a => a.Period, period =>
+                {
+                    period.Property(p => p.StartDate)
+                          .HasColumnName("StartDate")
+                          .IsRequired();
+
+                    period.Property(p => p.DueDate)
+                          .HasColumnName("DueDate")
+                          .IsRequired();
+                });
                 entity.Property(a => a.MaxScore).IsRequired();
 
                 entity.HasOne(a => a.Course)

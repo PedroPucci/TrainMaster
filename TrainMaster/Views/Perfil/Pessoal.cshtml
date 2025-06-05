@@ -34,9 +34,9 @@
                 <label>Estado Civil</label>
                 <select name="Marital" class="form-control" asp-items="ViewBag.MaritalOptions" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                     <option value="">Selecione</option>
-                    <option value="1" @(Model.Marital == TrainMaster.Domain.Enums.MaritalStatus.Single ? "selected" : "")>Solteiro</option>
-                    <option value="2" @(Model.Marital == TrainMaster.Domain.Enums.MaritalStatus.Married ? "selected" : "")>Casado</option>
-                    <option value="3" @(Model.Marital == TrainMaster.Domain.Enums.MaritalStatus.Separate ? "selected" : "")>Separado</option>
+                    <option value="1" @(Model.EMaritalStatus == TrainMaster.Domain.Enums.EMaritalStatus.Single ? "selected" : "")>Solteiro</option>
+                    <option value="2" @(Model.EMaritalStatus == TrainMaster.Domain.Enums.EMaritalStatus.Married ? "selected" : "")>Casado</option>
+                    <option value="3" @(Model.EMaritalStatus == TrainMaster.Domain.Enums.EMaritalStatus.Separate ? "selected" : "")>Separado</option>
                 </select>
                 <span asp-validation-for="Marital" class="text-danger"></span>
             </div>
@@ -44,8 +44,8 @@
                 <label>Gênero</label>
                 <select name="Gender" class="form-control" asp-items="ViewBag.GenderStatus" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                     <option value="">Selecione</option>
-                    <option value="1" @(Model.Gender == TrainMaster.Domain.Enums.GenderStatus.Male ? "selected" : "")>Homem</option>
-                    <option value="2" @(Model.Gender == TrainMaster.Domain.Enums.GenderStatus.Woman ? "selected" : "")>Mulher</option>
+                    <option value="1" @(Model.EGenderStatus == TrainMaster.Domain.Enums.EGenderStatus.Male ? "selected" : "")>Homem</option>
+                    <option value="2" @(Model.EGenderStatus == TrainMaster.Domain.Enums.EGenderStatus.Woman ? "selected" : "")>Mulher</option>
                 </select>
                 <span asp-validation-for="Marital" class="text-danger"></span>
             </div>

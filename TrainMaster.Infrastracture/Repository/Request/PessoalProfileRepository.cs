@@ -37,8 +37,8 @@ namespace TrainMaster.Infrastracture.Repository.Request
                     Id = pessoalProfile.Id,
                     DateOfBirth = pessoalProfile.DateOfBirth,
                     FullName = pessoalProfile.FullName,
-                    Gender = pessoalProfile.Gender,
-                    Marital = pessoalProfile.Marital
+                    EGenderStatus = pessoalProfile.EGenderStatus,
+                    EMaritalStatus = pessoalProfile.EMaritalStatus
                 }).ToListAsync();
         }
 

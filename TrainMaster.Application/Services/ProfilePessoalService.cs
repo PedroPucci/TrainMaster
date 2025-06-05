@@ -137,8 +137,8 @@ namespace TrainMaster.Application.Services
                     pessoalProfileById.FullName = pessoalProfileEntity.FullName;
                     pessoalProfileById.ModificationDate = DateTime.UtcNow;
                     pessoalProfileById.DateOfBirth = DateTime.SpecifyKind(pessoalProfileEntity.DateOfBirth, DateTimeKind.Utc);
-                    pessoalProfileById.Gender = pessoalProfileEntity.Gender;
-                    pessoalProfileById.Marital = pessoalProfileEntity.Marital;
+                    pessoalProfileById.EGenderStatus = pessoalProfileEntity.EGenderStatus;
+                    pessoalProfileById.EMaritalStatus = pessoalProfileEntity.EMaritalStatus;
 
                     _repositoryUoW.PessoalProfileRepository.Update(pessoalProfileById);
                 }

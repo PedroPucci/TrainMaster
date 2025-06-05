@@ -30,7 +30,8 @@ namespace TrainMaster.Infrastracture.Repository.Request
             return await _context.CourseActivitieEntity
                 .Include(a => a.Course)
                 .AsNoTracking()
-                .OrderBy(a => a.StartDate)
+                //.OrderBy(a => a.StartDate)
+                .OrderBy(a => a.Period.StartDate)
                 .ToListAsync();
         }
 

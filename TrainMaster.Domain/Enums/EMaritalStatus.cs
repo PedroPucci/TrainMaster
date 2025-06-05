@@ -1,6 +1,6 @@
 ﻿namespace TrainMaster.Domain.Enums
 {
-    public enum MaritalStatus
+    public enum EMaritalStatus
     {
         Default = 0,
         Single = 1,

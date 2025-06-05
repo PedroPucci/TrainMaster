@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 
 namespace TrainMaster.Controllers
 {
@@ -96,8 +97,11 @@ namespace TrainMaster.Controllers
 
             existing.Title = model.Title;
             existing.Description = model.Description;
-            existing.StartDate = model.StartDate;
-            existing.DueDate = model.DueDate;
+            //existing.StartDate = model.StartDate;
+            //existing.DueDate = model.DueDate;
+            var startUtc = DateTime.SpecifyKind(model.Period.StartDate, DateTimeKind.Utc);
+            var dueUtc = DateTime.SpecifyKind(model.Period.DueDate, DateTimeKind.Utc);
+            existing.SetPeriod(new Period(startUtc, dueUtc));
             existing.MaxScore = model.MaxScore;
 
             var result = await _unitOfWork.CourseActivitieService.Update(existing);

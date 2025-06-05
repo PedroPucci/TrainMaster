@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.3 on win32)" generated="2025-05-29T16:19:17.656134" rpa="false" schemaversion="5">
+<suite id="s1" name="teste cadastro curso bug descVazia" source="C:\Users\User\source\repos\TrainMaster\robot_bug_bad_request\teste_cadastro_curso_bug_descVazia.robot">
+<test id="s1-t1" name="Cenário: Cadastro de curso sem preencher descrição deve gerar erro" line="63">
+<kw name="Abrir o navegador e fazer login">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:17.867617" level="INFO">Opening browser 'chrome' to base url 'http://127.0.0.1:5215/Login'.</msg>
+<arg>${URL_LOGIN}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-05-29T16:19:17.867399" elapsed="1.500589"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-05-29T16:19:19.368241" elapsed="0.038366"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-29T16:19:21.407108" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-29T16:19:19.406783" elapsed="2.000439"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:21.407707" level="INFO">Typing text '10786651334' into text field '//*[@id='cpf']'.</msg>
+<arg>${INPUT_CPF}</arg>
+<arg>${cpf}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-05-29T16:19:21.407372" elapsed="0.090163"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:21.497920" level="INFO">Typing text 'qwer12' into text field '//*[@id='Password']'.</msg>
+<arg>${INPUT_SENHA}</arg>
+<arg>${SENHA}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-05-29T16:19:21.497701" elapsed="0.065442"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:21.563507" level="INFO">Clicking button '//button[contains(text(),'Entrar')]'.</msg>
+<arg>${BOTAO_ENTRAR}</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2025-05-29T16:19:21.563307" elapsed="0.058121"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-29T16:19:23.621925" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-29T16:19:21.621622" elapsed="2.000445"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:23.761667" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-1.png"&gt;&lt;img src="selenium-screenshot-1.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2025-05-29T16:19:23.622277" elapsed="0.139530"/>
+</kw>
+<status status="PASS" start="2025-05-29T16:19:17.866796" elapsed="5.895223"/>
+</kw>
+<kw name="Navegar até página de cursos">
+<kw name="Click Link" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:23.762782" level="INFO">Clicking link 'Cursos'.</msg>
+<arg>Cursos</arg>
+<doc>Clicks a link identified by ``locator``.</doc>
+<status status="PASS" start="2025-05-29T16:19:23.762625" elapsed="0.106161"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-29T16:19:25.869397" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-29T16:19:23.869049" elapsed="2.000457"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:25.968226" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-2.png"&gt;&lt;img src="selenium-screenshot-2.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2025-05-29T16:19:25.869670" elapsed="0.098646"/>
+</kw>
+<status status="PASS" start="2025-05-29T16:19:23.762384" elapsed="2.206019"/>
+</kw>
+<kw name="Acessar tela de cadastro de curso">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${BOTAO_NOVO_CURSO}</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-05-29T16:19:25.968982" elapsed="0.016480"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:25.985868" level="INFO">Clicking element '//button[contains(text(),'+ Novo Curso')]'.</msg>
+<arg>${BOTAO_NOVO_CURSO}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-05-29T16:19:25.985652" elapsed="0.264459"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-05-29T16:19:28.251073" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-05-29T16:19:26.250291" elapsed="2.000974"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:28.352569" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-3.png"&gt;&lt;img src="selenium-screenshot-3.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2025-05-29T16:19:28.251543" elapsed="0.101132"/>
+</kw>
+<status status="PASS" start="2025-05-29T16:19:25.968698" elapsed="2.384063"/>
+</kw>
+<kw name="Preencher dados do curso sem descrição">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:28.353563" level="INFO">Typing text 'Teste sem descrição' into text field '//*[@name='Name']'.</msg>
+<arg>${INPUT_NOME}</arg>
+<arg>Teste sem descrição</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-05-29T16:19:28.353367" elapsed="0.080140"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-05-29T16:19:28.433982" level="FAIL">Keyword 'SeleniumLibrary.Input Text' expected 2 to 3 arguments, got 1.</msg>
+<arg>${INPUT_DESCRICAO}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="FAIL" start="2025-05-29T16:19:28.433769" elapsed="0.000271">Keyword 'SeleniumLibrary.Input Text' expected 2 to 3 arguments, got 1.</status>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>${INPUT_START_DATE}</arg>
+<arg>22/05/2025</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2025-05-29T16:19:28.434159" elapsed="0.000028"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>${INPUT_END_DATE}</arg>
+<arg>31/05/2025</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2025-05-29T16:19:28.434295" elapsed="0.000031"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-05-29T16:19:28.434431" elapsed="0.000036"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="NOT RUN" start="2025-05-29T16:19:28.434601" elapsed="0.000041"/>
+</kw>
+<status status="FAIL" start="2025-05-29T16:19:28.353115" elapsed="0.081677">Keyword 'SeleniumLibrary.Input Text' expected 2 to 3 arguments, got 1.</status>
+</kw>
+<kw name="Salvar cadastro">
+<status status="NOT RUN" start="2025-05-29T16:19:28.435131" elapsed="0.000034"/>
+</kw>
+<kw name="Fechar navegador">
+<status status="NOT RUN" start="2025-05-29T16:19:28.435399" elapsed="0.000043"/>
+</kw>
+<tag>cadastro</tag>
+<tag>curso</tag>
+<tag>negativo</tag>
+<tag>validacao</tag>
+<status status="FAIL" start="2025-05-29T16:19:17.865709" elapsed="10.570005">Keyword 'SeleniumLibrary.Input Text' expected 2 to 3 arguments, got 1.</status>
+</test>
+<status status="FAIL" start="2025-05-29T16:19:17.657257" elapsed="10.779382"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="0" fail="1" skip="0">cadastro</stat>
+<stat pass="0" fail="1" skip="0">curso</stat>
+<stat pass="0" fail="1" skip="0">negativo</stat>
+<stat pass="0" fail="1" skip="0">validacao</stat>
+</tag>
+<suite>
+<stat name="teste cadastro curso bug descVazia" id="s1" pass="0" fail="1" skip="0">teste cadastro curso bug descVazia</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

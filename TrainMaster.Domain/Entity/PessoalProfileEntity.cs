@@ -8,8 +8,8 @@ namespace TrainMaster.Domain.Entity
     {
         public string? FullName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public GenderStatus Gender { get; set; }
-        public MaritalStatus Marital { get; set; }
+        public EGenderStatus EGenderStatus { get; set; }
+        public EMaritalStatus EMaritalStatus { get; set; }
 
         [JsonIgnore]
         public UserEntity? User { get; set; }
