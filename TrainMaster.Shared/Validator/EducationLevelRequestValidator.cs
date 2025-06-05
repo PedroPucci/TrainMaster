@@ -17,11 +17,11 @@ namespace TrainMaster.Shared.Validator
                 .NotEmpty()
                     .WithMessage(EducationLevelErrors.EducationLevel_Error_InstitutionCanNotBeNullOrEmpty.Description());
 
-            RuleFor(p => p.StartedAt)
+            RuleFor(p => p.Period.StartDate)
                 .NotEmpty()
                     .WithMessage(EducationLevelErrors.EducationLevel_Error_StartedAtCanNotBeNullOrEmpty.Description());
 
-            RuleFor(p => p.EndeedAt)
+            RuleFor(p => p.Period.EndDate)
                 .NotEmpty()
                     .WithMessage(EducationLevelErrors.EducationLevel_Error_EndeedAtCanNotBeNullOrEmpty.Description());
         }

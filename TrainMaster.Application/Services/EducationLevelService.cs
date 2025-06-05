@@ -127,13 +127,16 @@ namespace TrainMaster.Application.Services
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                educationLevelEntity.StartedAt = educationLevelEntity.StartedAt.HasValue
-                    ? DateTime.SpecifyKind(educationLevelEntity.StartedAt.Value, DateTimeKind.Utc)
-                    : null;
+                var normalizedStart = educationLevelEntity.Period?.StartDate ?? DateTime.MinValue;
+                var normalizedEnd = educationLevelEntity.Period?.EndDate ?? DateTime.MinValue;
 
-                educationLevelEntity.EndeedAt = educationLevelEntity.EndeedAt.HasValue
-                    ? DateTime.SpecifyKind(educationLevelEntity.EndeedAt.Value, DateTimeKind.Utc)
-                    : null;
+                normalizedStart = normalizedStart.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(normalizedStart, DateTimeKind.Utc)
+                    : normalizedStart.ToUniversalTime();
+
+                normalizedEnd = normalizedEnd.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(normalizedEnd, DateTimeKind.Utc)
+                    : normalizedEnd.ToUniversalTime();
 
                 var educationLevelById = await _repositoryUoW.EducationLevelRepository.GetById(educationLevelEntity.Id);
 
@@ -148,8 +151,7 @@ namespace TrainMaster.Application.Services
                 {
                     educationLevelById.Title = educationLevelEntity.Title;
                     educationLevelById.Institution = educationLevelEntity.Institution;
-                    educationLevelById.StartedAt = educationLevelEntity.StartedAt;
-                    educationLevelById.EndeedAt = educationLevelEntity.EndeedAt;
+                    educationLevelById.Period = educationLevelEntity.Period;
                     educationLevelById.ModificationDate = DateTime.UtcNow;
 
                     _repositoryUoW.EducationLevelRepository.Update(educationLevelById);

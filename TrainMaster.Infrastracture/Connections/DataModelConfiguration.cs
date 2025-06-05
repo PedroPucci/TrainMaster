@@ -89,8 +89,16 @@ namespace TrainMaster.Infrastracture.Connections
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Title).HasMaxLength(255);
                 entity.Property(e => e.Institution).HasMaxLength(255);
-                entity.Property(e => e.StartedAt);
-                entity.Property(e => e.EndeedAt);
+                entity.OwnsOne(c => c.Period, period =>
+                {
+                    period.Property(p => p.StartDate)
+                          .HasColumnName("StartDate")
+                          .IsRequired();
+
+                    period.Property(p => p.EndDate)
+                          .HasColumnName("EndDate")
+                          .IsRequired();
+                });
 
                 entity.HasOne(e => e.ProfessionalProfile)
                       .WithOne(p => p.EducationLevel)

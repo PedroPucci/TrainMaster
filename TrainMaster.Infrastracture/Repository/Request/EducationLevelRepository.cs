@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 using TrainMaster.Infrastracture.Connections;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 
@@ -36,8 +37,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
                 {
                     Id = educationLevelEntity.Id,
                     Institution = educationLevelEntity.Institution,
-                    StartedAt = educationLevelEntity.StartedAt,
-                    EndeedAt = educationLevelEntity.EndeedAt,
+                    Period = new Period(educationLevelEntity.Period.StartDate, educationLevelEntity.Period.EndDate),
                 }).ToListAsync();
         }
 

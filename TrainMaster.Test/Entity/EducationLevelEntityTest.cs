@@ -1,4 +1,5 @@
 ﻿using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 
 namespace TrainMaster.Test.Entity
 {
@@ -10,14 +11,14 @@ namespace TrainMaster.Test.Entity
             // Arrange
             var startDate = new DateTime(2020, 01, 01);
             var endDate = new DateTime(2023, 12, 31);
+            var period = new Period(startDate, endDate);
 
             var entity = new EducationLevelEntity
             {
                 Id = 1,
                 Title = "Graduação em Engenharia",
                 Institution = "Universidade XYZ",
-                StartedAt = startDate,
-                EndeedAt = endDate,
+                Period = period,
                 ProfessionalProfileId = 10
             };
 
@@ -25,8 +26,8 @@ namespace TrainMaster.Test.Entity
             Assert.Equal(1, entity.Id);
             Assert.Equal("Graduação em Engenharia", entity.Title);
             Assert.Equal("Universidade XYZ", entity.Institution);
-            Assert.Equal(startDate, entity.StartedAt);
-            Assert.Equal(endDate, entity.EndeedAt);
+            Assert.Equal(startDate, entity.Period.StartDate);
+            Assert.Equal(endDate, entity.Period.EndDate);
             Assert.Equal(10, entity.ProfessionalProfileId);
         }
     }

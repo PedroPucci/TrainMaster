@@ -2,6 +2,7 @@
 using Moq;
 using TrainMaster.Application.Services;
 using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 
@@ -27,19 +28,22 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Add_ShouldReturnSuccess_WhenValid()
         {
+            // Arrange
+            var period = new Period(DateTime.UtcNow.AddYears(-3), DateTime.UtcNow);
             var education = new EducationLevelEntity
             {
                 Title = "Ensino Superior",
                 Institution = "Universidade XYZ",
-                StartedAt = DateTime.UtcNow.AddYears(-3),
-                EndeedAt = DateTime.UtcNow
+                Period = period
             };
 
             _educationRepositoryMock.Setup(x => x.Add(It.IsAny<EducationLevelEntity>())).ReturnsAsync(education);
             _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
 
+            // Act
             var result = await _service.Add(education);
 
+            // Assert
             Assert.True(result.Success);
             _educationRepositoryMock.Verify(x => x.Add(It.IsAny<EducationLevelEntity>()), Times.Once);
             _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);

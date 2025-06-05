@@ -35,19 +35,20 @@
 
             <div class="form-group" style="margin-bottom: 15px;">
                 <label>Data de Início</label>
-                <input name="StartedAt" type="date" value="@(Model.StartedAt?.ToString("yyyy-MM-dd"))"
+                <input name="Period.StartDate" type="date" value="@(Model.Period?.StartDate.ToString("yyyy-MM-dd"))"
                        class="form-control"
                        style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
-                <span asp-validation-for="StartedAt" class="text-danger"></span>
+                <span asp-validation-for="Period.StartDate" class="text-danger"></span>
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">
                 <label>Data de Conclusão</label>
-                <input name="EndeedAt" type="date" value="@(Model.EndeedAt?.ToString("yyyy-MM-dd"))"
+                <input name="Period.EndDate" type="date" value="@(Model.Period?.EndDate.ToString("yyyy-MM-dd"))"
                        class="form-control"
                        style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
-                <span asp-validation-for="EndedAt" class="text-danger"></span>
+                <span asp-validation-for="Period.EndDate" class="text-danger"></span>
             </div>
+
             <div class="button-group">
                 <button type="submit" class="btn"
                         style="background-color: #20b2aa; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
