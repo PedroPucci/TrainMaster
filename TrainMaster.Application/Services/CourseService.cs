@@ -3,6 +3,7 @@ using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
 using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 using TrainMaster.Shared.Logging;
 using TrainMaster.Shared.Validator;
@@ -37,13 +38,17 @@ namespace TrainMaster.Application.Services
                     Log.Error(LogMessages.InvalidDateRangeCourse());
                     return Result<CourseDto>.Error(errorMessage);
                 }
-                
+
+                var period = new Period(
+                    DateTime.SpecifyKind(courseEntity.StartDate, DateTimeKind.Utc),
+                    DateTime.SpecifyKind(courseEntity.EndDate, DateTimeKind.Utc)
+                );
+
                 var course = new CourseEntity
                 {
                     Name = courseEntity.Name,
                     Description = courseEntity.Description,
-                    StartDate = DateTime.SpecifyKind(courseEntity.StartDate, DateTimeKind.Utc),
-                    EndDate = DateTime.SpecifyKind(courseEntity.EndDate, DateTimeKind.Utc),
+                    Period = period,
                     IsActive = true,
                     UserId = courseEntity.UserId
                 };
@@ -77,7 +82,6 @@ namespace TrainMaster.Application.Services
                 if (courseEntity is not null)
                 {
                     courseEntity.IsActive = false;
-                    //_repositoryUoW.CourseRepository.Update(courseEntity);
                     _repositoryUoW.CourseRepository.Delete(courseEntity);
                 }                    
 
@@ -178,13 +182,13 @@ namespace TrainMaster.Application.Services
                 courseById.Name = courseEntity.Name;
                 courseById.Description = courseEntity.Description;
 
-                courseById.StartDate = courseEntity.StartDate.Kind == DateTimeKind.Unspecified
-                    ? DateTime.SpecifyKind(courseEntity.StartDate, DateTimeKind.Utc)
-                    : courseEntity.StartDate.ToUniversalTime();
+                var startDate = courseEntity.Period.StartDate.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(courseEntity.Period.StartDate, DateTimeKind.Utc)
+                    : courseEntity.Period.StartDate.ToUniversalTime();
 
-                courseById.EndDate = courseEntity.EndDate.Kind == DateTimeKind.Unspecified
-                    ? DateTime.SpecifyKind(courseEntity.EndDate, DateTimeKind.Utc)
-                    : courseEntity.EndDate.ToUniversalTime();
+                var endDate = courseEntity.Period.EndDate.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(courseEntity.Period.EndDate, DateTimeKind.Utc)
+                    : courseEntity.Period.EndDate.ToUniversalTime();
 
                 _repositoryUoW.CourseRepository.Update(courseById);
 
@@ -204,7 +208,6 @@ namespace TrainMaster.Application.Services
                 transaction.Dispose();
             }
         }
-
 
         private async Task<Result<CourseDto>> IsValidCourseRequest(CourseDto courseEntity)
         {

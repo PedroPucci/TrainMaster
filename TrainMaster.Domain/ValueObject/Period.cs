@@ -3,7 +3,7 @@
     public class Period
     {
         public DateTime StartDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         // Construtor vazio necessário para o model binder
         public Period() { }
@@ -14,7 +14,7 @@
             //    throw new ArgumentException("Due date must be after start date");
 
             StartDate = startDate;
-            DueDate = dueDate;
+            EndDate = dueDate;
         }
     }
 }

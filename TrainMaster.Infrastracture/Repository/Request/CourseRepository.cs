@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 using TrainMaster.Infrastracture.Connections;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 
@@ -38,8 +38,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
                     Id = course.Id,
                     Name = course.Name,
                     Description = course.Description,
-                    StartDate = course.StartDate,
-                    EndDate = course.EndDate,
+                    Period = new Period(course.Period.StartDate, course.Period.EndDate),
                     IsActive = course.IsActive,
                 })
                 .ToListAsync();

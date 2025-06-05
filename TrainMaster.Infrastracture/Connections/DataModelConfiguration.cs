@@ -103,8 +103,16 @@ namespace TrainMaster.Infrastracture.Connections
                 entity.HasKey(c => c.Id);
                 entity.Property(c => c.Name).IsRequired();
                 entity.Property(c => c.Description);
-                entity.Property(c => c.StartDate).IsRequired();
-                entity.Property(c => c.EndDate).IsRequired();
+                entity.OwnsOne(c => c.Period, period =>
+                {
+                    period.Property(p => p.StartDate)
+                          .HasColumnName("StartDate")
+                          .IsRequired();
+
+                    period.Property(p => p.EndDate)
+                          .HasColumnName("EndDate")
+                          .IsRequired();
+                });
 
                 entity.HasOne(c => c.User)
                       .WithMany(u => u.Courses)
@@ -173,7 +181,7 @@ namespace TrainMaster.Infrastracture.Connections
                           .HasColumnName("StartDate")
                           .IsRequired();
 
-                    period.Property(p => p.DueDate)
+                    period.Property(p => p.EndDate)
                           .HasColumnName("DueDate")
                           .IsRequired();
                 });

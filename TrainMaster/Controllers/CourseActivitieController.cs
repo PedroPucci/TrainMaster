@@ -100,7 +100,7 @@ namespace TrainMaster.Controllers
             //existing.StartDate = model.StartDate;
             //existing.DueDate = model.DueDate;
             var startUtc = DateTime.SpecifyKind(model.Period.StartDate, DateTimeKind.Utc);
-            var dueUtc = DateTime.SpecifyKind(model.Period.DueDate, DateTimeKind.Utc);
+            var dueUtc = DateTime.SpecifyKind(model.Period.EndDate, DateTimeKind.Utc);
             existing.SetPeriod(new Period(startUtc, dueUtc));
             existing.MaxScore = model.MaxScore;
 

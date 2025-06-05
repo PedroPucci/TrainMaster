@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using TrainMaster.Domain.General;
+using TrainMaster.Domain.ValueObject;
 
 namespace TrainMaster.Domain.Entity
 {
@@ -10,8 +11,8 @@ namespace TrainMaster.Domain.Entity
         public string? Name { get; set; }
         [Required(ErrorMessage = "O campo Descrição é obrigatório.")]
         public string? Description { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public Period Period { get; set; }
+
         public bool IsActive { get; set; }
 
         [JsonIgnore]

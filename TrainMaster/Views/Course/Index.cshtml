@@ -44,12 +44,12 @@
                                 : string.Join(" ", curso.Description.Split(' ').Take(10)) + (curso.Description.Split(' ').Length > 10 ? "..." : "")
                                 )
                         </td>
-                        <td>@(curso.StartDate != DateTime.MinValue ? curso.StartDate.ToString("dd/MM/yyyy") : "-")</td>
-                        <td>@(curso.EndDate != DateTime.MinValue ? curso.EndDate.ToString("dd/MM/yyyy") : "-")</td>
+                        <td>@(curso.Period?.StartDate != DateTime.MinValue ? curso.Period.StartDate.ToString("dd/MM/yyyy") : "-")</td>
+                        <td>@(curso.Period?.EndDate != DateTime.MinValue ? curso.Period.EndDate.ToString("dd/MM/yyyy") : "-")</td>
                         <td>
                             @(
-                                curso.EndDate != DateTime.MinValue
-                                ? (curso.EndDate < DateTime.Today ? "Sim" : "Não")
+                                curso.Period?.EndDate != DateTime.MinValue
+                                ? (curso.Period.EndDate < DateTime.Today ? "Sim" : "Não")
                                 : "-"
                                 )
                         </td>

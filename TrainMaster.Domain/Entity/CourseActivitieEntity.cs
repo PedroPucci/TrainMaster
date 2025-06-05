@@ -7,9 +7,6 @@ namespace TrainMaster.Domain.Entity
     {        
         public string? Title { get; set; }
         public string? Description { get; set; }
-        //public DateTime StartDate { get; set; }
-        //public DateTime DueDate { get; set; }
-        //public Period? Period { get; set; }
         public Period Period { get; set; }
         public int MaxScore { get; set; }
 

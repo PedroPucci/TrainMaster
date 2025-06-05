@@ -43,10 +43,8 @@
                                 : string.Join(" ", atividade.Description.Split(' ').Take(10)) + (atividade.Description.Split(' ').Length > 10 ? "..." : "")
                                 )
                         </td>
-@*                             <td style="padding: 10px;">@atividade.StartDate.ToString("dd/MM/yyyy")</td>
-                            <td style="padding: 10px;">@atividade.DueDate.ToString("dd/MM/yyyy")</td> *@
                         <td style="padding: 10px;">@atividade.Period.StartDate.ToString("dd/MM/yyyy")</td>
-                        <td style="padding: 10px;">@atividade.Period.DueDate.ToString("dd/MM/yyyy")</td>
+                        <td style="padding: 10px;">@atividade.Period.EndDate.ToString("dd/MM/yyyy")</td>
                         <td style="padding: 10px; text-align: center;">@atividade.MaxScore</td>
                         <td style="padding: 10px; text-align: center;">
                             <button onclick="location.href='/atividades/edit/@atividade.Id'"

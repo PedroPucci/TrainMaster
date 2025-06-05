@@ -3,6 +3,7 @@ using Moq;
 using TrainMaster.Application.Services;
 using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 
@@ -136,24 +137,24 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Update_ShouldUpdate_WhenCourseExists()
         {
+            var originalPeriod = new Period(DateTime.UtcNow, DateTime.UtcNow.AddDays(5));
             var course = new CourseEntity
             {
                 Id = 1,
                 Name = "Curso Antigo",
                 Description = "Descrição antiga",
-                StartDate = DateTime.UtcNow,
-                EndDate = DateTime.UtcNow.AddDays(5)
+                Period = originalPeriod
             };
 
             _courseRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(course);
 
+            var updatedPeriod = new Period(DateTime.UtcNow, DateTime.UtcNow.AddDays(10));
             var updateCourse = new CourseEntity
             {
                 Id = 1,
                 Name = "Curso Atualizado",
                 Description = "Descrição atualizada",
-                StartDate = DateTime.UtcNow,
-                EndDate = DateTime.UtcNow.AddDays(10)
+                Period = updatedPeriod
             };
 
             var result = await _courseService.Update(updateCourse);
