@@ -9,7 +9,7 @@ namespace TrainMaster.Shared.Validator
     {
         public PessoalProfileRequestValidator()
         {
-            RuleFor(p => p.Name)
+            RuleFor(p => p.Name.Value)
                 .NotEmpty()
                     .WithMessage(PessoalProfileErrors.PessoalProfile_Error_NameCanNotBeNullOrEmpty.Description())
                 .MinimumLength(4)

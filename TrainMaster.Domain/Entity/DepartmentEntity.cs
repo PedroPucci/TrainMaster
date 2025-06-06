@@ -1,11 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 using TrainMaster.Domain.General;
+using TrainMaster.Domain.ValueObject;
 
 namespace TrainMaster.Domain.Entity
 {
     public class DepartmentEntity : BaseEntity
     {
-        public string? Name { get; set; }
+        public Name Name { get; set; }
         public string? Description { get; set; }
         public bool IsActive { get; set; }
 

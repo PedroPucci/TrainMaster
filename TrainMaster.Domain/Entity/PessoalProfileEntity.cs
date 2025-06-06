@@ -1,12 +1,13 @@
 ﻿using System.Text.Json.Serialization;
 using TrainMaster.Domain.Enums;
 using TrainMaster.Domain.General;
+using TrainMaster.Domain.ValueObject;
 
 namespace TrainMaster.Domain.Entity
 {
     public class PessoalProfileEntity : BaseEntity
     {
-        public string? Name { get; set; }
+        public Name Name { get; set; }
         public DateTime DateOfBirth { get; set; }
         public EGenderStatus EGenderStatus { get; set; }
         public EMaritalStatus EMaritalStatus { get; set; }

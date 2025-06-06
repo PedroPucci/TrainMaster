@@ -50,7 +50,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
 
         public async Task<PessoalProfileEntity?> GetByFullName(string? fullName)
         {
-            return await _context.PessoalProfileEntity.FirstOrDefaultAsync(pessoalProfileEntity => pessoalProfileEntity.Name == fullName);
+            return await _context.PessoalProfileEntity.FirstOrDefaultAsync(pessoalProfileEntity => pessoalProfileEntity.Name.Value == fullName);
         }
 
         public PessoalProfileEntity Update(PessoalProfileEntity pessoalProfileEntity)

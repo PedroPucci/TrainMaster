@@ -4,8 +4,8 @@ using TrainMaster.Domain.ValueObject;
 namespace TrainMaster.Domain.Entity
 {
     public class CourseActivitieEntity : BaseEntity
-    {        
-        public string? Name { get; set; }
+    {
+        public Name Name { get; set; }
         public string? Description { get; set; }
         public Period Period { get; set; }
         public int MaxScore { get; set; }

@@ -8,11 +8,10 @@ namespace TrainMaster.Test.Entity
         [Fact]
         public void DepartmentEntity_ShouldSetAndGetPropertiesCorrectly()
         {
-            // Arrange
             var department = new DepartmentEntity
             {
                 Id = 1,
-                Name = "Tecnologia da Informação",
+                Name = new Name("Tecnologia da Informação"),
                 Description = "Departamento responsável pela TI",
                 IsActive = true,
                 UserId = 100
@@ -38,9 +37,8 @@ namespace TrainMaster.Test.Entity
             department.User = user;
             department.Teams.Add(team);
 
-            // Assert
             Assert.Equal(1, department.Id);
-            Assert.Equal("Tecnologia da Informação", department.Name);
+            Assert.Equal("Tecnologia da Informação", department.Name.Value);
             Assert.Equal("Departamento responsável pela TI", department.Description);
             Assert.True(department.IsActive);
             Assert.Equal(100, department.UserId);

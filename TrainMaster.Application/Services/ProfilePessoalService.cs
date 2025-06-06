@@ -30,7 +30,7 @@ namespace TrainMaster.Application.Services
                     return Result<PessoalProfileEntity>.Error(isValidPessoalProfile.Message);
                 }
 
-                var checkFullNameIsExist = await _repositoryUoW.PessoalProfileRepository.GetByFullName(pessoalProfileEntity.Name);
+                var checkFullNameIsExist = await _repositoryUoW.PessoalProfileRepository.GetByFullName(pessoalProfileEntity.Name.Value);
 
                 if (checkFullNameIsExist is not null)
                 {

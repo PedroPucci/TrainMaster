@@ -58,7 +58,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
 
         public async Task<DepartmentEntity?> GetByName(string? name)
         {
-            return await _context.DepartmentEntity.FirstOrDefaultAsync(department => department.Name == name);
+            return await _context.DepartmentEntity.FirstOrDefaultAsync(department => department.Name.Value == name);
         }
 
         public DepartmentEntity Update(DepartmentEntity departmentEntity)
