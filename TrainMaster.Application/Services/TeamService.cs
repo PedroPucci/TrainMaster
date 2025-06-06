@@ -30,7 +30,7 @@ namespace TrainMaster.Application.Services
                     return Result<TeamEntity>.Error(isValidTeam.Message);
                 }
 
-                TeamEntity? IsDuplicateName = await _repositoryUoW.TeamRepository.GetByName(teamEntity.Name);
+                TeamEntity? IsDuplicateName = await _repositoryUoW.TeamRepository.GetByName(teamEntity.Name.Value);
 
                 if (IsDuplicateName is not null)
                 {

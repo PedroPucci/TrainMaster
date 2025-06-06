@@ -44,7 +44,7 @@ namespace TrainMaster.Infrastracture.Connections
             modelBuilder.Entity<PessoalProfileEntity>(entity =>
             {
                 entity.HasKey(p => p.Id);
-                entity.Property(p => p.FullName).IsRequired().HasMaxLength(255);
+                entity.Property(p => p.Name).IsRequired().HasMaxLength(255);
                 entity.Property(p => p.DateOfBirth).IsRequired();
                 entity.Property(p => p.EGenderStatus).IsRequired().HasMaxLength(50);
                 entity.Property(p => p.EMaritalStatus).IsRequired().HasMaxLength(50);
@@ -68,7 +68,7 @@ namespace TrainMaster.Infrastracture.Connections
             modelBuilder.Entity<ProfessionalProfileEntity>(entity =>
             {
                 entity.HasKey(p => p.Id);
-                entity.Property(p => p.JobTitle).HasMaxLength(255);
+                entity.Property(p => p.Name).HasMaxLength(255);
                 entity.Property(p => p.YearsOfExperience);
                 entity.Property(p => p.Skills);
                 entity.Property(p => p.Certifications);
@@ -87,7 +87,7 @@ namespace TrainMaster.Infrastracture.Connections
             modelBuilder.Entity<EducationLevelEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Title).HasMaxLength(255);
+                entity.Property(e => e.Name).HasMaxLength(255);
                 entity.Property(e => e.Institution).HasMaxLength(255);
                 entity.OwnsOne(c => c.Period, period =>
                 {
@@ -179,7 +179,7 @@ namespace TrainMaster.Infrastracture.Connections
             modelBuilder.Entity<CourseActivitieEntity>(entity =>
             {
                 entity.HasKey(a => a.Id);
-                entity.Property(a => a.Title).IsRequired().HasMaxLength(255);
+                entity.Property(a => a.Name).IsRequired().HasMaxLength(255);
                 entity.Property(a => a.Description).HasColumnType("text");
                 //entity.Property(a => a.StartDate).IsRequired();
                 //entity.Property(a => a.DueDate).IsRequired();

@@ -35,7 +35,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
                 .Select(professionalProfileEntity => new ProfessionalProfileEntity
                 {
                     Id = professionalProfileEntity.Id,
-                    JobTitle = professionalProfileEntity.JobTitle,
+                    Name = professionalProfileEntity.Name,
                     YearsOfExperience = professionalProfileEntity.YearsOfExperience,
                 }).ToListAsync();
         }

@@ -49,7 +49,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
 
         public async Task<TeamEntity?> GetByName(string? name)
         {
-            return await _context.TeamEntity.FirstOrDefaultAsync(teamEntity => teamEntity.Name == name);
+            return await _context.TeamEntity.FirstOrDefaultAsync(teamEntity => teamEntity.Name.Value == name);
         }
 
         public TeamEntity Update(TeamEntity teamEntity)

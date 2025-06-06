@@ -32,7 +32,7 @@ namespace TrainMaster.Test.Services
             var period = new Period(DateTime.UtcNow.AddYears(-3), DateTime.UtcNow);
             var education = new EducationLevelEntity
             {
-                Title = "Ensino Superior",
+                Name = "Ensino Superior",
                 Institution = "Universidade XYZ",
                 Period = period
             };
@@ -52,7 +52,7 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task GetById_ShouldReturnEntity_WhenExists()
         {
-            var education = new EducationLevelEntity { Id = 1, Title = "Mestrado" };
+            var education = new EducationLevelEntity { Id = 1, Name = "Mestrado" };
 
             _educationRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync(education);
 
@@ -93,8 +93,8 @@ namespace TrainMaster.Test.Services
         {
             var list = new List<EducationLevelEntity>
             {
-                new() { Id = 1, Title = "Ensino Médio" },
-                new() { Id = 2, Title = "Graduação" }
+                new() { Id = 1, Name = "Ensino Médio" },
+                new() { Id = 2, Name = "Graduação" }
             };
 
             _educationRepositoryMock.Setup(x => x.Get()).ReturnsAsync(list);

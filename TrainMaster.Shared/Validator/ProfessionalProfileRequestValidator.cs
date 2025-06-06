@@ -9,7 +9,7 @@ namespace TrainMaster.Shared.Validator
     {
         public ProfessionalProfileRequestValidator()
         {
-            RuleFor(p => p.JobTitle)
+            RuleFor(p => p.Name)
                 .NotEmpty()
                     .WithMessage(ProfessionalProfileErrors.ProfessionalProfile_Error_JobTitleCanNotBeNullOrEmpty.Description());
 

@@ -6,7 +6,7 @@ namespace TrainMaster.Domain.Entity
 {
     public class EducationLevelEntity : BaseEntity
     {
-        public string? Title { get; set; }
+        public string? Name { get; set; }
         public string? Institution { get; set; }
         public Period Period { get; set; }
 

@@ -95,7 +95,7 @@ namespace TrainMaster.Application.Services
                 if (existing == null)
                     return Result<CourseActivitieEntity>.Error("Atividade não encontrada.");
 
-                existing.Title = entity.Title;
+                existing.Name = entity.Name;
                 existing.Description = entity.Description;
                 var startUtc = DateTime.SpecifyKind(entity.Period.StartDate, DateTimeKind.Utc);
                 var dueUtc = DateTime.SpecifyKind(entity.Period.EndDate, DateTimeKind.Utc);

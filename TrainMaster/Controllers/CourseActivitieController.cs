@@ -95,7 +95,7 @@ namespace TrainMaster.Controllers
             if (existing == null)
                 return NotFound();
 
-            existing.Title = model.Title;
+            existing.Name = model.Name;
             existing.Description = model.Description;
             //existing.StartDate = model.StartDate;
             //existing.DueDate = model.DueDate;

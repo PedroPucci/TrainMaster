@@ -145,7 +145,7 @@ namespace TrainMaster.Application.Services
                 professionalProfileById.YearsOfExperience = professionalProfileEntity.YearsOfExperience;
                 professionalProfileById.Skills = professionalProfileEntity.Skills;
                 professionalProfileById.Certifications = professionalProfileEntity.Certifications;
-                professionalProfileById.JobTitle = professionalProfileEntity.JobTitle;
+                professionalProfileById.Name = professionalProfileEntity.Name;
                 professionalProfileById.ModificationDate = DateTime.UtcNow;
 
                 _repositoryUoW.ProfessionalProfileRepository.Update(professionalProfileById);

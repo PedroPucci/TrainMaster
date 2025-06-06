@@ -1,4 +1,5 @@
 ﻿using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 
 namespace TrainMaster.Test.Entity
 {
@@ -11,7 +12,7 @@ namespace TrainMaster.Test.Entity
             var team = new TeamEntity
             {
                 Id = 1,
-                Name = "Equipe de Desenvolvimento",
+                Name = new Name("Equipe de Desenvolvimento"),
                 Description = "Responsável pela criação de software",
                 IsActive = true,
                 DepartmentId = 42
@@ -19,11 +20,10 @@ namespace TrainMaster.Test.Entity
 
             // Assert
             Assert.Equal(1, team.Id);
-            Assert.Equal("Equipe de Desenvolvimento", team.Name);
+            Assert.Equal("Equipe de Desenvolvimento", team.Name.Value);
             Assert.Equal("Responsável pela criação de software", team.Description);
             Assert.True(team.IsActive);
             Assert.Equal(42, team.DepartmentId);
         }
-
     }
 }

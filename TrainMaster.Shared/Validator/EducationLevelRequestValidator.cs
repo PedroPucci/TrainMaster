@@ -9,7 +9,7 @@ namespace TrainMaster.Shared.Validator
     {
         public EducationLevelRequestValidator()
         {
-            RuleFor(p => p.Title)
+            RuleFor(p => p.Name)
                 .NotEmpty()
                     .WithMessage(EducationLevelErrors.EducationLevel_Error_TitleCanNotBeNullOrEmpty.Description());
 

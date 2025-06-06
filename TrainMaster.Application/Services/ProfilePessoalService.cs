@@ -30,7 +30,7 @@ namespace TrainMaster.Application.Services
                     return Result<PessoalProfileEntity>.Error(isValidPessoalProfile.Message);
                 }
 
-                var checkFullNameIsExist = await _repositoryUoW.PessoalProfileRepository.GetByFullName(pessoalProfileEntity.FullName);
+                var checkFullNameIsExist = await _repositoryUoW.PessoalProfileRepository.GetByFullName(pessoalProfileEntity.Name);
 
                 if (checkFullNameIsExist is not null)
                 {
@@ -134,7 +134,7 @@ namespace TrainMaster.Application.Services
                 else
                 {
                     // Se existir, atualiza
-                    pessoalProfileById.FullName = pessoalProfileEntity.FullName;
+                    pessoalProfileById.Name = pessoalProfileEntity.Name;
                     pessoalProfileById.ModificationDate = DateTime.UtcNow;
                     pessoalProfileById.DateOfBirth = DateTime.SpecifyKind(pessoalProfileEntity.DateOfBirth, DateTimeKind.Utc);
                     pessoalProfileById.EGenderStatus = pessoalProfileEntity.EGenderStatus;

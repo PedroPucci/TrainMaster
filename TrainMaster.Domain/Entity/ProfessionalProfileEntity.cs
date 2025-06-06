@@ -5,7 +5,7 @@ namespace TrainMaster.Domain.Entity
 {
     public class ProfessionalProfileEntity : BaseEntity
     {
-        public string? JobTitle { get; set; }
+        public string? Name { get; set; }
         public int? YearsOfExperience { get; set; }
         public string? Skills { get; set; }
         public string? Certifications { get; set; }

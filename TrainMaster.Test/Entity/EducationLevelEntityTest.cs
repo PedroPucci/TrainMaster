@@ -16,7 +16,7 @@ namespace TrainMaster.Test.Entity
             var entity = new EducationLevelEntity
             {
                 Id = 1,
-                Title = "Graduação em Engenharia",
+                Name = "Graduação em Engenharia",
                 Institution = "Universidade XYZ",
                 Period = period,
                 ProfessionalProfileId = 10
@@ -24,7 +24,7 @@ namespace TrainMaster.Test.Entity
 
             // Assert
             Assert.Equal(1, entity.Id);
-            Assert.Equal("Graduação em Engenharia", entity.Title);
+            Assert.Equal("Graduação em Engenharia", entity.Name);
             Assert.Equal("Universidade XYZ", entity.Institution);
             Assert.Equal(startDate, entity.Period.StartDate);
             Assert.Equal(endDate, entity.Period.EndDate);

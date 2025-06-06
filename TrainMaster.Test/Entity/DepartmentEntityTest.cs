@@ -1,4 +1,5 @@
 ﻿using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 
 namespace TrainMaster.Test.Entity
 {
@@ -29,7 +30,7 @@ namespace TrainMaster.Test.Entity
             var team = new TeamEntity
             {
                 Id = 10,
-                Name = "Desenvolvimento",
+                Name = new Name("Desenvolvimento"),
                 Description = "Equipe de desenvolvimento",
                 DepartmentId = department.Id
             };

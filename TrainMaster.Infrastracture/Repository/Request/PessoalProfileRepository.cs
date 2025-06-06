@@ -36,7 +36,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
                 {
                     Id = pessoalProfile.Id,
                     DateOfBirth = pessoalProfile.DateOfBirth,
-                    FullName = pessoalProfile.FullName,
+                    Name = pessoalProfile.Name,
                     EGenderStatus = pessoalProfile.EGenderStatus,
                     EMaritalStatus = pessoalProfile.EMaritalStatus
                 }).ToListAsync();
@@ -50,7 +50,7 @@ namespace TrainMaster.Infrastracture.Repository.Request
 
         public async Task<PessoalProfileEntity?> GetByFullName(string? fullName)
         {
-            return await _context.PessoalProfileEntity.FirstOrDefaultAsync(pessoalProfileEntity => pessoalProfileEntity.FullName == fullName);
+            return await _context.PessoalProfileEntity.FirstOrDefaultAsync(pessoalProfileEntity => pessoalProfileEntity.Name == fullName);
         }
 
         public PessoalProfileEntity Update(PessoalProfileEntity pessoalProfileEntity)

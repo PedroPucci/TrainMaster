@@ -3,6 +3,7 @@ using Moq;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services;
 using TrainMaster.Domain.Entity;
+using TrainMaster.Domain.ValueObject;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
 
@@ -30,7 +31,7 @@ namespace TrainMaster.Test.Services
         {
             var team = new TeamEntity
             {
-                Name = "Time de Inovação",
+                Name = new Name("Time de Inovação"),
                 Description = "Equipe responsável por projetos inovadores",
                 DepartmentId = 1
             };
@@ -38,7 +39,7 @@ namespace TrainMaster.Test.Services
             var mockTeamRepository = new Mock<ITeamRepository>();
             var mockRepositoryUoW = new Mock<IRepositoryUoW>();
 
-            mockTeamRepository.Setup(x => x.GetByName(team.Name)).ReturnsAsync((TeamEntity?)null);
+            mockTeamRepository.Setup(x => x.GetByName(team.Name.Value)).ReturnsAsync((TeamEntity?)null);
             mockTeamRepository.Setup(x => x.Add(It.IsAny<TeamEntity>())).ReturnsAsync(team);
             mockRepositoryUoW.Setup(x => x.TeamRepository).Returns(mockTeamRepository.Object);
             mockRepositoryUoW.Setup(x => x.BeginTransaction()).Returns(Mock.Of<IDbContextTransaction>());
@@ -49,7 +50,7 @@ namespace TrainMaster.Test.Services
             var result = await service.Object.Add(team);
 
             Assert.True(result.Success);
-            mockTeamRepository.Verify(x => x.GetByName(team.Name), Times.Once);
+            mockTeamRepository.Verify(x => x.GetByName(team.Name.Value), Times.Once);
             mockTeamRepository.Verify(x => x.Add(It.Is<TeamEntity>(t =>
                 t.Name == team.Name &&
                 t.Description == team.Description &&
@@ -64,7 +65,7 @@ namespace TrainMaster.Test.Services
         {
             var team = new TeamEntity
             {
-                Name = "Time de Inovação",
+                Name = new Name("Time de Inovação"),
                 Description = "Duplicado",
                 DepartmentId = 1
             };
@@ -72,13 +73,13 @@ namespace TrainMaster.Test.Services
             var existingTeam = new TeamEntity
             {
                 Id = 99,
-                Name = "Time de Inovação"
+                Name = new Name("Time de Inovação")
             };
 
             var mockTeamRepository = new Mock<ITeamRepository>();
             var mockRepositoryUoW = new Mock<IRepositoryUoW>();
 
-            mockTeamRepository.Setup(x => x.GetByName(team.Name)).ReturnsAsync(existingTeam);
+            mockTeamRepository.Setup(x => x.GetByName(team.Name.Value)).ReturnsAsync(existingTeam);
             mockRepositoryUoW.Setup(x => x.TeamRepository).Returns(mockTeamRepository.Object);
             mockRepositoryUoW.Setup(x => x.BeginTransaction()).Returns(Mock.Of<IDbContextTransaction>());
 
@@ -88,7 +89,7 @@ namespace TrainMaster.Test.Services
 
             Assert.False(result.Success);
             Assert.Equal($"Já existe um time com o nome \"{team.Name}\".", result.Message);
-            mockTeamRepository.Verify(x => x.GetByName(team.Name), Times.Once);
+            mockTeamRepository.Verify(x => x.GetByName(team.Name.Value), Times.Once);
             mockTeamRepository.Verify(x => x.Add(It.IsAny<TeamEntity>()), Times.Never);
             mockRepositoryUoW.Verify(x => x.SaveAsync(), Times.Never);
         }
@@ -101,7 +102,7 @@ namespace TrainMaster.Test.Services
             var existingTeam = new TeamEntity
             {
                 Id = teamId,
-                Name = "Time de Suporte",
+                Name = new Name("Time de Suporte"),
                 IsActive = false
             };
 

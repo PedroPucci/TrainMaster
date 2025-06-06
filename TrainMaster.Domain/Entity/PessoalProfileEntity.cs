@@ -6,7 +6,7 @@ namespace TrainMaster.Domain.Entity
 {
     public class PessoalProfileEntity : BaseEntity
     {
-        public string? FullName { get; set; }
+        public string? Name { get; set; }
         public DateTime DateOfBirth { get; set; }
         public EGenderStatus EGenderStatus { get; set; }
         public EMaritalStatus EMaritalStatus { get; set; }

@@ -149,7 +149,7 @@ namespace TrainMaster.Application.Services
                 }
                 else
                 {
-                    educationLevelById.Title = educationLevelEntity.Title;
+                    educationLevelById.Name = educationLevelEntity.Name;
                     educationLevelById.Institution = educationLevelEntity.Institution;
                     educationLevelById.Period = educationLevelEntity.Period;
                     educationLevelById.ModificationDate = DateTime.UtcNow;
