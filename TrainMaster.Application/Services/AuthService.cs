@@ -2,7 +2,6 @@
 using System.Text.RegularExpressions;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
-using TrainMaster.Domain.Dto;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 using TrainMaster.Infrastracture.Security.Cryptography;

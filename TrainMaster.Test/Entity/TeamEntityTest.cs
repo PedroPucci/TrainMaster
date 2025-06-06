@@ -8,7 +8,6 @@ namespace TrainMaster.Test.Entity
         [Fact]
         public void TeamEntity_ShouldSetAndGetPropertiesCorrectly()
         {
-            // Arrange
             var team = new TeamEntity
             {
                 Id = 1,
@@ -18,7 +17,6 @@ namespace TrainMaster.Test.Entity
                 DepartmentId = 42
             };
 
-            // Assert
             Assert.Equal(1, team.Id);
             Assert.Equal("Equipe de Desenvolvimento", team.Name.Value);
             Assert.Equal("Responsável pela criação de software", team.Description);

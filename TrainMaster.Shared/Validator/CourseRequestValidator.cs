@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using TrainMaster.Domain.Dto;
-using TrainMaster.Domain.Entity;
 using TrainMaster.Shared.Enums;
 using TrainMaster.Shared.Helpers;
 

@@ -7,7 +7,6 @@ namespace TrainMaster.Test.Entity
         [Fact]
         public void UserEntity_ShouldSetAndGetPropertiesCorrectly()
         {
-            // Arrange
             var user = new UserEntity
             {
                 Id = 1,
@@ -17,7 +16,6 @@ namespace TrainMaster.Test.Entity
                 IsActive = true
             };
 
-            // Assert
             Assert.Equal(1, user.Id);
             Assert.Equal("12345678900", user.Cpf);
             Assert.Equal("teste@example.com", user.Email);

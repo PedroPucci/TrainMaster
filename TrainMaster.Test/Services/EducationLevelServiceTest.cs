@@ -28,7 +28,6 @@ namespace TrainMaster.Test.Services
         [Fact]
         public async Task Add_ShouldReturnSuccess_WhenValid()
         {
-            // Arrange
             var period = new Period(DateTime.UtcNow.AddYears(-3), DateTime.UtcNow);
             var education = new EducationLevelEntity
             {
@@ -40,10 +39,8 @@ namespace TrainMaster.Test.Services
             _educationRepositoryMock.Setup(x => x.Add(It.IsAny<EducationLevelEntity>())).ReturnsAsync(education);
             _repositoryUoWMock.Setup(x => x.SaveAsync()).Returns(Task.CompletedTask);
 
-            // Act
             var result = await _service.Add(education);
 
-            // Assert
             Assert.True(result.Success);
             _educationRepositoryMock.Verify(x => x.Add(It.IsAny<EducationLevelEntity>()), Times.Once);
             _repositoryUoWMock.Verify(x => x.SaveAsync(), Times.Once);

@@ -140,7 +140,6 @@ namespace TrainMaster.Application.Services
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                // Busca o departamento relacionado ao usuário
                 var departmentResult = await _repositoryUoW.DepartmentRepository.GetByUserId(userId);
 
                 if (departmentResult == null)
@@ -148,7 +147,6 @@ namespace TrainMaster.Application.Services
 
                 var departmentId = departmentResult.Id;
 
-                // Busca os times pelo departamento
                 var teams = await _repositoryUoW.TeamRepository.GetByDepartmentId(departmentId);
 
                 _repositoryUoW.Commit();

@@ -4,7 +4,6 @@ using TrainMaster.Application.Services;
 using TrainMaster.Domain.Entity;
 using TrainMaster.Infrastracture.Repository.Interfaces;
 using TrainMaster.Infrastracture.Repository.RepositoryUoW;
-using Xunit;
 
 namespace TrainMaster.Test.Services
 {

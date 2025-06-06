@@ -7,7 +7,6 @@ namespace TrainMaster.Test.Entity
         [Fact]
         public void AddressEntity_ShouldSetAndGetPropertiesCorrectly()
         {
-            // Arrange
             var address = new AddressEntity
             {
                 Id = 1,
@@ -19,7 +18,6 @@ namespace TrainMaster.Test.Entity
                 PessoalProfileId = 2
             };
 
-            // Assert
             Assert.Equal(1, address.Id);
             Assert.Equal("60170150", address.PostalCode);
             Assert.Equal("Rua Teste", address.Street);
