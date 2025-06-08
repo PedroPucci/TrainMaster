@@ -56,7 +56,6 @@ namespace TrainMaster.Controllers
             if (existing?.Data == null)
                 return NotFound(new { message = "Usuário não encontrado." });
 
-            // Atualiza apenas os campos preenchidos
             existing.Data.Cpf = !string.IsNullOrWhiteSpace(model.Cpf) ? model.Cpf : existing.Data.Cpf;
             existing.Data.Email = !string.IsNullOrWhiteSpace(model.Email) ? model.Email : existing.Data.Email;
 
@@ -78,6 +77,52 @@ namespace TrainMaster.Controllers
             return result.Success
                 ? Ok(new { message = "Usuário atualizado com sucesso.", data = dto })
                 : BadRequest(new { message = "Erro ao atualizar usuário.", error = result.Message });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var user = await _unitOfWork.UserService.GetById(id);
+            if (user?.Data == null)
+                return NotFound(new { message = "Usuário não encontrado." });
+
+            try
+            {
+                await _unitOfWork.UserService.Delete(id);
+                return Ok(new { message = "Usuário deletado com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Erro ao deletar usuário.", error = ex.Message });
+            }
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var users = await _unitOfWork.UserService.Get();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao carregar usuários.", error = ex.Message });
+            }
+        }
+
+        [HttpGet("active")]
+        public async Task<IActionResult> GetAllActives()
+        {
+            try
+            {
+                var users = await _unitOfWork.UserService.GetAllActives();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao carregar usuários ativos.", error = ex.Message });
+            }
         }
     }
 }

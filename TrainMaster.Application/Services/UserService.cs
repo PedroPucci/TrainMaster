@@ -1,5 +1,4 @@
-﻿using BCrypt.Net;
-using Serilog;
+﻿using Serilog;
 using System.Text.RegularExpressions;
 using TrainMaster.Application.ExtensionError;
 using TrainMaster.Application.Services.Interfaces;
