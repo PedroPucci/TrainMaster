@@ -1,41 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Entity;
 
-[Route("PerfilProfessional")]
-public class ProfessionalProfileController : Controller
+namespace TrainMaster.Controllers
 {
-    private readonly IUnitOfWorkService _serviceUoW;
-
-    public ProfessionalProfileController(IUnitOfWorkService unitOfWorkService)
+    [ApiController]
+    [Route("api/v1/professional-profile")]
+    public class ProfessionalProfileController : ControllerBase
     {
-        _serviceUoW = unitOfWorkService;
-    }
+        private readonly IUnitOfWorkService _serviceUoW;
 
-    [HttpGet("Edit/{id}")]
-    public async Task<IActionResult> Edit(int id)
-    {
-        var result = await _serviceUoW.ProfileProfessionalService.GetById(id);
-        var model = result?.Data ?? new ProfessionalProfileEntity { UserId = id };
-        return View("~/Views/PerfilProfessional/Professional.cshtml", model);
-    }
-
-    [HttpPost("Edit/{id}")]
-    public async Task<IActionResult> Edit(int id, ProfessionalProfileEntity model)
-    {
-        if (!ModelState.IsValid)
-            return View("~/Views/PerfilProfessional/Professional.cshtml", model);
-
-        var result = await _serviceUoW.ProfileProfessionalService.Update(id, model);
-
-        if (!result.Success)
+        public ProfessionalProfileController(IUnitOfWorkService unitOfWorkService)
         {
-            ViewBag.ErrorMessage = result.Message;
-            return View("~/Views/PerfilProfessional/Professional.cshtml", model);
+            _serviceUoW = unitOfWorkService;
         }
 
-        ViewBag.Sucesso = "Perfil profissional atualizado com sucesso!";
-        return View("~/Views/PerfilProfessional/Professional.cshtml", model);
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetProfile()
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized(new { message = "Usuário não autenticado." });
 
+            int userId = Convert.ToInt32(userIdClaim);
+            var result = await _serviceUoW.ProfileProfessionalService.GetById(userId);
+
+            return result?.Data == null
+                ? NotFound("Perfil profissional não encontrado.")
+                : Ok(result.Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile([FromBody] ProfessionalProfileEntity model)
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized(new { message = "Usuário não autenticado." });
+
+            int userId = Convert.ToInt32(userIdClaim);
+            model.UserId = userId;
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _serviceUoW.ProfileProfessionalService.Update(userId, model);
+            return result.Success
+                ? Ok(new { message = "Perfil profissional atualizado com sucesso.", data = model })
+                : BadRequest(new { message = result.Message });
+        }
+    }
 }

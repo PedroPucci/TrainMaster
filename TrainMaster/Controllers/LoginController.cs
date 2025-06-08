@@ -7,7 +7,9 @@ using TrainMaster.Domain.Dto;
 
 namespace TrainMaster.Controllers
 {
-    public class LoginController : Controller
+    [ApiController]
+    [Route("api/v1/auth")]
+    public class LoginController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWork;
 
@@ -16,70 +18,48 @@ namespace TrainMaster.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Index(LoginDto login)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto login)
         {
             if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError(string.Empty, "Os campos CPF e senha estão incorretos.");
-                return View(login);
-            }
+                return BadRequest("CPF e senha são obrigatórios.");
 
             var result = await _unitOfWork.AuthService.Login(login.Cpf, login.Password);
-
             if (!result.Success)
-            {
-                ModelState.AddModelError(string.Empty, "Os campos CPF e senha estão incorretos.");
-                return View(login);
-            }
+                return Unauthorized(new { Message = "CPF ou senha inválidos." });
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString()),
+                // Adicione mais claims se necessário (como roles)
             };
+
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            return RedirectToAction("Index", "Home");
+            return Ok(new { Message = "Login realizado com sucesso", UserId = result.Data.Id });
         }
 
-        [HttpGet]
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Login");
+            return Ok(new { Message = "Logout realizado com sucesso" });
         }
 
-        [HttpGet()]
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        [HttpPost("SendRecovery")]
-        public async Task<IActionResult> SendRecovery(ForgotPasswordDto dto)
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
         {
             if (!ModelState.IsValid)
-                return View("ForgotPassword", dto);
+                return BadRequest("O e-mail é obrigatório.");
 
             var result = await _unitOfWork.AuthService.ResetPassword(dto.Email);
-
             if (!result.Success)
-            {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View("ForgotPassword", dto);
-            }
+                return BadRequest(new { Message = result.Message });
 
-            ViewBag.NovaSenha = result.Data;
-            return View("ForgotPassword", dto);
+            return Ok(new { Message = "Nova senha enviada", NovaSenha = result.Data });
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
 {
-    [Route("Atividades")]
-    public class CourseActivitieController : Controller
+    [ApiController]
+    [Route("api/v1/activities")]
+    public class CourseActivitieController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWork;
 
@@ -15,101 +15,73 @@ namespace TrainMaster.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("create")]
-        public async Task<IActionResult> Create()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var courses = await _unitOfWork.CourseService.Get();
-            ViewBag.Courses = courses.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
-
-            return View("Create");
+            var activities = await _unitOfWork.CourseActivitieService.GetAll();
+            return Ok(activities);
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> Create(CourseActivitieEntity entity)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var activity = await _unitOfWork.CourseActivitieService.GetById(id);
+            if (activity == null)
+                return NotFound("Atividade não encontrada.");
+
+            return Ok(activity);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CourseActivitieEntity entity)
         {
             if (!ModelState.IsValid)
-            {
-                await LoadCoursesAsync();
-                ViewBag.ErrorMessage = "Todos os campos devem ser preenchidos.";
-                return View("Create", entity);
-            }
+                return BadRequest(ModelState);
 
             var result = await _unitOfWork.CourseActivitieService.Add(entity);
 
             if (!result.Success)
-            {
-                await LoadCoursesAsync();
-                ViewBag.ErrorMessage = "Erro ao registrar atividade.";
-                return View("Create", entity);
-            }
+                return BadRequest(result.Message);
 
-            return RedirectToAction("Index");
+            return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
         }
 
-        private async Task LoadCoursesAsync()
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] CourseActivitieEntity model)
         {
-            var courses = await _unitOfWork.CourseService.Get();
-            ViewBag.Courses = courses.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
-        }
+            if (id != model.Id)
+                return BadRequest("ID da URL não corresponde ao corpo da requisição.");
 
-        [HttpGet("index")]
-        public async Task<IActionResult> Index()
-        {
-            var atividades = await _unitOfWork.CourseActivitieService.GetAll();
-            return View("Index", atividades);
-        }
-
-        [HttpGet("edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var courses = await _unitOfWork.CourseService.Get();
-            ViewBag.Courses = courses.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
-
-            var atividade = await _unitOfWork.CourseActivitieService.GetById(id);
-            if (atividade == null)
-                return NotFound();
-
-            return View("Edit", atividade);
-        }
-
-        [HttpPost("edit/{id}")]
-        public async Task<IActionResult> Edit(int id, CourseActivitieEntity model)
-        {
             if (!ModelState.IsValid)
-                return View("Edit", model);
+                return BadRequest(ModelState);
 
             var existing = await _unitOfWork.CourseActivitieService.GetById(id);
             if (existing == null)
-                return NotFound();
+                return NotFound("Atividade não encontrada.");
 
             existing.Title = model.Title;
             existing.Description = model.Description;
             existing.StartDate = model.StartDate;
             existing.DueDate = model.DueDate;
             existing.MaxScore = model.MaxScore;
+            existing.CourseId = model.CourseId;
 
             var result = await _unitOfWork.CourseActivitieService.Update(existing);
-
             if (!result.Success)
-            {
-                ModelState.AddModelError(string.Empty, "Erro ao atualizar atividade.");
-                return View("Edit", existing);
-            }
+                return BadRequest(result.Message);
 
-            ViewBag.Sucesso = "Atividade atualizada com sucesso!";
-            return View("Edit", existing);
+            return Ok(existing);
         }
+
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var existing = await _unitOfWork.CourseActivitieService.GetById(id);
+        //    if (existing == null)
+        //        return NotFound("Atividade não encontrada.");
+
+        //    var result = await _unitOfWork.CourseActivitieService.Delete(id);
+        //    return result.Success ? NoContent() : BadRequest(result.Message);
+        //}
     }
 }

@@ -5,8 +5,9 @@ using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
 {
-    [Route("Departamentos")]
-    public class DepartmentController : Controller
+    [ApiController]
+    [Route("api/v1/departments")]
+    public class DepartmentController : ControllerBase
     {
         private readonly IUnitOfWorkService _serviceUoW;
 
@@ -15,86 +16,47 @@ namespace TrainMaster.Controllers
             _serviceUoW = unitOfWorkService;
         }
 
-        [HttpGet("Index")]
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        [HttpGet("by-user")]
+        public async Task<IActionResult> GetByUser()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized("Usuário não autenticado.");
 
             var result = await _serviceUoW.DepartmentService.GetByUserId(Convert.ToInt32(userId));
-
-            if (!result.Success || result.Data == null)
-            {
-                ViewBag.ErrorMessage = result.Message ?? "Nenhum departamento encontrado.";
-                return View("Index", new List<DepartmentEntity>());
-            }
-
-            var departamentos = new List<DepartmentEntity> { result.Data };
-
-            var totalDepartamentos = departamentos.Count();
-            var departamentosPaginados = departamentos
-                .OrderBy(d => d.Name)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)totalDepartamentos / pageSize);
-
-            return View("Index", departamentosPaginados);
+            return !result.Success || result.Data == null ? NotFound(result.Message) : Ok(result.Data);
         }
 
-        [HttpGet("Create")]
-        public IActionResult Create()
-        {
-            var userId = HttpContext.Session.GetString("UserId");
-            ViewBag.UserId = userId;
-            return View();
-        }
-
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create(DepartmentEntity department)
-        {
-            if (!ModelState.IsValid)
-                return View(department);
-
-            var result = await _serviceUoW.DepartmentService.Add(department);
-            if (!result.Success)
-            {
-                ViewBag.ErrorMessage = result.Message;
-                return View(department);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var result = await _serviceUoW.DepartmentService.GetById(id);
-            if (result?.Data == null)
-                return NotFound();
-
-            ModelState.Clear();
-            return View("~/Views/Department/Edit.cshtml", result.Data);
+            return result?.Data == null ? NotFound("Departamento não encontrado.") : Ok(result.Data);
         }
 
-        [HttpPost("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id, DepartmentEntity department)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] DepartmentEntity department)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _serviceUoW.DepartmentService.Add(department);
+            return result.Success
+                ? CreatedAtAction(nameof(GetById), new { id = department.Id }, department)
+                : BadRequest(result.Message);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] DepartmentEntity department)
         {
             if (id != department.Id)
-                return BadRequest();
+                return BadRequest("ID da URL não corresponde ao corpo da requisição.");
 
             if (!ModelState.IsValid)
-                return View(department);
+                return BadRequest(ModelState);
 
             var result = await _serviceUoW.DepartmentService.Update(department);
-            if (!result.Success)
-            {
-                ViewBag.ErrorMessage = result.Message;
-                return View(department);
-            }
-
-            return RedirectToAction("Index");
+            return result.Success ? Ok(department) : BadRequest(result.Message);
         }
     }
 }

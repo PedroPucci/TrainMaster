@@ -4,8 +4,9 @@ using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
 {
-    [Route("Endereco")]
-    public class AddressController : Controller
+    [ApiController]
+    [Route("api/v1/addresses")]
+    public class AddressController : ControllerBase
     {
         private readonly IUnitOfWorkService _serviceUoW;
 
@@ -14,85 +15,59 @@ namespace TrainMaster.Controllers
             _serviceUoW = unitOfWorkService;
         }
 
-
-        [HttpGet("GetByPostalCode")]
+        [HttpGet("by-postal-code/{postalCode}")]
         public async Task<IActionResult> GetByPostalCode(string postalCode)
         {
-            if (string.IsNullOrEmpty(postalCode))
+            if (string.IsNullOrWhiteSpace(postalCode))
                 return BadRequest("CEP inválido.");
 
             var result = await _serviceUoW.AddressService.GetAddressByZipCode(postalCode);
-            if (result.Success)
-                return Json(result.Data);
-
-            return NotFound(result.Message);
+            return result.Success ? Ok(result.Data) : NotFound(result.Message);
         }
 
-        [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var result = await _serviceUoW.AddressService.GetById(id);
-            if (result?.Data == null)
-                return NotFound();
-
-            return View("~/Views/Address/Edit.cshtml", result.Data);
+            return result.Data == null ? NotFound() : Ok(result.Data);
         }
 
-        [HttpPost("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id, AddressEntity model)
-        {
-            if (id != model.Id)
-                return BadRequest();
-
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var result = await _serviceUoW.AddressService.Update(id, model);
-            if (!result.Success)
-            {
-                ViewBag.ErrorMessage = result.Message;
-                return View(model);
-            }
-
-            ViewBag.Sucesso = "Endereço atualizado com sucesso!";
-            return View("~/Views/Address/Edit.cshtml", model);
-        }
-
-        [HttpGet("Create")]
-        public IActionResult Create()
-        {
-            var model = new AddressEntity();
-            return View("~/Views/Address/Create.cshtml", model);
-        }
-
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create(AddressEntity model)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] AddressEntity model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+                return BadRequest(ModelState);
 
             var result = await _serviceUoW.AddressService.Add(model);
-            if (!result.Success)
-            {
-                ViewBag.ErrorMessage = result.Message;
-                return View(model);
-            }
-
-            return RedirectToAction("List");
+            return result.Success ? CreatedAtAction(nameof(GetById), new { id = model.Id }, model)
+                                  : BadRequest(result.Message);
         }
 
-        [HttpGet("List")]
-        public async Task<IActionResult> List()
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] AddressEntity model)
+        {
+            if (id != model.Id)
+                return BadRequest("ID mismatch.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _serviceUoW.AddressService.Update(id, model);
+            return result.Success ? Ok(model) : BadRequest(result.Message);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
             var result = await _serviceUoW.AddressService.Get();
-            return View("~/Views/Address/List.cshtml", result);
+            return Ok(result);
         }
 
-        [HttpPost("Delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _serviceUoW.AddressService.Delete(id);
-            return RedirectToAction("List");
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var result = await _serviceUoW.AddressService.Delete(id);
+        //    return result.Success ? NoContent() : BadRequest(result.Message);
+        //}
     }
 }

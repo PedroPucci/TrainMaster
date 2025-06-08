@@ -5,8 +5,9 @@ using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
 {
-    [Route("Times")]
-    public class TeamController : Controller
+    [ApiController]
+    [Route("api/v1/teams")]
+    public class TeamController : ControllerBase
     {
         private readonly IUnitOfWorkService _serviceUoW;
 
@@ -15,82 +16,78 @@ namespace TrainMaster.Controllers
             _serviceUoW = unitOfWorkService;
         }
 
-        [HttpGet("Index")]
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        [HttpGet]
+        public async Task<IActionResult> GetTeams([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var times = await _serviceUoW.TeamService.GetByUserId(Convert.ToInt32(userId));
-            var totalTimes = times.Count();
-            var timesPaginados = times
-                .OrderBy(c => c.Name)
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized(new { message = "Usuário não autenticado." });
+
+            var userId = Convert.ToInt32(userIdClaim);
+            var times = await _serviceUoW.TeamService.GetByUserId(userId);
+
+            var total = times.Count();
+            var paged = times
+                .OrderBy(t => t.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)totalTimes / pageSize);
-
-            return View("Index", timesPaginados);
-        }
-
-        [HttpGet("Create")]
-        public IActionResult Create()
-        {
-            var userId = HttpContext.Session.GetString("UserId");
-            ViewBag.UserId = userId;
-            return View();
-        }
-
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create(int userId, TeamEntity team)
-        {
-            if (!ModelState.IsValid)
-                return View(team);
-
-            var resultId = await _serviceUoW.DepartmentService.GetByUserId(userId);
-
-            if (resultId is not null)
+            return Ok(new
             {
-                team.DepartmentId = resultId.Data.Id;
-                var result = await _serviceUoW.TeamService.Add(team);
-                if (!result.Success)
-                {
-                    ViewBag.ErrorMessage = result.Message;
-                    return View(team);
-                }
-            }
-
-            return RedirectToAction("Index");
+                currentPage = page,
+                totalPages = (int)Math.Ceiling((double)total / pageSize),
+                totalItems = total,
+                data = paged
+            });
         }
 
-        [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] TeamEntity team)
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized(new { message = "Usuário não autenticado." });
+
+            int userId = Convert.ToInt32(userIdClaim);
+            var departmentResult = await _serviceUoW.DepartmentService.GetByUserId(userId);
+
+            if (departmentResult?.Data == null)
+                return BadRequest(new { message = "Departamento do usuário não encontrado." });
+
+            team.DepartmentId = departmentResult.Data.Id;
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _serviceUoW.TeamService.Add(team);
+            return result.Success
+                ? Ok(new { message = "Time criado com sucesso!", data = team })
+                : BadRequest(new { message = result.Message });
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var result = await _serviceUoW.TeamService.GetById(id);
-            if (result?.Data == null)
-                return NotFound();
-
-            ModelState.Clear();
-            return View("~/Views/Team/Edit.cshtml", result.Data);
+            return result?.Data == null
+                ? NotFound(new { message = "Time não encontrado." })
+                : Ok(result.Data);
         }
 
-        [HttpPost("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id, TeamEntity team)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] TeamEntity team)
         {
             if (id != team.Id)
-                return BadRequest();
+                return BadRequest(new { message = "ID da URL não confere com o corpo da requisição." });
 
             if (!ModelState.IsValid)
-                return View(team);
+                return BadRequest(ModelState);
 
             var result = await _serviceUoW.TeamService.Update(team);
-            if (!result.Success)
-            {
-                ViewBag.ErrorMessage = result.Message;
-                return View(team);
-            }
-
-            return RedirectToAction("Index");
+            return result.Success
+                ? Ok(new { message = "Time atualizado com sucesso!", data = team })
+                : BadRequest(new { message = result.Message });
         }
     }
 }

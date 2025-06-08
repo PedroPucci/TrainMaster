@@ -6,8 +6,9 @@ using TrainMaster.Domain.Entity;
 
 namespace TrainMaster.Controllers
 {
-    [Route("Cursos")]
-    public class CourseController : Controller
+    [ApiController]
+    [Route("api/v1/courses")]
+    public class CourseController : ControllerBase
     {
         private readonly IUnitOfWorkService _serviceUoW;
 
@@ -16,87 +17,54 @@ namespace TrainMaster.Controllers
             _serviceUoW = unitOfWorkService;
         }
 
-        [HttpGet("Index")]
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        [HttpGet("by-user")]
+        public async Task<IActionResult> GetByUser()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized("Usuário não autenticado.");
 
-            var cursos = await _serviceUoW.CourseService.GetByUserId(Convert.ToInt32(userId));
-            var totalCursos = cursos.Count();
-
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCursos / pageSize);
-            ViewBag.TotalCursos = totalCursos;
-
-            return View("Index", cursos);
+            var cursos = await _serviceUoW.CourseService.GetByUserId(int.Parse(userId));
+            return Ok(cursos);
         }
 
-        [HttpGet("Create")]
-        public IActionResult Create()
-        {
-            var userId = HttpContext.Session.GetString("UserId");
-            ViewBag.UserId = userId;
-
-            var model = new CourseDto
-            {
-                UserId = Convert.ToInt32(userId)
-            };
-
-            return View(model);
-        }
-
-
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create(CourseDto course)
-        {
-            if (!ModelState.IsValid)
-                return View(course);
-
-            var result = await _serviceUoW.CourseService.Add(course);
-            if (!result.Success)
-            {
-                ViewBag.ErrorMessage = result.Message;
-                return View(course);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var result = await _serviceUoW.CourseService.GetById(id);
-            if (result?.Data == null)
-                return NotFound();
-
-            ModelState.Clear();
-            return View("~/Views/Course/Edit.cshtml", result.Data);
+            return result?.Data == null ? NotFound("Curso não encontrado.") : Ok(result.Data);
         }
 
-        [HttpPost("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id, CourseEntity course)
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create([FromBody] CourseDto course)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _serviceUoW.CourseService.Add(course);
+            return result.Success ? Ok(result) : BadRequest(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] CourseEntity course)
         {
             if (id != course.Id)
-                return BadRequest();
+                return BadRequest("ID da URL não corresponde ao corpo da requisição.");
 
             if (!ModelState.IsValid)
-                return View(course);
+                return BadRequest(ModelState);
 
             var result = await _serviceUoW.CourseService.Update(course);
-            if (!result.Success)
-            {
-                ViewBag.ErrorMessage = result.Message;
-                return View(course);
-            }
-
-            return RedirectToAction("Index");
+            return result.Success ? Ok(course) : BadRequest(result.Message);
         }
 
-        [HttpPost("Delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _serviceUoW.CourseService.Delete(id);
-            return RedirectToAction(nameof(Index));
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var result = await _serviceUoW.CourseService.Delete(id);
+        //    return result.Success ? NoContent() : BadRequest(result.Message);
+        //}
     }
 }

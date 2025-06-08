@@ -6,8 +6,9 @@ using TrainMaster.Infrastracture.Security.Cryptography;
 
 namespace TrainMaster.Controllers
 {
-    [Route("users")]
-    public class UserController : Controller
+    [ApiController]
+    [Route("api/v1/users")]
+    public class UserController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWork;
 
@@ -16,103 +17,67 @@ namespace TrainMaster.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("register")]
-        public IActionResult Register()
-        {
-            var userId = HttpContext.Session.GetString("UserId");
-            ViewBag.UserId = userId;
-            return View("Register");
-        }
-
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserCreateUpdateDto userEntity)
+        public async Task<IActionResult> Register([FromBody] UserCreateUpdateDto userDto)
         {
             if (!ModelState.IsValid)
-                return View("Register", userEntity);
+                return BadRequest(ModelState);
 
-            var entity = new UserEntity
+            var user = new UserEntity
             {
-                Email = userEntity.Email,
-                Password = userEntity.Password,
-                Cpf = userEntity.Cpf
+                Email = userDto.Email,
+                Cpf = userDto.Cpf,
+                Password = new BCryptoAlgorithm().HashPassword(userDto.Password)
             };
 
-            var result = await _unitOfWork.UserService.Add(entity);
+            var result = await _unitOfWork.UserService.Add(user);
 
-            if (!result.Success)
-            {
-                ModelState.AddModelError(string.Empty, "Erro ao registrar usuário.");
-                return View("Register", userEntity);
-            }
-
-            return RedirectToAction("Index", "Login");
+            return result.Success
+                ? Ok(new { message = "Usuário registrado com sucesso.", userId = user.Id })
+                : BadRequest(new { message = "Erro ao registrar usuário.", error = result.Message });
         }
 
-        [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var user = await _unitOfWork.UserService.GetById(id);
-            if (user?.Data == null)
-                return NotFound();
-
-            return View(user.Data);
+            return user?.Data == null
+                ? NotFound(new { message = "Usuário não encontrado." })
+                : Ok(user.Data);
         }
 
-        [HttpPost("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id, UserEntity model)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UserEntity model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+                return BadRequest(ModelState);
 
-            var user = await _unitOfWork.UserService.GetById(id);
-            if (user?.Data == null)
-                return NotFound();
+            var existing = await _unitOfWork.UserService.GetById(id);
+            if (existing?.Data == null)
+                return NotFound(new { message = "Usuário não encontrado." });
 
-            if (!string.IsNullOrWhiteSpace(model.Cpf))
-            {
-                user.Data.Cpf = model.Cpf;
-            }
-            else
-            {
-                user.Data.Cpf = user.Data.Cpf;
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.Email))
-            {
-                user.Data.Email = model.Email;
-            }
-            else
-            {
-                user.Data.Email = user.Data.Email;
-            }
+            // Atualiza apenas os campos preenchidos
+            existing.Data.Cpf = !string.IsNullOrWhiteSpace(model.Cpf) ? model.Cpf : existing.Data.Cpf;
+            existing.Data.Email = !string.IsNullOrWhiteSpace(model.Email) ? model.Email : existing.Data.Email;
 
             if (!string.IsNullOrWhiteSpace(model.Password))
             {
-                user.Data.Password = model.Password;
-            }
-            else
-            {
-                user.Data.Password = user.Data.Password;
-            }
-            
-            if (!string.IsNullOrEmpty(model.Password))
-            {
                 var crypto = new BCryptoAlgorithm();
-                user.Data.Password = crypto.HashPassword(model.Password);
+                existing.Data.Password = crypto.HashPassword(model.Password);
             }
 
-            var userDto = new UserUpdateDto
+            var dto = new UserUpdateDto
             {
-                Id = user.Data.Id,
-                Cpf = user.Data.Cpf,
-                Email = user.Data.Email,
-                Password = user.Data.Password
+                Id = existing.Data.Id,
+                Cpf = existing.Data.Cpf,
+                Email = existing.Data.Email,
+                Password = existing.Data.Password
             };
 
-            await _unitOfWork.UserService.Update(userDto);
-
-            ViewBag.Sucesso = "Usuário atualizado com sucesso!";
-            return View("Edit", user.Data);
+            var result = await _unitOfWork.UserService.Update(dto);
+            return result.Success
+                ? Ok(new { message = "Usuário atualizado com sucesso.", data = dto })
+                : BadRequest(new { message = "Erro ao atualizar usuário.", error = result.Message });
         }
     }
 }

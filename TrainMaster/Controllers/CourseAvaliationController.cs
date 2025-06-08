@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrainMaster.Application.UnitOfWork;
 using TrainMaster.Domain.Entity;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TrainMaster.Controllers
 {
-    [Route("Avaliacoes")]
-    public class CourseAvaliationController : Controller
+    [ApiController]
+    [Route("api/v1/avaliations")]
+    public class CourseAvaliationController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWork;
 
@@ -15,82 +15,44 @@ namespace TrainMaster.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("create")]
-        public async Task<IActionResult> Create()
-        {
-            var courses = await _unitOfWork.CourseService.Get();
-
-            ViewBag.Courses = courses.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
-
-            return View("Create");
-        }
-
-        [HttpPost("create")]
-        public async Task<IActionResult> Create(CourseAvaliationEntity entity)
-        {
-            if (!ModelState.IsValid)
-            {
-                await CarregarCursosAsync();
-                ViewBag.ErrorMessage = "Todos os campos devem ser preenchidos.";
-                return View("Create", entity);
-            }
-
-            var result = await _unitOfWork.CourseAvaliationService.Add(entity);
-
-            if (!result.Success)
-            {
-                await CarregarCursosAsync();
-                ModelState.AddModelError(string.Empty, "Erro ao registrar avaliação.");
-                return View("Create", entity);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        private async Task CarregarCursosAsync()
-        {
-            var courses = await _unitOfWork.CourseService.Get();
-            ViewBag.Courses = courses.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
-        }
-
-
-        [HttpGet("index")]
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
             var avaliacoes = await _unitOfWork.CourseAvaliationService.GetAll();
-            return View("Index", avaliacoes);
+            return Ok(avaliacoes);
         }
 
-        [HttpGet("edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var avaliacao = await _unitOfWork.CourseAvaliationService.GetById(id);
-            if (avaliacao == null)
-                return NotFound();
-            await CarregarCursosAsync();
-            return View("Edit", avaliacao);
+            return avaliacao == null ? NotFound("Avaliação não encontrada.") : Ok(avaliacao);
         }
 
-        [HttpPost("edit/{id}")]
-        public async Task<IActionResult> Edit(int id, CourseAvaliationEntity model)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CourseAvaliationEntity entity)
         {
             if (!ModelState.IsValid)
-            {
-                await CarregarCursosAsync();
-                return View("Edit", model);
-            }               
+                return BadRequest(ModelState);
+
+            var result = await _unitOfWork.CourseAvaliationService.Add(entity);
+            return result.Success
+                ? CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity)
+                : BadRequest(result.Message);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] CourseAvaliationEntity model)
+        {
+            if (id != model.Id)
+                return BadRequest("ID da URL não corresponde ao corpo da requisição.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var existing = await _unitOfWork.CourseAvaliationService.GetById(id);
             if (existing == null)
-                return NotFound();
+                return NotFound("Avaliação não encontrada.");
 
             existing.CourseId = model.CourseId;
             existing.Rating = model.Rating;
@@ -98,17 +60,18 @@ namespace TrainMaster.Controllers
             existing.ReviewDate = model.ReviewDate;
 
             var result = await _unitOfWork.CourseAvaliationService.Update(existing);
-
-            if (!result.Success)
-            {
-                await CarregarCursosAsync();
-                ModelState.AddModelError(string.Empty, "Erro ao atualizar avaliação.");
-                return View("Edit", existing);
-            }
-
-            ViewBag.Sucesso = "Avaliação atualizada com sucesso!";
-            //return View("Edit", existing);
-            return RedirectToAction("Index");
+            return result.Success ? Ok(existing) : BadRequest(result.Message);
         }
+
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var existing = await _unitOfWork.CourseAvaliationService.GetById(id);
+        //    if (existing == null)
+        //        return NotFound("Avaliação não encontrada.");
+
+        //    var result = await _unitOfWork.CourseAvaliationService.Delete(id);
+        //    return result.Success ? NoContent() : BadRequest(result.Message);
+        //}
     }
 }
