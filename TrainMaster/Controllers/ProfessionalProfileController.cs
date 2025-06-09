@@ -34,20 +34,61 @@ namespace TrainMaster.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProfile([FromBody] ProfessionalProfileEntity model)
         {
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userIdClaim))
-                return Unauthorized(new { message = "Usuário não autenticado." });
+            //var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //if (string.IsNullOrEmpty(userIdClaim))
+            //    return Unauthorized(new { message = "Usuário não autenticado." });
 
-            int userId = Convert.ToInt32(userIdClaim);
-            model.UserId = userId;
+            //int userId = Convert.ToInt32(userIdClaim);
+            //model.UserId = userId;
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _serviceUoW.ProfileProfessionalService.Update(userId, model);
+            var result = await _serviceUoW.ProfileProfessionalService.Update(model.UserId, model);
             return result.Success
                 ? Ok(new { message = "Perfil profissional atualizado com sucesso.", data = model })
                 : BadRequest(new { message = result.Message });
+        }
+
+        [HttpPost("add")]
+        public async Task<IActionResult> Add([FromBody] ProfessionalProfileEntity model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _serviceUoW.ProfileProfessionalService.Add(model);
+
+            return result.Success
+                ? Ok(new { message = "Perfil profissional criado com sucesso.", data = result.Data })
+                : BadRequest(new { message = result.Message });
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _serviceUoW.ProfileProfessionalService.Delete(id);
+                return Ok(new { message = "Perfil profissional excluído com sucesso." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var list = await _serviceUoW.ProfileProfessionalService.Get();
+                return Ok(list);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
     }
 }
