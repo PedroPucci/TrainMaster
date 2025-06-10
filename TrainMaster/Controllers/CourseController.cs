@@ -48,17 +48,8 @@ namespace TrainMaster.Controllers
 
         [HttpPost("Create")]
         public async Task<IActionResult> Create(CourseDto course)
-        {
-            if (!ModelState.IsValid)
-                return View(course);
-
-            var result = await _serviceUoW.CourseService.Add(course);
-            if (!result.Success)
-            {
-                ViewBag.ErrorMessage = result.Message;
-                return View(course);
-            }
-
+        {          
+            var result = await _serviceUoW.CourseService.Add(course);           
             return RedirectToAction("Index");
         }
 
@@ -76,18 +67,18 @@ namespace TrainMaster.Controllers
         [HttpPost("Edit/{id}")]
         public async Task<IActionResult> Edit(int id, CourseEntity course)
         {
-            if (id != course.Id)
-                return BadRequest();
+            //if (id != course.Id)
+            //    return BadRequest();
 
-            if (!ModelState.IsValid)
-                return View(course);
+            //if (!ModelState.IsValid)
+            //    return View(course);
 
             var result = await _serviceUoW.CourseService.Update(course);
-            if (!result.Success)
-            {
-                ViewBag.ErrorMessage = result.Message;
-                return View(course);
-            }
+            //if (!result.Success)
+            //{
+            //    ViewBag.ErrorMessage = result.Message;
+            //    return View(course);
+            //}
 
             return RedirectToAction("Index");
         }

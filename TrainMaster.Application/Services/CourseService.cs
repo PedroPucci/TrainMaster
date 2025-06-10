@@ -23,21 +23,15 @@ namespace TrainMaster.Application.Services
             using var transaction = _repositoryUoW.BeginTransaction();
             try
             {
-                var isValidAddress = await IsValidCourseRequest(courseEntity);
+                courseEntity.Name = "";
 
-                if (!isValidAddress.Success)
+                if (string.IsNullOrWhiteSpace(courseEntity.Name))
                 {
-                    Log.Error(LogMessages.InvalidAddressInputs());
-                    return Result<CourseDto>.Error(isValidAddress.Message);
+                    // Forçando uma exception para cair no DeveloperExceptionPage
+                    throw new InvalidOperationException("Nome não pode estar vazio.");
                 }
 
-                if (courseEntity.EndDate < courseEntity.StartDate)
-                {
-                    var errorMessage = "End date cannot be earlier than start date.";
-                    Log.Error(LogMessages.InvalidDateRangeCourse());
-                    return Result<CourseDto>.Error(errorMessage);
-                }
-                
+
                 var course = new CourseEntity
                 {
                     Name = courseEntity.Name,
@@ -59,7 +53,7 @@ namespace TrainMaster.Application.Services
             {
                 Log.Error(LogMessages.AddingCourseError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Error to add a new course");
+                throw;
             }
             finally
             {
@@ -175,7 +169,15 @@ namespace TrainMaster.Application.Services
                     throw new InvalidOperationException("Error updating Course");
 
                 courseById.ModificationDate = DateTime.UtcNow;
-                courseById.Name = courseEntity.Name;
+                //courseById.Name = courseEntity.Name;
+                courseById.Name = "";
+
+                if (string.IsNullOrWhiteSpace(courseEntity.Name))
+                {
+                    // Forçando uma exception para cair no DeveloperExceptionPage
+                    throw new InvalidOperationException("Nome não pode estar vazio.");
+                }
+
                 courseById.Description = courseEntity.Description;
 
                 courseById.StartDate = courseEntity.StartDate.Kind == DateTimeKind.Unspecified
@@ -193,11 +195,17 @@ namespace TrainMaster.Application.Services
 
                 return Result<CourseEntity>.Ok();
             }
+            //catch (Exception ex)
+            //{
+            //    Log.Error(LogMessages.UpdatingErrorCourse(ex));
+            //    transaction.Rollback();
+            //    throw new InvalidOperationException("Error updating course", ex);
+            //}
             catch (Exception ex)
             {
-                Log.Error(LogMessages.UpdatingErrorCourse(ex));
+                Log.Error(LogMessages.AddingCourseError(ex));
                 transaction.Rollback();
-                throw new InvalidOperationException("Error updating course", ex);
+                throw;
             }
             finally
             {

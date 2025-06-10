@@ -20,29 +20,29 @@ namespace TrainMaster.Extensions
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(context, ex);
+                //await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            context.Response.StatusCode = exception switch
-            {
-                NpgsqlException => StatusCodes.Status503ServiceUnavailable,
-                _ => StatusCodes.Status500InternalServerError,
-            };
+        //private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        //{
+        //    context.Response.StatusCode = exception switch
+        //    {
+        //        NpgsqlException => StatusCodes.Status503ServiceUnavailable,
+        //        _ => StatusCodes.Status500InternalServerError,
+        //    };
 
-            context.Response.ContentType = "application/json";
+        //    context.Response.ContentType = "application/json";
 
-            Log.Error(exception, "An error occurred while processing the request. StatusCode: {StatusCode}", context.Response.StatusCode);
+        //    Log.Error(exception, "An error occurred while processing the request. StatusCode: {StatusCode}", context.Response.StatusCode);
 
-            return context.Response.WriteAsJsonAsync(new
-            {
-                StatusCode = context.Response.StatusCode,
-                Message = context.Response.StatusCode == StatusCodes.Status503ServiceUnavailable
-                    ? "The database is currently unavailable. Please try again later."
-                    : "An unexpected error occurred. Please contact support if the problem persists."
-            });
-        }
+        //    //return context.Response.WriteAsJsonAsync(new
+        //    //{
+        //    //    StatusCode = context.Response.StatusCode,
+        //    //    Message = context.Response.StatusCode == StatusCodes.Status503ServiceUnavailable
+        //    //        ? "The database is currently unavailable. Please try again later."
+        //    //        : "An unexpected error occurred. Please contact support if the problem persists."
+        //    //});
+        //}
     }
 }

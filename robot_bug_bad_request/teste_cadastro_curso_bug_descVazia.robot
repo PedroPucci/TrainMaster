@@ -6,7 +6,7 @@ ${URL_LOGIN}          http://127.0.0.1:5215/Login
 ${URL_CURSOS}         http://127.0.0.1:5215/Cursos
 ${BROWSER}            chrome
 
-${cpf}                04252972384
+${cpf}                04052972385
 ${SENHA}              qwer12
 
 ${INPUT_CPF}          //*[@id='cpf']
@@ -44,8 +44,8 @@ Acessar tela de cadastro de curso
     Capture Page Screenshot
 
 Preencher dados do curso sem descrição
-    Input Text      ${INPUT_NOME}        Teste sem descrição
-    Input Text      ${INPUT_DESCRICAO}   # deixa vazio
+    Input Text      ${INPUT_NOME}        # deixa vazio
+    Input Text      ${INPUT_DESCRICAO}   Teste sem descrição
     Input Text      ${INPUT_START_DATE}  22/05/2025
     Input Text      ${INPUT_END_DATE}    31/05/2025    
     Sleep           1s
@@ -53,7 +53,7 @@ Preencher dados do curso sem descrição
 
 Salvar cadastro
     Click Element   ${BTN_SALVAR}
-    Sleep           2s
+    Wait Until Page Contains    Internal Server Error    timeout=5s
     Capture Page Screenshot
 
 Fechar navegador

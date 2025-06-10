@@ -6,7 +6,7 @@ ${URL_LOGIN}          http://127.0.0.1:5215/Login
 ${URL_CURSOS}         http://127.0.0.1:5215/Cursos
 ${BROWSER}            chrome
 
-${cpf}                10286651334
+${cpf}                04052972385
 ${SENHA}              qwer12
 
 ${INPUT_CPF}          //*[@id='cpf']
