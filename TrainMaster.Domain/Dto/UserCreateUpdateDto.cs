@@ -4,8 +4,8 @@ namespace TrainMaster.Domain.Dto
 {
     public class UserCreateUpdateDto
     {
-        [Required(ErrorMessage = "Preencha todos os campos")]
-        [StringLength(11, MinimumLength = 11, ErrorMessage = "CPF no formato incorreto")]
+        //[Required(ErrorMessage = "Preencha todos os campos")]
+        //[StringLength(11, MinimumLength = 11, ErrorMessage = "CPF no formato incorreto")]
         public string Cpf { get; set; }
 
         [Required(ErrorMessage = "Preencha todos os campos")]

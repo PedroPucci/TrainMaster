@@ -29,17 +29,17 @@ namespace TrainMaster.Application.Services
                 var crypto = new BCryptoAlgorithm();
                 var isValidUser = await IsValidUserRequest(userEntity);
 
-                if (!isValidUser.Success)
-                {
-                    Log.Error(LogMessages.InvalidUserInputs());
-                    return Result<UserEntity>.Error(isValidUser.Message);
-                }
+                //if (!isValidUser.Success)
+                //{
+                //    Log.Error(LogMessages.InvalidUserInputs());
+                //    return Result<UserEntity>.Error(isValidUser.Message);
+                //}
 
-                if (await UniqueCpf(userEntity.Cpf))
-                {
-                    Log.Error("CPF already exists in the system.");
-                    return Result<UserEntity>.Error("The provided CPF is already in use.");
-                }
+                //if (await UniqueCpf(userEntity.Cpf))
+                //{
+                //    Log.Error("CPF already exists in the system.");
+                //    return Result<UserEntity>.Error("The provided CPF is already in use.");
+                //}
 
                 userEntity.ModificationDate = DateTime.UtcNow;
                 userEntity.Email = userEntity.Email?.Trim().ToLower();
@@ -289,7 +289,8 @@ namespace TrainMaster.Application.Services
 
                 user.Email = user.Email.Trim().ToLower();
                 //user.Cpf = user.Cpf.Trim();
-                user.Cpf = FormatCpf(user.Cpf);
+                //user.Cpf = FormatCpf(user.Cpf);
+                user.Cpf = user.Cpf;
                 _repositoryUoW.Commit();
                 return Result<UserEntity>.Okedit(user);
             }
@@ -305,15 +306,15 @@ namespace TrainMaster.Application.Services
             }
         }
 
-        private string FormatCpf(string cpf)
-        {
-            cpf = cpf?.Trim();
+        //private string FormatCpf(string cpf)
+        //{
+        //    cpf = cpf?.Trim();
 
-            if (string.IsNullOrEmpty(cpf) || cpf.Length != 11)
-                return cpf;
+        //    if (string.IsNullOrEmpty(cpf) || cpf.Length != 11)
+        //        return cpf;
 
-            return Convert.ToUInt64(cpf).ToString(@"000\.000\.000\-00");
-        }
+        //    return Convert.ToUInt64(cpf).ToString(@"000\.000\.000\-00");
+        //}
 
 
         private async Task<Result<UserEntity>> IsValidUserRequest(UserEntity userEntity)
@@ -329,9 +330,9 @@ namespace TrainMaster.Application.Services
             return Result<UserEntity>.Ok();
         }
 
-        private async Task<bool> UniqueCpf(string cpf)
-        {
-            return await _repositoryUoW.UserRepository.GetByCpf(cpf) is not null;
-        }
+        //private async Task<bool> UniqueCpf(string cpf)
+        //{
+        //    return await _repositoryUoW.UserRepository.GetByCpf(cpf) is not null;
+        //}
     }
 }
